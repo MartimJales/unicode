@@ -4,6 +4,14 @@
 #include <math.h>
 #include "parse.h"
 
+void PUSH(long val);
+long POP();
+void PRINNT_STACK();
+
+// Tenho que arranjar maneia de tirar estas globais
+int top = -1;
+long stack[10240];
+
 void parse(char *line)
 {
     char *delimitadores = " \t \n";
@@ -17,7 +25,6 @@ void parse(char *line)
         }
         else if (strcmp(token, "+") == 0)
         {
-
             long x = POP();
             long y = POP();
             PUSH(x + y);
@@ -65,5 +72,44 @@ void parse(char *line)
             PUSH(pow(x, y));
         }
     }
-   PRINT_STACK();
+    PRINT_STACK();
+}
+
+long POP()
+{
+    int loc_top = top;
+    if (top == -1)
+    {
+        printf("Stack vazia velho!!!\n");
+        return 0;
+    }
+    else
+    {
+        printf("Popei %lu!!\n", stack[top]);
+        top--;
+        loc_top = top;
+        return stack[top + 1];
+    }
+}
+
+void PUSH(long val_i)
+{
+    if (top == 10240)
+        printf("Stack cheia velho!!!\n");
+    else
+    {
+        top++;
+        stack[top] = val_i;
+        printf("Pushei %lu!!\n", stack[top]);
+    }
+}
+
+void PRINT_STACK()
+{
+    for (int i = 0; i <= top; i++)
+    {
+        printf("%lu", stack[i]);
+        printf("/");
+    }
+    printf("\n");
 }
