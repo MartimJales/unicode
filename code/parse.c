@@ -65,4 +65,5 @@ void parse(char *line)
             PUSH(pow(x, y));
         }
     }
+   PRINT_STACK();
 }
