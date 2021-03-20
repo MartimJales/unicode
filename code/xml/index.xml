@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.8.17">
+  <compound refid="main_8c" kind="file"><name>main.c</name>
+    <member refid="main_8c_1ae66f6b31b5ad750f1fe042a706a4e3d4" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="parse_8c" kind="file"><name>parse.c</name>
+    <member refid="parse_8c_1af93f4f37fc2ad9c37af4a715423b110c" kind="variable"><name>top</name></member>
+    <member refid="parse_8c_1aaeadc1b65919d9adc5b3700e7f27c87f" kind="variable"><name>stack</name></member>
+    <member refid="parse_8c_1ae7e45a1b0f2ce3ff1c34eccdff425637" kind="function"><name>parse</name></member>
+    <member refid="parse_8c_1a0fab6d113db36bd0d939be75e40fbc39" kind="function"><name>POP</name></member>
+    <member refid="parse_8c_1a0d914e91bf3f494a11317b8aaabce2df" kind="function"><name>PUSH</name></member>
+    <member refid="parse_8c_1aba79cb558dcc94742a2c64f7f2a19a4f" kind="function"><name>PRINT_STACK</name></member>
+  </compound>
+  <compound refid="parse_8h" kind="file"><name>parse.h</name>
+    <member refid="parse_8h_1ae7e45a1b0f2ce3ff1c34eccdff425637" kind="function"><name>parse</name></member>
+    <member refid="parse_8h_1ac73273fd0ffc555551899ca6df91dac7" kind="function"><name>PUSH</name></member>
+    <member refid="parse_8h_1a0fab6d113db36bd0d939be75e40fbc39" kind="function"><name>POP</name></member>
+    <member refid="parse_8h_1aba79cb558dcc94742a2c64f7f2a19a4f" kind="function"><name>PRINT_STACK</name></member>
+  </compound>
+</doxygenindex>
