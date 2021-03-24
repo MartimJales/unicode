@@ -17,8 +17,8 @@ long stack[10240];
  * 
  * Posteriormente, através de um ciclo, inicia-se uma nova variável (um apontador de carateres (token)),
  * com a condição de paragem quando esse token for NULL. 
- * A cada iteração o token é atualizado.
- * 
+ * A cada iteração o token é atualizado. 
+ *
  * Através de condições if verifica-se o valor a devolver ao topo da pilha, 
  * se à partida, a string contiver apenas números é imediatamente devolvida, 
  * caso contrário, através da função 'strcmp' verificar-se-à que valor/es 
@@ -35,6 +35,7 @@ void parse(char *line)
     {
         char *resto;
         long val_i = strtol(token, &resto, 10);
+        
         if (strlen(resto) == 0)
         {
             PUSH(val_i);
@@ -57,12 +58,14 @@ void parse(char *line)
             long y = POP();
             PUSH(y / x);
         }
+
         else if (strcmp(token, "-") == 0)
         {
             long x = POP();
             long y = POP();
             PUSH(y - x);
         }
+        
         else if (strcmp(token, ")") == 0)
         {
             long x = POP();
@@ -73,6 +76,7 @@ void parse(char *line)
             long x = POP();
             PUSH(x - 1);
         }
+
         else if (strcmp(token, "%") == 0)
         {
             long x = POP();
@@ -127,7 +131,7 @@ long POP()
 
 /**
  * \brief Função PUSH do programa
- * 
+ *
  * Função que vai à Stack adicionar uma célula acima da última.
  * 
  * @param long val_i 
