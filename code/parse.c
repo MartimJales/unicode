@@ -169,8 +169,15 @@ void parse(char *line)
             struct elemento x = POP();
             struct elemento y = POP();
             struct elemento z = POP();
-            PUSH(z);
+            PUSH(y);
             PUSH(x);
+            PUSH(z);
+        }
+        else if (strcmp(token, "$") == 0)
+        {
+            struct elemento x = POP();
+            int i = atoi(x.valor);
+            struct elemento y = stack[top - i];
             PUSH(y);
         }
         printf("STACK:");
