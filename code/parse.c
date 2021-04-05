@@ -8,10 +8,6 @@
 #include "parse.h"
 #include <assert.h>
 
-
-
-
-
 int top = -1;
 struct elemento stack[10];
 
@@ -44,103 +40,103 @@ void parse(char *line)
         {
             struct elemento val;
             val.tipo = T_long;
-            sprintf(val.valor,"%ld",val_i); 
+            sprintf(val.valor, "%ld", val_i);
             PUSH(val);
         }
         else if (strcmp(token, "l") == 0) //ler linha
         {
-            struct elemento x ;
+            struct elemento x;
             assert(fgets(x.valor, 100, stdin) != NULL);
-            x.tipo=T_string;
+            x.tipo = T_string;
             PUSH(x);
         }
         else if (strcmp(token, "i") == 0) //converter para int
         {
-            struct elemento x = POP() ;
-            x.tipo=T_int;
+            struct elemento x = POP();
+            x.tipo = T_int;
             PUSH(x);
         }
         else if (strcmp(token, "f") == 0) //converter para float
         {
-            struct elemento x = POP() ;
-            x.tipo=T_float;
+            struct elemento x = POP();
+            x.tipo = T_float;
             PUSH(x);
         }
         else if (strcmp(token, "+") == 0)
         {
             struct elemento x = POP();
             struct elemento y = POP();
-            PUSH(operador(x , y,'+'));
+            PUSH(operador(x, y, '+'));
         }
         else if (strcmp(token, "*") == 0)
         {
             struct elemento x = POP();
             struct elemento y = POP();
-            PUSH(operador(x , y,'*'));
+            PUSH(operador(x, y, '*'));
         }
         else if (strcmp(token, "/") == 0)
         {
             struct elemento y = POP();
             struct elemento x = POP();
 
-            PUSH(operador(x , y,'/'));
+            PUSH(operador(x, y, '/'));
         }
         else if (strcmp(token, "-") == 0)
         {
             struct elemento y = POP();
             struct elemento x = POP();
-            PUSH(operador(x , y,'-'));
+            PUSH(operador(x, y, '-'));
         }
         else if (strcmp(token, ")") == 0)
         {
             struct elemento x = POP();
-            long l=atol(x.valor);
-            sprintf(x.valor,"%ld",++l);
+            long l = atol(x.valor);
+            sprintf(x.valor, "%ld", ++l);
             PUSH(x);
         }
         else if (strcmp(token, "(") == 0)
         {
             struct elemento x = POP();
-            long l=atol(x.valor);
-            sprintf(x.valor,"%ld",--l);
+            long l = atol(x.valor);
+            sprintf(x.valor, "%ld", --l);
             PUSH(x);
         }
         else if (strcmp(token, "%") == 0)
         {
             struct elemento y = POP();
             struct elemento x = POP();
-            PUSH(operador(x , y,'%'));
+            PUSH(operador(x, y, '%'));
         }
         else if (strcmp(token, "#") == 0)
         {
             struct elemento y = POP();
             struct elemento x = POP();
-            PUSH(operador(x , y,'#'));
+            PUSH(operador(x, y, '#'));
         }
         else if (strcmp(token, "&") == 0)
         {
             struct elemento x = POP();
             struct elemento y = POP();
-            PUSH(operador(x , y,'&'));
+            PUSH(operador(x, y, '&'));
         }
         else if (strcmp(token, "|") == 0)
         {
             struct elemento x = POP();
             struct elemento y = POP();
-            PUSH(operador(x , y,'|'));
+            PUSH(operador(x, y, '|'));
         }
         else if (strcmp(token, "^") == 0)
         {
             struct elemento x = POP();
             struct elemento y = POP();
-            PUSH(operador(x , y,'^'));
+            PUSH(operador(x, y, '^'));
         }
         else if (strcmp(token, "~") == 0)
         {
             struct elemento x = POP();
-            long l=atol(x.valor);
-            l=~l;
-            sprintf(x.valor,"%ld",l);
+            long l = atol(x.valor);
+            l = ~l;
+            sprintf(x.valor, "%ld", l);
             PUSH(x);
         }
         else if (strcmp(token, "_") == 0)
@@ -153,24 +149,32 @@ void parse(char *line)
         {
             struct elemento x = POP();
         }
-        else if (strcmp(token, "\\" ) == 0)
+        else if (strcmp(token, "\\") == 0)
         {
             struct elemento x = POP();
             struct elemento y = POP();
             PUSH(x);
             PUSH(y);
         }
-        else if (strcmp(token, "c" ) == 0)
+        else if (strcmp(token, "c") == 0)
         {
             struct elemento x = POP();
-            x.valor[0]=atoi(x.valor);
-            x.valor[1]=0;
-            x.tipo=T_string;
+            x.valor[0] = atoi(x.valor);
+            x.valor[1] = 0;
+            x.tipo = T_string;
             PUSH(x);
-        }  
-printf("STACK:");
- PRINT_STACK_DEBUG();
-
+        }
+        else if (strcmp(token, "@") == 0)
+        {
+            struct elemento x = POP();
+            struct elemento y = POP();
+            struct elemento z = POP();
+            PUSH(z);
+            PUSH(x);
+            PUSH(y);
+        }
+        printf("STACK:");
+        PRINT_STACK_DEBUG();
     }
 
     printf("STACK FINAL:");
@@ -199,7 +203,8 @@ struct elemento POP()
  * 
  * @returns Não devolve nada (void).
  */
-void PUSH(struct elemento val_i)
+void
+PUSH(struct elemento val_i)
 {
     top++;
     stack[top] = val_i;
@@ -222,7 +227,7 @@ void PRINT_STACK()
 {
     for (int i = 0; i <= top; i++)
     {
-        printf("%s",stack[i].valor);
+        printf("%s", stack[i].valor);
     }
     printf("\n");
 }
@@ -231,7 +236,7 @@ void PRINT_STACK_DEBUG()
 {
     for (int i = 0; i <= top; i++)
     {
-        printf("%d %s " ,stack[i].tipo,stack[i].valor);
+        printf("%d %s ", stack[i].tipo, stack[i].valor);
     }
     printf("\n");
 }
@@ -240,73 +245,68 @@ double convertToDouble(struct elemento x)
 {
     double ret;
 
-    ret=0.0;
+    ret = 0.0;
     if (x.tipo == T_int || x.tipo == T_long || x.tipo == T_double || x.tipo == T_float)
     {
         //no campo valor temos algo como "200", "323.2" ..
-        ret=strtod(x.valor,NULL);
+        ret = strtod(x.valor, NULL);
     }
     return ret;
-
 }
 
-
-struct elemento operador (struct elemento x,struct elemento y,char op) 
+struct elemento operador(struct elemento x, struct elemento y, char op)
 {
-    double dx, dy,dres;
+    double dx, dy, dres;
 
-    dx=convertToDouble(x);
-    dy=convertToDouble(y);
+    dx = convertToDouble(x);
+    dy = convertToDouble(y);
 
     if (op == '*')
     {
-        dres=dx*dy;
+        dres = dx * dy;
     }
     else if (op == '+')
     {
-        dres=dx+dy;
+        dres = dx + dy;
     }
     else if (op == '-')
     {
-        dres=dx-dy;
+        dres = dx - dy;
     }
     else if (op == '/')
     {
-        dres=dx/dy;
+        dres = dx / dy;
     }
     else if (op == '#')
     {
-        dres=pow(dx,dy);
+        dres = pow(dx, dy);
     }
     else if (op == '%')
     {
-        dres=(long)dx % (long)dy;
+        dres = (long)dx % (long)dy;
     }
     else if (op == '&')
     {
-        dres=(long)dx & (long)dy;
+        dres = (long)dx & (long)dy;
     }
     else if (op == '|')
     {
-        dres=(long)dx |(long)dy;
+        dres = (long)dx | (long)dy;
     }
     else if (op == '^')
     {
-        dres=(long)dx ^ (long)dy;
+        dres = (long)dx ^ (long)dy;
     }
     struct elemento val;
     val.tipo = x.tipo;
-    if (val.tipo==T_int)
-        sprintf(val.valor,"%d",(int)dres);
-    else if (val.tipo==T_long)
-        sprintf(val.valor,"%ld",(long)dres);
-    else if (val.tipo==T_float)
-        sprintf(val.valor,"%f",(float)dres);
-    else if (val.tipo==T_double)
-        sprintf(val.valor,"%lf",(double)dres);
-              
+    if (val.tipo == T_int)
+        sprintf(val.valor, "%d", (int)dres);
+    else if (val.tipo == T_long)
+        sprintf(val.valor, "%ld", (long)dres);
+    else if (val.tipo == T_float)
+        sprintf(val.valor, "%f", (float)dres);
+    else if (val.tipo == T_double)
+        sprintf(val.valor, "%lf", (double)dres);
+
     return val;
-
-
 }
-
