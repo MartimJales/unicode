@@ -35,12 +35,28 @@ void parse(char *line)
     for (char *token = strtok(line, delimitadores); token != NULL; token = strtok(NULL, delimitadores))
     {
         char *resto;
-        long val_i = strtol(token, &resto, 10);
+        int val_tipo;
+
+      //  printf("ANTES token=%s resto=%s \n", token,resto);
+        char *p = strstr(token, ".");
+
+        if (p)
+        {
+            strtod (token, &resto);
+            val_tipo = T_double;
+        }
+        else
+        {
+            strtol (token, &resto, 10);
+            val_tipo = T_long;
+        }
+       // printf("DEPOIS token=%s resto=%s \n", token,resto);
         if (strlen(resto) == 0)
         {
             struct elemento val;
-            val.tipo = T_long;
-            sprintf(val.valor, "%ld", val_i);
+            val.tipo = val_tipo;
+
+            sprintf(val.valor, "%s", token);
             PUSH(val);
         }
         else if (strcmp(token, "l") == 0) //ler linha
@@ -90,8 +106,11 @@ void parse(char *line)
         else if (strcmp(token, ")") == 0)
         {
             struct elemento x = POP();
+                 //   printf("antes %s \n" ,x.valor);
             long l = atol(x.valor);
             sprintf(x.valor, "%ld", ++l);
+
+                // printf("depois %s \n" ,x.valor);
             PUSH(x);
         }
         else if (strcmp(token, "(") == 0)
@@ -147,7 +166,7 @@ void parse(char *line)
         }
         else if (strcmp(token, ";") == 0)
         {
-            struct elemento x = POP();
+            POP();
         }
         else if (strcmp(token, "\\") == 0)
         {
@@ -159,9 +178,7 @@ void parse(char *line)
         else if (strcmp(token, "c") == 0)
         {
             struct elemento x = POP();
-            x.valor[0] = atoi(x.valor);
-            x.valor[1] = 0;
-            x.tipo = T_string;
+            x.tipo = T_char;
             PUSH(x);
         }
         else if (strcmp(token, "@") == 0)
@@ -180,11 +197,11 @@ void parse(char *line)
             struct elemento y = stack[top - i];
             PUSH(y);
         }
-        printf("STACK:");
-        PRINT_STACK_DEBUG();
+        // printf("STACK:");
+        // PRINT_STACK_DEBUG();
     }
 
-    printf("STACK FINAL:");
+    // printf("STACK FINAL:");
     PRINT_STACK();
 }
 
@@ -232,9 +249,23 @@ PUSH(struct elemento val_i)
 
 void PRINT_STACK()
 {
+    char *resto;
     for (int i = 0; i <= top; i++)
     {
-        printf("%s", stack[i].valor);
+
+        if ( stack[i].tipo == T_int || stack[i].tipo == T_long )
+            printf("%ld", strtol(stack[i].valor,&resto,10));
+        else if ( stack[i].tipo == T_float ||  stack[i].tipo == T_double )
+            printf("%.6g", strtod(stack[i].valor,&resto));
+        else if ( stack[i].tipo == T_char)
+        {
+            char str[2];
+            str[0]=atoi(stack[i].valor);
+            str[1]=0;
+            printf("%s", str);
+        }
+        else
+            printf("%s", stack[i].valor);
     }
     printf("\n");
 }
@@ -248,7 +279,7 @@ void PRINT_STACK_DEBUG()
     printf("\n");
 }
 
-double convertToDouble(struct elemento x)
+float convertToDouble(struct elemento x)
 {
     double ret;
 
@@ -256,18 +287,18 @@ double convertToDouble(struct elemento x)
     if (x.tipo == T_int || x.tipo == T_long || x.tipo == T_double || x.tipo == T_float)
     {
         //no campo valor temos algo como "200", "323.2" ..
-        ret = strtod(x.valor, NULL);
+        ret = strtof(x.valor, NULL);
     }
     return ret;
 }
 
 struct elemento operador(struct elemento x, struct elemento y, char op)
 {
-    double dx, dy, dres;
+    float dx, dy, dres;
 
     dx = convertToDouble(x);
     dy = convertToDouble(y);
-
+    dres = 0.0;
     if (op == '*')
     {
         dres = dx * dy;
@@ -305,15 +336,24 @@ struct elemento operador(struct elemento x, struct elemento y, char op)
         dres = (long)dx ^ (long)dy;
     }
     struct elemento val;
-    val.tipo = x.tipo;
+
+    if (x.tipo == T_double || y.tipo == T_double )
+        val.tipo = T_double;
+    else if (x.tipo == T_float || y.tipo == T_float )
+        val.tipo = T_float;
+    else if (x.tipo == T_long || y.tipo == T_long)
+         val.tipo = T_long;
+    else
+        val.tipo = T_int;
+
     if (val.tipo == T_int)
         sprintf(val.valor, "%d", (int)dres);
     else if (val.tipo == T_long)
         sprintf(val.valor, "%ld", (long)dres);
     else if (val.tipo == T_float)
-        sprintf(val.valor, "%f", (float)dres);
+        sprintf(val.valor, "%.16g", (float)dres);
     else if (val.tipo == T_double)
-        sprintf(val.valor, "%lf", (double)dres);
+        sprintf(val.valor, "%.16g", (double)dres);
 
     return val;
 }
