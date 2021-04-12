@@ -59,91 +59,91 @@ void parse(char *line)
             val.tipo = val_tipo;
 
             sprintf(val.valor, "%s", token);
-            PUSH(val);
+            PUSH(top, stack, val);
         }
         else if (strcmp(token, "l") == 0) //ler linha
         {
             struct elemento x;
             assert(fgets(x.valor, 100, stdin) != NULL);
             x.tipo = T_string;
-            PUSH(x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, "i") == 0) //converter para int
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             x.tipo = T_int;
-            PUSH(x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, "f") == 0) //converter para float
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             x.tipo = T_float;
-            PUSH(x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, ")") == 0)
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             //   printf("antes %s \n" ,x.valor);
             long l = atol(x.valor);
             sprintf(x.valor, "%ld", ++l);
 
             // printf("depois %s \n" ,x.valor);
-            PUSH(x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, "(") == 0)
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             long l = atol(x.valor);
             sprintf(x.valor, "%ld", --l);
-            PUSH(x);
+            PUSH(top, stack, x);
         }
 
         else if (strcmp(token, "~") == 0)
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             long l = atol(x.valor);
             l = ~l;
             sprintf(x.valor, "%ld", l);
-            PUSH(x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, "_") == 0)
         {
-            struct elemento x = POP();
-            PUSH(x);
-            PUSH(x);
+            struct elemento x = POP(top, stack);
+            PUSH(top, stack, x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, ";") == 0)
         {
-            POP();
+            POP(top, stack);
         }
         else if (strcmp(token, "\\") == 0)
         {
-            struct elemento x = POP();
-            struct elemento y = POP();
-            PUSH(x);
-            PUSH(y);
+            struct elemento x = POP(top, stack);
+            struct elemento y = POP(top, stack);
+            PUSH(top, stack, x);
+            PUSH(top, stack, y);
         }
         else if (strcmp(token, "c") == 0)
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             x.tipo = T_char;
-            PUSH(x);
+            PUSH(top, stack, x);
         }
         else if (strcmp(token, "@") == 0)
         {
-            struct elemento x = POP();
-            struct elemento y = POP();
-            struct elemento z = POP();
-            PUSH(y);
-            PUSH(x);
-            PUSH(z);
+            struct elemento x = POP(top, stack);
+            struct elemento y = POP(top, stack);
+            struct elemento z = POP(top, stack);
+            PUSH(top, stack, y);
+            PUSH(top, stack, x);
+            PUSH(top, stack, z);
         }
         else if (strcmp(token, "$") == 0)
         {
-            struct elemento x = POP();
+            struct elemento x = POP(top, stack);
             int i = atoi(x.valor);
             struct elemento y = stack[top - i];
-            PUSH(y);
+            PUSH(top, stack, y);
         }
         else
         {
@@ -154,7 +154,7 @@ void parse(char *line)
         // printf("STACK:");
         // PRINT_STACK_DEBUG();
     }
-    PRINT_STACK();
+    PRINT_STACK(top, stack);
 }
 
 /**
@@ -162,7 +162,7 @@ void parse(char *line)
  * 
  * Função que vai à Stack tirar a última célula.
  * 
- * @returns Um inteiro long, cujo resultado é o valor no topo da Stack.
+ * @returns long topo da Stack.
  */
 struct elemento POP(int top, struct elemento stack[])
 {
@@ -215,15 +215,6 @@ void PRINT_STACK(int top, struct elemento stack[])
         }
         else
             printf("%s", stack[i].valor);
-    }
-    printf("\n");
-}
-
-void PRINT_STACK_DEBUG(int top, struct elemento stack[])
-{
-    for (int i = 0; i <= top; i++)
-    {
-        printf("%d %s ", stack[i].tipo, stack[i].valor);
     }
     printf("\n");
 }
@@ -308,12 +299,3 @@ struct elemento operador(struct elemento x, struct elemento y, char op)
 
     return val;
 }
-
-no parse-- -
-
-    verificamos se o har pettence a um destes simbolos : [simbolos utilizados na funcao operador]
-
-                                                         sim : Chama operador com a stack,
-    os dosi primeiros elementos e o char
-
-        não : Passa para as outras funções auaxiliares !!!
