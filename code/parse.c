@@ -54,7 +54,6 @@ void parse(char *line)
             strtol(token, &resto, 10);
             val_tipo = T_long;
         }
-        // printf("DEPOIS token=%s resto=%s \n", token,resto);
         if (strlen(resto) == 0)
         {
             struct elemento val;
@@ -82,30 +81,44 @@ void parse(char *line)
             x.tipo = T_float;
             PUSH(ptr_lady, x);
         }
-        else if (strcmp(token, "+") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '+'));
-        }
-        else if (strcmp(token, "*") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '*'));
-        }
-        else if (strcmp(token, "/") == 0)
-        {
-            struct elemento y = POP(ptr_lady);
-            struct elemento x = POP(ptr_lady);
 
-            PUSH(ptr_lady, operador(x, y, '/'));
-        }
-        else if (strcmp(token, "-") == 0)
+        /*
+Funçãio que verifica se o token é relativo às operações da função operador
+*/
+
+        // Um array para ver as u«fnções do guião 1;
+        // Outro para ver as funçoes do guiao 2;
+
+        /*
+
+if (isG1(token)) {
+    guiao1(ptr_lady, token);
+}
+else if (is G2(token)){
+    guiao2(ptr_lady, token);
+}
+
+void guiao1(struct stack *stack, char *op)
+{
+    if (isOp(token))
         {
-            struct elemento y = POP(ptr_lady);
+
+            //guiao1(ptr_lady);
             struct elemento x = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '-'));
+            struct elemento y = POP(ptr_lady);
+            PUSH(ptr_lady, operador(x, y, token));
+        }
+    }
+}
+*/
+
+        if (isOp(token))
+        {
+
+            //guiao1(ptr_lady);
+            struct elemento x = POP(ptr_lady);
+            struct elemento y = POP(ptr_lady);
+            PUSH(ptr_lady, operador(x, y, token));
         }
         else if (strcmp(token, ")") == 0)
         {
@@ -123,36 +136,6 @@ void parse(char *line)
             long l = atol(x.valor);
             sprintf(x.valor, "%ld", --l);
             PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "%") == 0)
-        {
-            struct elemento y = POP(ptr_lady);
-            struct elemento x = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '%'));
-        }
-        else if (strcmp(token, "#") == 0)
-        {
-            struct elemento y = POP(ptr_lady);
-            struct elemento x = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '#'));
-        }
-        else if (strcmp(token, "&") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '&'));
-        }
-        else if (strcmp(token, "|") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '|'));
-        }
-        else if (strcmp(token, "^") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, '^'));
         }
         else if (strcmp(token, "~") == 0)
         {
@@ -201,8 +184,6 @@ void parse(char *line)
             struct elemento y = get_the_kid(ptr_lady, i);
             PUSH(ptr_lady, y);
         }
-        // printf("STACK:");
-        // PRINT_STACK_DEBUG();
     }
     PRINT_STACK(ptr_lady);
 }
@@ -283,48 +264,45 @@ float convertToDouble(struct elemento x)
     return ret;
 }
 
-struct elemento operador(struct elemento x, struct elemento y, char op)
+struct elemento operador(struct elemento x, struct elemento y, char *op)
 {
     float dx, dy, dres;
 
     dx = convertToDouble(x);
     dy = convertToDouble(y);
     dres = 0.0;
-    if (op == '*')
+    switch (*op)
     {
+    case '*':
         dres = dx * dy;
-    }
-    else if (op == '+')
-    {
+        break;
+    case '+':
         dres = dx + dy;
-    }
-    else if (op == '-')
-    {
+        break;
+    case '-':
         dres = dx - dy;
-    }
-    else if (op == '/')
-    {
+        break;
+    case '/':
         dres = dx / dy;
-    }
-    else if (op == '#')
-    {
-        dres = pow(dx, dy);
-    }
-    else if (op == '%')
-    {
+        break;
+    case '%':
         dres = (long)dx % (long)dy;
-    }
-    else if (op == '&')
-    {
+        break;
+    case '#':
+        dres = pow(dx, dy);
+        break;
+    case '&':
         dres = (long)dx & (long)dy;
-    }
-    else if (op == '|')
-    {
+        break;
+    case '|':
         dres = (long)dx | (long)dy;
-    }
-    else if (op == '^')
-    {
+        break;
+    case '^':
         dres = (long)dx ^ (long)dy;
+        break;
+    default:
+        printf("DEU BAGULHO____ABORT ABORT!!!");
+        break;
     }
     struct elemento val;
 
@@ -352,4 +330,43 @@ struct elemento operador(struct elemento x, struct elemento y, char op)
 struct elemento get_the_kid(struct stack *stack, int i)
 {
     return (*stack).array[(*stack).top - i];
+}
+
+int isOp(char *token)
+{
+    char *sinais = "+-/*%#&|^";
+
+    while (*sinais || *token == *sinais)
+    {
+        sinais++;
+    }
+    if (*token == *sinais)
+        return 1;
+    return 0;
+}
+
+int isG1(char *token)
+{
+    char *sinais = "sinais da guiao 1";
+
+    while (*sinais || *token == *sinais)
+    {
+        sinais++;
+    }
+    if (*token == *sinais)
+        return 1;
+    return 0;
+}
+
+int isG2(char *token)
+{
+    char *sinais = "sinais da guiao 2";
+
+    while (*sinais || *token == *sinais)
+    {
+        sinais++;
+    }
+    if (*token == *sinais)
+        return 1;
+    return 0;
 }
