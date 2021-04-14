@@ -12,10 +12,16 @@ struct elemento
     char valor[100];
 };
 
-struct elemento operador (struct elemento x,struct elemento y,char op) ;
+struct stack
+{
+    int top;
+    struct elemento array[100];
+};
+
+struct elemento operador(struct elemento x, struct elemento y, char op);
 
 void parse(char *line);
-void PUSH(struct elemento val);
-struct elemento POP();
-void PRINT_STACK();
-void PRINT_STACK_DEBUG();
+void PUSH(struct stack *stack, struct elemento n);
+struct elemento POP(struct stack *stack);
+void PRINT_STACK(struct stack *stack);
+struct elemento get_the_kid(struct stack *stack, int i);
