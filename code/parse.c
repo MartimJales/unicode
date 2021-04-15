@@ -8,9 +8,6 @@
 #include "parse.h"
 #include <assert.h>
 
-int top = -1;
-struct elemento stack[10];
-
 /**
  * \brief Função parse do programa
  * 
@@ -41,9 +38,7 @@ void parse(char *line)
         char *resto;
         int val_tipo;
 
-        //  printf("ANTES token=%s resto=%s \n", token,resto);
         char *p = strstr(token, ".");
-
         if (p)
         {
             strtod(token, &resto);
@@ -62,127 +57,26 @@ void parse(char *line)
             sprintf(val.valor, "%s", token);
             PUSH(ptr_lady, val);
         }
-        else if (strcmp(token, "l") == 0) //ler linha
+        else
         {
-            struct elemento x;
-            assert(fgets(x.valor, 100, stdin) != NULL);
-            x.tipo = T_string;
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "i") == 0) //converter para int
-        {
-            struct elemento x = POP(ptr_lady);
-            x.tipo = T_int;
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "f") == 0) //converter para float
-        {
-            struct elemento x = POP(ptr_lady);
-            x.tipo = T_float;
-            PUSH(ptr_lady, x);
-        }
-
-        /*
-Funçãio que verifica se o token é relativo às operações da função operador
-*/
-
-        // Um array para ver as u«fnções do guião 1;
-        // Outro para ver as funçoes do guiao 2;
-
-        /*
-
-if (isG1(token)) {
-    guiao1(ptr_lady, token);
-}
-else if (is G2(token)){
-    guiao2(ptr_lady, token);
-}
-
-void guiao1(struct stack *stack, char *op)
-{
-    if (isOp(token))
-        {
-
-            //guiao1(ptr_lady);
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, token));
-        }
-    }
-}
-*/
-
-        if (isOp(token))
-        {
-
-            //guiao1(ptr_lady);
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, operador(x, y, token));
-        }
-        else if (strcmp(token, ")") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            //   printf("antes %s \n" ,x.valor);
-            long l = atol(x.valor);
-            sprintf(x.valor, "%ld", ++l);
-
-            // printf("depois %s \n" ,x.valor);
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "(") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            long l = atol(x.valor);
-            sprintf(x.valor, "%ld", --l);
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "~") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            long l = atol(x.valor);
-            l = ~l;
-            sprintf(x.valor, "%ld", l);
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "_") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            PUSH(ptr_lady, x);
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, ";") == 0)
-        {
-            POP(ptr_lady);
-        }
-        else if (strcmp(token, "\\") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            PUSH(ptr_lady, x);
-            PUSH(ptr_lady, y);
-        }
-        else if (strcmp(token, "c") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            x.tipo = T_char;
-            PUSH(ptr_lady, x);
-        }
-        else if (strcmp(token, "@") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            struct elemento y = POP(ptr_lady);
-            struct elemento z = POP(ptr_lady);
-            PUSH(ptr_lady, y);
-            PUSH(ptr_lady, x);
-            PUSH(ptr_lady, z);
-        }
-        else if (strcmp(token, "$") == 0)
-        {
-            struct elemento x = POP(ptr_lady);
-            int i = atoi(x.valor);
-            struct elemento y = get_the_kid(ptr_lady, i);
-            PUSH(ptr_lady, y);
+            switch (filter(token))
+            {
+            case 1:
+                maths(ptr_lady, token);
+                break;
+            case 2:
+                manstack(ptr_lady, token);
+                break;
+            case 3:
+                conversion(ptr_lady, token);
+                break;
+            case 4:
+                inoutput(ptr_lady, token);
+                break;
+            default:
+                //Esta é referente aos próximos guiões e ainda não estão definidas!
+                break;
+            }
         }
     }
     PRINT_STACK(ptr_lady);
@@ -258,7 +152,6 @@ float convertToDouble(struct elemento x)
     ret = 0.0;
     if (x.tipo == T_int || x.tipo == T_long || x.tipo == T_double || x.tipo == T_float)
     {
-        //no campo valor temos algo como "200", "323.2" ..
         ret = strtof(x.valor, NULL);
     }
     return ret;
@@ -280,16 +173,16 @@ struct elemento operador(struct elemento x, struct elemento y, char *op)
         dres = dx + dy;
         break;
     case '-':
-        dres = dx - dy;
+        dres = dy - dx;
         break;
     case '/':
-        dres = dx / dy;
+        dres = dy / dx;
         break;
     case '%':
-        dres = (long)dx % (long)dy;
+        dres = (long)dy % (long)dx;
         break;
     case '#':
-        dres = pow(dx, dy);
+        dres = pow(dy, dx);
         break;
     case '&':
         dres = (long)dx & (long)dy;
@@ -332,41 +225,138 @@ struct elemento get_the_kid(struct stack *stack, int i)
     return (*stack).array[(*stack).top - i];
 }
 
-int isOp(char *token)
+int filter(char *token)
 {
-    char *sinais = "+-/*%#&|^";
+    char *maths = "+-/*%#&|^()~";
+    char *manstack = "_;\\@$";
+    char *conversion = "ifcs";
+    char *io = "l";
 
-    while (*sinais || *token == *sinais)
+    while (*maths)
     {
-        sinais++;
+        if (*token == *maths)
+        {
+            return 1;
+        }
+        maths++;
     }
-    if (*token == *sinais)
-        return 1;
+    while (*manstack)
+    {
+        if (*token == *manstack)
+        {
+            return 2;
+        }
+        manstack++;
+    }
+    while (*conversion)
+    {
+        if (*token == *conversion)
+        {
+            return 3;
+        }
+        conversion++;
+    }
+    while (*io)
+    {
+        if (*token == *io)
+        {
+            return 4;
+        }
+        io++;
+    }
     return 0;
 }
 
-int isG1(char *token)
+void maths(struct stack *ptr_lady, char *token)
 {
-    char *sinais = "sinais da guiao 1";
-
-    while (*sinais || *token == *sinais)
+    if (*token == '(')
     {
-        sinais++;
+        struct elemento x = POP(ptr_lady);
+        long l = atol(x.valor);
+        sprintf(x.valor, "%ld", --l);
+        PUSH(ptr_lady, x);
     }
-    if (*token == *sinais)
-        return 1;
-    return 0;
+    else if (*token == ')')
+    {
+        struct elemento x = POP(ptr_lady);
+        long l = atol(x.valor);
+        sprintf(x.valor, "%ld", ++l);
+        PUSH(ptr_lady, x);
+    }
+    else
+    {
+        struct elemento x = POP(ptr_lady);
+        struct elemento y = POP(ptr_lady);
+        PUSH(ptr_lady, operador(x, y, token));
+    }
 }
 
-int isG2(char *token)
+void manstack(struct stack *ptr_lady, char *token)
 {
-    char *sinais = "sinais da guiao 2";
-
-    while (*sinais || *token == *sinais)
+    if (strcmp(token, "_") == 0)
     {
-        sinais++;
+        struct elemento x = POP(ptr_lady);
+        PUSH(ptr_lady, x);
+        PUSH(ptr_lady, x);
     }
-    if (*token == *sinais)
-        return 1;
-    return 0;
+    else if (strcmp(token, ";") == 0)
+    {
+        POP(ptr_lady);
+    }
+    else if (strcmp(token, "\\") == 0)
+    {
+        struct elemento x = POP(ptr_lady);
+        struct elemento y = POP(ptr_lady);
+        PUSH(ptr_lady, x);
+        PUSH(ptr_lady, y);
+    }
+    else if (strcmp(token, "@") == 0)
+    {
+        struct elemento x = POP(ptr_lady);
+        struct elemento y = POP(ptr_lady);
+        struct elemento z = POP(ptr_lady);
+        PUSH(ptr_lady, y);
+        PUSH(ptr_lady, x);
+        PUSH(ptr_lady, z);
+    }
+    else if (strcmp(token, "$") == 0)
+    {
+        struct elemento x = POP(ptr_lady);
+        int i = atoi(x.valor);
+        struct elemento y = get_the_kid(ptr_lady, i);
+        PUSH(ptr_lady, y);
+    }
+}
+
+void conversion(struct stack *ptr_lady, char *token)
+{
+    if (strcmp(token, "i") == 0) //converter para int
+    {
+        struct elemento x = POP(ptr_lady);
+        x.tipo = T_int;
+        PUSH(ptr_lady, x);
+    }
+    else if (strcmp(token, "f") == 0) //converter para float
+    {
+        struct elemento x = POP(ptr_lady);
+        x.tipo = T_float;
+        PUSH(ptr_lady, x);
+    }
+    else if (strcmp(token, "c") == 0) //converter para char
+    {
+        struct elemento x = POP(ptr_lady);
+        x.tipo = T_char;
+        PUSH(ptr_lady, x);
+    }
+}
+
+void inoutput(struct stack *ptr_lady, char *token)
+{
+    if (strcmp(token, "l") == 0) //ler linha
+    {
+        struct elemento x;
+        assert(fgets(x.valor, 100, stdin) != NULL);
+        x.tipo = T_string;
+        PUSH(ptr_lady, x);
+    }
 }
