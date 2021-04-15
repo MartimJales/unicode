@@ -26,9 +26,9 @@
  */
 void parse(char *line)
 {
-    struct stack lady;
-    lady.top = -1;
-    struct stack *ptr_lady = &lady;
+    struct stack STACK;
+    STACK.top = -1;
+    struct stack *ptr_STACK = &STACK;
 
     char *delimitadores = " \t \n";
     for (char *token = strtok(line, delimitadores); token != NULL; token = strtok(NULL, delimitadores))
@@ -53,23 +53,23 @@ void parse(char *line)
             val.tipo = val_tipo;
 
             sprintf(val.valor, "%s", token);
-            PUSH(ptr_lady, val);
+            PUSH(ptr_STACK, val);
         }
         else
         {
             switch (filter(token))
             {
             case 1:
-                maths(ptr_lady, token);
+                maths(ptr_STACK, token);
                 break;
             case 2:
-                manstack(ptr_lady, token);
+                manstack(ptr_STACK, token);
                 break;
             case 3:
-                conversion(ptr_lady, token);
+                conversion(ptr_STACK, token);
                 break;
             case 4:
-                inoutput(ptr_lady, token);
+                inoutput(ptr_STACK, token);
                 break;
             default:
                 //Esta é referente aos próximos guiões e ainda não estão definidas!
@@ -77,7 +77,7 @@ void parse(char *line)
             }
         }
     }
-    PRINT_STACK(ptr_lady);
+    PRINT_STACK(ptr_STACK);
 }
 
 /**
@@ -85,7 +85,7 @@ void parse(char *line)
  * 
  * Função que vai à Stack tirar a última célula.
  * 
- * @returns Um valor inteiro que é o valor do novo topo da stack
+ * @returns Um valor elemento .
  */
 struct elemento POP(struct stack *stack)
 {
@@ -96,10 +96,10 @@ struct elemento POP(struct stack *stack)
 /**
  * \brief Função PUSH do programa
  * 
- * Função que vai à Stack adicionar uma célula acima da última.
+ *que adiciona uma célula à Stack .
  * 
  * @param stack
- * @param n
+ * @param n (elemento a adicionar).
  */
 void
 PUSH(struct stack *stack, struct elemento n)
@@ -109,7 +109,7 @@ PUSH(struct stack *stack, struct elemento n)
 }
 
 /**
- * \brief Função PRINT_STACK do programa
+ * \brief Função PRINT_STACK do programa.
  * 
  * Inicia-se um ciclo for, onde uma variável é incializada também,
  * a condição de paragem ocorre se a variável é maior
@@ -145,7 +145,7 @@ void PRINT_STACK(struct stack *stack)
 /**
  * \brief Função convertToDouble
  * 
- * É uma função auxiliar que recebe um elemento e converte-o para Double
+ * é uma função auxiliar que recebe um elemento e converte-o para Double
  * 
  * @param x 
  * 
@@ -175,7 +175,7 @@ float convertToDouble(struct elemento x)
  * 
  * @param x 
  * @param y
- * @param op
+ * @param op (operando)
  * 
  * @returns Um struct elemento val
  */
@@ -216,7 +216,7 @@ struct elemento operador(struct elemento x, struct elemento y, char *op)
         dres = (long)dx ^ (long)dy;
         break;
     default:
-        printf("DEU BAGULHO____ABORT ABORT!!!");
+        printf("Se cair aqui deu erro.");
         break;
     }
     struct elemento val;
@@ -243,17 +243,17 @@ struct elemento operador(struct elemento x, struct elemento y, char *op)
 }
 
 /**
- * \brief Função get_the_kid do programa
+ * \brief Função dollarfunction do programa
  * 
- * A função get_the_kid recebe como parâmetros um apontador para a struct stack e uma variável i
- * e dá o valor apontado pelo topo da stack menos o valor de i.
+ * recebe como parâmetros um apontador para a struct stack e uma variável i
+ * e devolve o valor apontado para esse índice.
  * 
  * @param stack
- * @param i
+ * @param i (índice)
  * 
  * @returns Um elemento da Stack.
  */
-struct elemento get_the_kid(struct stack *stack, int i)
+struct elemento dollarfunction(struct stack *stack, int i)
 {
     return (*stack).array[(*stack).top - i];
 }
@@ -261,12 +261,12 @@ struct elemento get_the_kid(struct stack *stack, int i)
 /**
  * \brief Função filter do programa
  * 
- * A função filter compara o token com os diferentes apontadores para operar segundo
- * um dos ciclos while da função.
+ * recebe um token e devolve o número correspondente ao conjunto de operações onde o mesmo pertence.
+ *
  * 
  * @param token 
  * 
- * @returns Um inteiro
+ * @returns Um inteiro 
  */
 int filter(char *token)
 {
@@ -313,125 +313,131 @@ int filter(char *token)
 /**
  * \brief Função maths do programa
  * 
- * A função efetua o cálculo das operações aritméticas.
+ * efetua o cálculo das operações aritméticas.
  * 
- * @param ptr_lady
+ * @param ptr_STACK
  * @param token
  */
-void maths(struct stack *ptr_lady, char *token)
+void maths(struct stack *ptr_STACK, char *token)
 {
     if (*token == '(')
     {
-        struct elemento x = POP(ptr_lady);
+        struct elemento x = POP(ptr_STACK);
         long l = atol(x.valor);
         sprintf(x.valor, "%ld", --l);
-        PUSH(ptr_lady, x);
+        PUSH(ptr_STACK, x);
     }
     else if (*token == ')')
     {
-        struct elemento x = POP(ptr_lady);
+        struct elemento x = POP(ptr_STACK);
         long l = atol(x.valor);
         sprintf(x.valor, "%ld", ++l);
-        PUSH(ptr_lady, x);
+        PUSH(ptr_STACK, x);
     }
     else
     {
-        struct elemento x = POP(ptr_lady);
-        struct elemento y = POP(ptr_lady);
-        PUSH(ptr_lady, operador(x, y, token));
+        struct elemento x = POP(ptr_STACK);
+        struct elemento y = POP(ptr_STACK);
+        PUSH(ptr_STACK, operador(x, y, token));
     }
 }
 
 /**
  * \brief Função manstack do programa
  * 
- * A função efetua o cálculo das operações para manipulação da Stack.
+ * efetua o cálculo das operações para manipulação da Stack.
  * 
- * @param ptr_lady
+ * @param ptr_STACK
  * @param token
  */
-void manstack(struct stack *ptr_lady, char *token)
+void manstack(struct stack *ptr_STACK, char *token)
 {
     if (strcmp(token, "_") == 0)
     {
-        struct elemento x = POP(ptr_lady);
-        PUSH(ptr_lady, x);
-        PUSH(ptr_lady, x);
+        struct elemento x = POP(ptr_STACK);
+        PUSH(ptr_STACK, x);
+        PUSH(ptr_STACK, x);
     }
     else if (strcmp(token, ";") == 0)
     {
-        POP(ptr_lady);
+        POP(ptr_STACK);
     }
     else if (strcmp(token, "\\") == 0)
     {
-        struct elemento x = POP(ptr_lady);
-        struct elemento y = POP(ptr_lady);
-        PUSH(ptr_lady, x);
-        PUSH(ptr_lady, y);
+        struct elemento x = POP(ptr_STACK);
+        struct elemento y = POP(ptr_STACK);
+        PUSH(ptr_STACK, x);
+        PUSH(ptr_STACK, y);
     }
     else if (strcmp(token, "@") == 0)
     {
-        struct elemento x = POP(ptr_lady);
-        struct elemento y = POP(ptr_lady);
-        struct elemento z = POP(ptr_lady);
-        PUSH(ptr_lady, y);
-        PUSH(ptr_lady, x);
-        PUSH(ptr_lady, z);
+        struct elemento x = POP(ptr_STACK);
+        struct elemento y = POP(ptr_STACK);
+        struct elemento z = POP(ptr_STACK);
+        PUSH(ptr_STACK, y);
+        PUSH(ptr_STACK, x);
+        PUSH(ptr_STACK, z);
     }
     else if (strcmp(token, "$") == 0)
     {
-        struct elemento x = POP(ptr_lady);
+        struct elemento x = POP(ptr_STACK);
         int i = atoi(x.valor);
-        struct elemento y = get_the_kid(ptr_lady, i);
-        PUSH(ptr_lady, y);
+        struct elemento y = dollarfunction(ptr_STACK, i);
+        PUSH(ptr_STACK, y);
     }
 }
 
 /**
  * \brief Função conversion do programa
  * 
- * A função efetua a conversão dos elementos da Stack.
+ *  efetua a conversão dos elementos da Stack para um dado tipo.
  * 
- * @param ptr_lady
+ * @param ptr_STACK
  * @param token
  */
-void conversion(struct stack *ptr_lady, char *token)
+void conversion(struct stack *ptr_STACK, char *token)
 {
     if (strcmp(token, "i") == 0) //converter para int
     {
-        struct elemento x = POP(ptr_lady);
+        struct elemento x = POP(ptr_STACK);
         x.tipo = T_int;
-        PUSH(ptr_lady, x);
+        PUSH(ptr_STACK, x);
     }
     else if (strcmp(token, "f") == 0) //converter para float
     {
-        struct elemento x = POP(ptr_lady);
+        struct elemento x = POP(ptr_STACK);
         x.tipo = T_float;
-        PUSH(ptr_lady, x);
+        PUSH(ptr_STACK, x);
     }
     else if (strcmp(token, "c") == 0) //converter para char
     {
-        struct elemento x = POP(ptr_lady);
+        struct elemento x = POP(ptr_STACK);
         x.tipo = T_char;
-        PUSH(ptr_lady, x);
+        PUSH(ptr_STACK, x);
+    }
+    else if (strcmp(token, "s") == 0) //converter para
+    {
+        struct elemento x = POP(ptr_STACK);
+        x.tipo = T_string;
+        PUSH(ptr_STACK, x);
     }
 }
 
 /**
  * \brief Função inoutput do programa
  * 
- * A função inoutput é responsável pelas ações de in/output.
+ * é responsável pelas ações de in/output.
  * 
- * @param ptr_lady
+ * @param ptr_STACK
  * @param token
  */
-void inoutput(struct stack *ptr_lady, char *token)
+void inoutput(struct stack *ptr_STACK, char *token)
 {
     if (strcmp(token, "l") == 0) //ler linha
     {
         struct elemento x;
         assert(fgets(x.valor, 100, stdin) != NULL);
         x.tipo = T_string;
-        PUSH(ptr_lady, x);
+        PUSH(ptr_STACK, x);
     }
 }

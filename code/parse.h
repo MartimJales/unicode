@@ -23,11 +23,11 @@ void parse(char *line);
 void PUSH(struct stack *stack, struct elemento n);
 struct elemento POP(struct stack *stack);
 void PRINT_STACK(struct stack *stack);
-struct elemento get_the_kid(struct stack *stack, int i);
+struct elemento dollarfunction(struct stack *stack, int i);
 
 int filter(char *token);
 
-void maths(struct stack *ptr_lady, char *token);
-void manstack(struct stack *ptr_lady, char *token);
-void conversion(struct stack *ptr_lady, char *token);
-void inoutput(struct stack *ptr_lady, char *token);
+void maths(struct stack *ptr_STACK, char *token);
+void manstack(struct stack *ptr_STACK, char *token);
+void conversion(struct stack *ptr_STACK, char *token);
+void inoutput(struct stack *ptr_STACK, char *token);
