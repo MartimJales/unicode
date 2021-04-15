@@ -23,8 +23,6 @@
  * terão que se devolver.
  * 
  * @param line Linha, onde a função parse atuará, e que já foi lida.
- * 
- * @returns Não devolve nada (void).
  */
 void parse(char *line)
 {
@@ -87,7 +85,7 @@ void parse(char *line)
  * 
  * Função que vai à Stack tirar a última célula.
  * 
- * @returns Um inteiro long, cujo resultado é o valor no topo da Stack.
+ * @returns Um valor inteiro que é o valor do novo topo da stack
  */
 struct elemento POP(struct stack *stack)
 {
@@ -100,9 +98,8 @@ struct elemento POP(struct stack *stack)
  * 
  * Função que vai à Stack adicionar uma célula acima da última.
  * 
- * @param long val_i 
- * 
- * @returns Não devolve nada (void).
+ * @param stack
+ * @param n
  */
 void
 PUSH(struct stack *stack, struct elemento n)
@@ -121,7 +118,7 @@ PUSH(struct stack *stack, struct elemento n)
  * É imprimido o valor da Stack no índice da variável, de acordo
  * com o seu valor a cada iteração.
  * 
- * @returns Não devolve nada (void).
+ * @param stack
  */
 void PRINT_STACK(struct stack *stack)
 {
@@ -145,6 +142,15 @@ void PRINT_STACK(struct stack *stack)
     printf("\n");
 }
 
+/**
+ * \brief Função convertToDouble
+ * 
+ * É uma função auxiliar que recebe um elemento e converte-o para Double
+ * 
+ * @param x 
+ * 
+ * @returns double, representado pela variável ret.
+ */
 float convertToDouble(struct elemento x)
 {
     double ret;
@@ -157,6 +163,22 @@ float convertToDouble(struct elemento x)
     return ret;
 }
 
+/**
+ * \brief Função operador
+ * 
+ * É uma função auxiliar que recebe dois elementos e um apontador para o operando 
+ * e calcula o resultado de ambos de acordo com o operando recebido.
+ * 
+ * É, de seguida, definida uma variável cuja constante associada à componente tipo será a mesma que a dos elementos recebidos
+ * quando estes têm o mesmo tipo, caso contrário, é declarada como tendo um tipo constante T_int.
+ * Posteriormente, de acordo com a constante da sua componente tipo a componente valor será igual ao valor da variável dres
+ * 
+ * @param x 
+ * @param y
+ * @param op
+ * 
+ * @returns Um struct elemento val
+ */
 struct elemento operador(struct elemento x, struct elemento y, char *op)
 {
     float dx, dy, dres;
@@ -220,11 +242,32 @@ struct elemento operador(struct elemento x, struct elemento y, char *op)
     return val;
 }
 
+/**
+ * \brief Função get_the_kid do programa
+ * 
+ * A função get_the_kid recebe como parâmetros um apontador para a struct stack e uma variável i
+ * e dá o valor apontado pelo topo da stack menos o valor de i.
+ * 
+ * @param stack
+ * @param i
+ * 
+ * @returns Um elemento da Stack.
+ */
 struct elemento get_the_kid(struct stack *stack, int i)
 {
     return (*stack).array[(*stack).top - i];
 }
 
+/**
+ * \brief Função filter do programa
+ * 
+ * A função filter compara o token com os diferentes apontadores para operar segundo
+ * um dos ciclos while da função.
+ * 
+ * @param token 
+ * 
+ * @returns Um inteiro
+ */
 int filter(char *token)
 {
     char *maths = "+-/*%#&|^()~";
@@ -267,6 +310,14 @@ int filter(char *token)
     return 0;
 }
 
+/**
+ * \brief Função maths do programa
+ * 
+ * A função efetua o cálculo das operações aritméticas.
+ * 
+ * @param ptr_lady
+ * @param token
+ */
 void maths(struct stack *ptr_lady, char *token)
 {
     if (*token == '(')
@@ -291,6 +342,14 @@ void maths(struct stack *ptr_lady, char *token)
     }
 }
 
+/**
+ * \brief Função manstack do programa
+ * 
+ * A função efetua o cálculo das operações para manipulação da Stack.
+ * 
+ * @param ptr_lady
+ * @param token
+ */
 void manstack(struct stack *ptr_lady, char *token)
 {
     if (strcmp(token, "_") == 0)
@@ -328,6 +387,14 @@ void manstack(struct stack *ptr_lady, char *token)
     }
 }
 
+/**
+ * \brief Função conversion do programa
+ * 
+ * A função efetua a conversão dos elementos da Stack.
+ * 
+ * @param ptr_lady
+ * @param token
+ */
 void conversion(struct stack *ptr_lady, char *token)
 {
     if (strcmp(token, "i") == 0) //converter para int
@@ -350,6 +417,14 @@ void conversion(struct stack *ptr_lady, char *token)
     }
 }
 
+/**
+ * \brief Função inoutput do programa
+ * 
+ * A função inoutput é responsável pelas ações de in/output.
+ * 
+ * @param ptr_lady
+ * @param token
+ */
 void inoutput(struct stack *ptr_lady, char *token)
 {
     if (strcmp(token, "l") == 0) //ler linha
