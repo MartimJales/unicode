@@ -71,6 +71,9 @@ void parse(char *line)
             case 4:
                 inoutput(ptr_STACK, token);
                 break;
+            case 5:
+                logic(ptr_STACK, token);
+                break;
             default:
                 //Esta é referente aos próximos guiões e ainda não estão definidas!
                 break;
@@ -273,6 +276,7 @@ int filter(char *token)
     char *maths = "+-/*%#&|^()~";
     char *manstack = "_;\\@$";
     char *conversion = "ifcs";
+    char *logic = "=><!?e";
     char *io = "l";
 
     while (*maths)
@@ -307,6 +311,14 @@ int filter(char *token)
         }
         io++;
     }
+    while (*logic)
+    {
+        if (*token == *logic)
+        {
+            return 5;
+        }
+        logic++;
+    }
     return 0;
 }
 
@@ -332,6 +344,13 @@ void maths(struct stack *ptr_STACK, char *token)
         struct elemento x = POP(ptr_STACK);
         long l = atol(x.valor);
         sprintf(x.valor, "%ld", ++l);
+        PUSH(ptr_STACK, x);
+    }
+    else if (*token == '~')
+    {
+        struct elemento x = POP(ptr_STACK);
+        long l = atol(x.valor);
+        sprintf(x.valor, "%ld", ~l);
         PUSH(ptr_STACK, x);
     }
     else
@@ -440,4 +459,89 @@ void inoutput(struct stack *ptr_STACK, char *token)
         x.tipo = T_string;
         PUSH(ptr_STACK, x);
     }
+}
+
+/**
+ * \brief Função logic do programa
+ * 
+ * é responsável pelas ações de lógica e condições.
+ * 
+ * @param ptr_STACK
+ * @param token
+ */
+void logic(struct stack *ptr_STACK, char *token)
+{
+    switch (*token)
+    {
+    case '>':
+        greater(ptr_STACK);
+        break;
+    case '<':
+        smaller(ptr_STACK);
+        break;
+    case '=':
+        equal(ptr_STACK);
+        break;
+    case '!':
+        not(ptr_STACK);
+        break;
+    case '?':
+        ifthenelse(ptr_STACK);
+        break;
+    default:
+        printf("Deu ero na função de lógica");
+        break;
+    }
+}
+
+//Funções auxiliares para a parte lógica
+
+void greater(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    if (y.valor > x.valor)
+        return 1;
+    else
+        return 0;
+}
+
+void smaller(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    if (y.valor < x.valor)
+        return 1;
+    else
+        return 0;
+}
+
+void equal(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    if (y.valor == x.valor)
+        return 1;
+    else
+        return 0;
+}
+
+void not(struct stack * ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    if (x.valor)
+        return 0;
+    else
+        return 1;
+}
+
+void ifthenelse(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    struct elemento condition = POP(ptr_STACK);
+    if (condition.valor)
+        return y;
+    else
+        return x;
 }
