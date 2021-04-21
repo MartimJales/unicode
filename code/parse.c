@@ -498,41 +498,57 @@ void logic(struct stack *ptr_STACK, char *token)
 
 void greater(struct stack *ptr_STACK)
 {
+    struct elemento val;
+    val.tipo = T_long;
     struct elemento x = POP(ptr_STACK);
+    double x_ret = strtof(x.valor, NULL);
     struct elemento y = POP(ptr_STACK);
-    if (y.valor > x.valor)
-        return 1;
+    double y_ret = strtof(y.valor, NULL);
+    if (y_ret > x_ret)
+        sprintf(val.valor, "%d", 1);
     else
-        return 0;
+        sprintf(val.valor, "%d", 0);
+    PUSH(ptr_STACK, val);
 }
 
 void smaller(struct stack *ptr_STACK)
 {
+    struct elemento val;
+    val.tipo = T_long;
     struct elemento x = POP(ptr_STACK);
+    double x_ret = strtof(x.valor, NULL);
     struct elemento y = POP(ptr_STACK);
-    if (y.valor < x.valor)
-        return 1;
+    double y_ret = strtof(y.valor, NULL);
+    if (y_ret < x_ret)
+        sprintf(val.valor, "%d", 1);
     else
-        return 0;
+        sprintf(val.valor, "%d", 0);
+    PUSH(ptr_STACK, val);
 }
 
 void equal(struct stack *ptr_STACK)
 {
+    struct elemento val;
+    val.tipo = T_long;
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
-    if (y.valor == x.valor)
-        return 1;
+    if (strcmp(y.valor, x.valor) == 0)
+        sprintf(val.valor, "%d", 1);
     else
-        return 0;
+        sprintf(val.valor, "%d", 0);
+    PUSH(ptr_STACK, val);
 }
 
 void not(struct stack * ptr_STACK)
 {
+    struct elemento val;
+    val.tipo = T_long;
     struct elemento x = POP(ptr_STACK);
-    if (x.valor)
-        return 0;
+    if (strcmp(x.valor, "0") == 0)
+        sprintf(val.valor, "%d", 1);
     else
-        return 1;
+        sprintf(val.valor, "%d", 0);
+    PUSH(ptr_STACK, val);
 }
 
 void ifthenelse(struct stack *ptr_STACK)
@@ -540,8 +556,8 @@ void ifthenelse(struct stack *ptr_STACK)
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
     struct elemento condition = POP(ptr_STACK);
-    if (condition.valor)
-        return y;
+    if (strcmp(condition.valor, "0") == 0)
+        PUSH(ptr_STACK, x);
     else
-        return x;
+        PUSH(ptr_STACK, y);
 }

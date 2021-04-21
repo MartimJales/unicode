@@ -174,3 +174,11 @@ void inoutput(struct stack *ptr_STACK, char *token);
  * @param token
  */
 void logic(struct stack *ptr_STACK, char *token);
+
+// falta comentar estas meninas
+
+void not(struct stack * ptr_STACK);
+void ifthenelse(struct stack *ptr_STACK);
+void equal(struct stack *ptr_STACK);
+void smaller(struct stack *ptr_STACK);
+void greater(struct stack *ptr_STACK);
