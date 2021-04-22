@@ -20,6 +20,19 @@ struct elemento
 };
 
 /**
+ * \brief Struct var
+ * 
+ * com um char referente à variável que estamos a utilizar
+ * e um elemento que a mesma representa.
+ * 
+ */
+struct var
+{
+    int index;
+    struct elemento elemento;
+};
+
+/**
  * \brief Struct stack
  * 
  * com um inteiro referente ao topo da stack. Um array de elementos referente à stack.
@@ -29,6 +42,7 @@ struct stack
 {
     int top;
     struct elemento array[100];
+    struct var vars[26];
 };
 
 /**
@@ -189,3 +203,8 @@ void ebigger(struct stack *ptr_STACK);
 void eshortcut(struct stack *ptr_STACK);
 void orshortcut(struct stack *ptr_STACK);
 void epequeno(struct stack *ptr_STACK);
+
+void variables1(struct stack *ptr_STACK, char *token);
+void variables2(struct stack *ptr_STACK, char *token);
+
+void initStack(struct stack *ptr_STACK);

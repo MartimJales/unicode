@@ -29,6 +29,7 @@ void parse(char *line)
     struct stack STACK;
     STACK.top = -1;
     struct stack *ptr_STACK = &STACK;
+    initStack(ptr_STACK);
 
     char *delimitadores = " \t \n";
     for (char *token = strtok(line, delimitadores); token != NULL; token = strtok(NULL, delimitadores))
@@ -74,8 +75,14 @@ void parse(char *line)
             case 5:
                 logic(ptr_STACK, token);
                 break;
+            case 6:
+                variables1(ptr_STACK, token);
+                break;
+            case 7:
+                variables2(ptr_STACK, token);
+                break;
             default:
-                //Esta é referente aos próximos guiões e ainda não estão definidas!
+                //Esta é referente aos próximos guiões e ainda não estão definidas (case 7)
                 break;
             }
         }
@@ -278,6 +285,8 @@ int filter(char *token)
     char *conversion = "ifcs";
     char *logic = "=><!?e";
     char *io = "l";
+    char *variables1 = "ABCDEFGHIJKLMOPQRTUVWXYZ";
+    char *variables2 = "NS:";
 
     while (*maths)
     {
@@ -314,10 +323,24 @@ int filter(char *token)
     while (*logic)
     {
         if (*token == *logic)
-        {
             return 5;
-        }
         logic++;
+    }
+    while (*variables1)
+    {
+        if (*token == *variables1)
+        {
+            return 6;
+        }
+        variables1++;
+    }
+    while (*variables2)
+    {
+        if (*token == *variables2)
+        {
+            return 7;
+        }
+        variables2++;
     }
     return 0;
 }
@@ -531,8 +554,10 @@ void equal(struct stack *ptr_STACK)
     struct elemento val;
     val.tipo = T_long;
     struct elemento x = POP(ptr_STACK);
+    double x_ret = strtof(x.valor, NULL);
     struct elemento y = POP(ptr_STACK);
-    if (strcmp(y.valor, x.valor) == 0)
+    double y_ret = strtof(y.valor, NULL);
+    if (y_ret == x_ret)
         sprintf(val.valor, "%d", 1);
     else
         sprintf(val.valor, "%d", 0);
@@ -544,10 +569,11 @@ void not(struct stack * ptr_STACK)
     struct elemento val;
     val.tipo = T_long;
     struct elemento x = POP(ptr_STACK);
-    if (strcmp(x.valor, "0") == 0)
-        sprintf(val.valor, "%d", 1);
-    else
+    double x_ret = strtof(x.valor, NULL);
+    if (x_ret)
         sprintf(val.valor, "%d", 0);
+    else
+        sprintf(val.valor, "%d", 1);
     PUSH(ptr_STACK, val);
 }
 
@@ -639,18 +665,16 @@ void orshortcut(struct stack *ptr_STACK)
     double x_ret = strtof(x.valor, NULL);
     struct elemento y = POP(ptr_STACK);
     double y_ret = strtof(y.valor, NULL);
-    if (strcmp(y.valor, "0") == 0)
-    {
-        PUSH(ptr_STACK, y);
-    }
-    else if (strcmp(x.valor, "0") == 0)
+    if (x_ret == 0 && y_ret == 0)
     {
         PUSH(ptr_STACK, x);
     }
-    else
+    else if (y_ret != 0)
     {
         PUSH(ptr_STACK, y);
     }
+    else
+        PUSH(ptr_STACK, x);
 }
 
 void epequeno(struct stack *ptr_STACK)
@@ -675,4 +699,60 @@ void epequeno(struct stack *ptr_STACK)
     {
         PUSH(ptr_STACK, x);
     }
+}
+
+void variables1(struct stack *ptr_STACK, char *token)
+{
+    int i = *token % 65;
+    PUSH(ptr_STACK, (*ptr_STACK).vars[i].elemento);
+}
+
+void variables2(struct stack *ptr_STACK, char *token)
+{
+    if (strcmp(token, "N") == 0)
+    {
+        struct elemento x;
+        x.tipo = T_string;
+        sprintf(x.valor, "%s", "\n");
+        PUSH(ptr_STACK, x);
+    }
+    else if (strcmp(token, "S") == 0)
+    {
+        struct elemento x;
+        x.tipo = T_string;
+        sprintf(x.valor, "%s", " ");
+        PUSH(ptr_STACK, x);
+    }
+    else if (*token == ':')
+    {
+        int i = *(token + 1) % 65;
+        (*ptr_STACK).vars[i].elemento = ptr_STACK->array[(*ptr_STACK).top];
+    }
+}
+
+void initStack(struct stack *ptr_STACK)
+{
+    struct var var_tmp;
+    struct elemento val;
+    val.tipo = T_long;
+
+    for (int i = 0; i < 6; i++)
+    {
+        sprintf(val.valor, "%d", 10 + i);
+        var_tmp.index = i;
+        var_tmp.elemento = val;
+        (*ptr_STACK).vars[i] = var_tmp;
+    }
+    sprintf(val.valor, "%d", 0);
+    var_tmp.index = 23;
+    var_tmp.elemento = val;
+    (*ptr_STACK).vars[23] = var_tmp;
+    sprintf(val.valor, "%d", 1);
+    var_tmp.index = 24;
+    var_tmp.elemento = val;
+    (*ptr_STACK).vars[24] = var_tmp;
+    sprintf(val.valor, "%d", 2);
+    var_tmp.index = 25;
+    var_tmp.elemento = val;
+    (*ptr_STACK).vars[25] = var_tmp;
 }
