@@ -70,6 +70,13 @@ void PRINT_STACK(struct stack *stack)
     printf("\n");
 }
 
+/**
+ * \brief Função initStack  do programa
+ * 
+ * inicia a stack
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void initStack(struct stack *ptr_STACK)
 {
     struct var var_tmp;

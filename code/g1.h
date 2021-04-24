@@ -20,4 +20,15 @@
  */
 struct elemento operador(struct elemento x, struct elemento y, char *op);
 
+/**
+ * \brief Função convertToDouble do programa
+ * 
+ * é responsável por converter um elemento caso seja do tipo longo 
+ * ou double ou inteiro ou float converte para double para
+ * posteriormente serem feitas as opeações
+ * 
+ * @param xs
+ * 
+ * @returns Um float
+ */
 float convertToDouble(struct elemento x);

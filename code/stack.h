@@ -85,4 +85,11 @@ struct elemento POP(struct stack *stack);
  */
 void PRINT_STACK(struct stack *stack);
 
+/**
+ * \brief Função initStack  do programa
+ * 
+ * inicia a stack
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void initStack(struct stack *ptr_STACK);
