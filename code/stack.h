@@ -8,12 +8,55 @@
  * 
  * Contém também todas as estrusturas criadas para a resolução dos guiões.
  */
+
+/**
+ * \brief T_int 1
+ * 
+ * o nº 1 representa o tipo "int".
+ * 
+ */
 #define T_int 1
+
+/**
+ * \brief T_char 2
+ * 
+ * o nº 2 representa o tipo "char".
+ * 
+ */
 #define T_char 2
+
+/**
+ * \brief T_float 3
+ * 
+ * o nº 3 representa o tipo "float".
+ * 
+ */
 #define T_float 3
+
+/**
+ * \brief T_long 4
+ * 
+ * o nº 4 representa o tipo "long".
+ * 
+ */
 #define T_long 4
+
+/**
+ * \brief T_double 5
+ * 
+ * o nº 5 representa o tipo "double".
+ * 
+ */
 #define T_double 5
+
+/**
+ * \brief T_string 6
+ * 
+ * o nº 6 representa o tipo "string".
+ * 
+ */
 #define T_string 6
+
 /**
  * \brief Struct elemento
  * 
@@ -22,8 +65,8 @@
  */
 struct elemento
 {
-    int tipo;
-    char valor[100];
+    int tipo;/**< Representa o tipo do elemento */
+    char valor[100];/**< Representa o valor do elemento */
 };
 
 /**
@@ -35,21 +78,18 @@ struct elemento
  */
 struct var
 {
-    int index;
-    struct elemento elemento;
+    int index;/**< Representa o índice da variável */
+    struct elemento elemento;/**< Representa o conteúdo da variável */
 };
 
-/**
- * \brief Struct stack
- * 
- * com um inteiro referente ao topo da stack. Um array de elementos referente à stack.
- * 
+/** @struct stack
+ *  @brief Esta struct representa a stack.
  */
 struct stack
 {
-    int top;
-    struct elemento array[100];
-    struct var vars[26];
+    int top;/**< Representa a variavél do topo da stack */
+    struct elemento array[100];/**< Representa o array de elementos */
+    struct var vars[26];/**< Representa as variáveis do programa */
 };
 
 /**
