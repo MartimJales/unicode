@@ -6,6 +6,7 @@
 #include <assert.h>
 #include <string.h>
 #include <math.h>
+#include "stack.h"
 #include "parse.h"
 
 /**

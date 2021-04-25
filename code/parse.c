@@ -5,93 +5,26 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "parse.h"
 #include "stack.h"
+#include "parse.h"
 #include "g1.h"
 #include "g2.h"
 #include "g3.h"
 #include <assert.h>
 
-/**
- * \brief Função parse do programa
- * 
- * Inicia-se um apontador de caracteres (delimitadores).
- * 
- * Posteriormente, através de um ciclo, inicia-se uma nova variável (um apontador de carateres (token)),
- * com a condição de paragem quando esse token for NULL. 
- * A cada iteração o token é atualizado.
- * 
- * Através de condições if verifica-se o valor a devolver ao topo da pilha, 
- * se à partida, a string contiver apenas números é imediatamente devolvida, 
- * caso contrário, através da função 'strcmp' verificar-se-à que valor/es 
- * terão que se devolver.
- * 
- * @param line Linha, onde a função parse atuará, e que já foi lida.
- */
-void parse(char *line)
+void check_type(char **resto, char **token, int *val_tipo)
 {
-    struct stack STACK;
-    STACK.top = -1;
-    struct stack *ptr_STACK = &STACK;
-    initStack(ptr_STACK);
-
-    char *delimitadores = " \t \n";
-    for (char *token = strtok(line, delimitadores); token != NULL; token = strtok(NULL, delimitadores))
+    char *p = strstr(*token, ".");
+    if (p)
     {
-        char *resto;
-        int val_tipo;
-
-        char *p = strstr(token, ".");
-        if (p)
-        {
-            strtod(token, &resto);
-            val_tipo = T_double;
-        }
-        else
-        {
-            strtol(token, &resto, 10);
-            val_tipo = T_long;
-        }
-        if (strlen(resto) == 0)
-        {
-            struct elemento val;
-            val.tipo = val_tipo;
-
-            sprintf(val.valor, "%s", token);
-            PUSH(ptr_STACK, val);
-        }
-        else
-        {
-            switch (filter(token))
-            {
-            case 1:
-                maths(ptr_STACK, token);
-                break;
-            case 2:
-                manstack(ptr_STACK, token);
-                break;
-            case 3:
-                conversion(ptr_STACK, token);
-                break;
-            case 4:
-                inoutput(ptr_STACK, token);
-                break;
-            case 5:
-                logic(ptr_STACK, token);
-                break;
-            case 6:
-                variables1(ptr_STACK, token);
-                break;
-            case 7:
-                variables2(ptr_STACK, token);
-                break;
-            default:
-                //Esta é referente aos próximos guiões e ainda não estão definidas (case 7)
-                break;
-            }
-        }
+        strtod(*token, resto);
+        *val_tipo = T_double;
     }
-    PRINT_STACK(ptr_STACK);
+    else
+    {
+        strtol(*token, resto, 10);
+        *val_tipo = T_long;
+    }
 }
 
 /**
@@ -190,4 +123,85 @@ int filter(char *token)
         variables2++;
     }
     return 0;
+}
+
+void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
+{
+    struct elemento val;
+    val.tipo = val_tipo;
+
+    sprintf(val.valor, "%s", token);
+    PUSH(ptr_STACK, val);
+}
+
+void go_filter(struct stack *ptr_STACK, char *token)
+{
+    switch (filter(token))
+    {
+    case 1:
+        maths(ptr_STACK, token);
+        break;
+    case 2:
+        manstack(ptr_STACK, token);
+        break;
+    case 3:
+        conversion(ptr_STACK, token);
+        break;
+    case 4:
+        inoutput(ptr_STACK, token);
+        break;
+    case 5:
+        logic(ptr_STACK, token);
+        break;
+    case 6:
+        variables1(ptr_STACK, token);
+        break;
+    case 7:
+        variables2(ptr_STACK, token);
+        break;
+    default:
+        //Esta é referente aos próximos guiões e ainda não estão definidas (case 7)
+        break;
+    }
+}
+
+/**
+ * \brief Função parse do programa
+ * 
+ * Inicia-se um apontador de caracteres (delimitadores).
+ * 
+ * Posteriormente, através de um ciclo, inicia-se uma nova variável (um apontador de carateres (token)),
+ * com a condição de paragem quando esse token for NULL. 
+ * A cada iteração o token é atualizado.
+ * 
+ * Através de condições if verifica-se o valor a devolver ao topo da pilha, 
+ * se à partida, a string contiver apenas números é imediatamente devolvida, 
+ * caso contrário, através da função 'strcmp' verificar-se-à que valor/es 
+ * terão que se devolver.
+ * 
+ * @param line Linha, onde a função parse atuará, e que já foi lida.
+ */
+void parse(char *line)
+{
+    struct stack STACK;
+    struct stack *ptr_STACK = &STACK;
+    initStack(ptr_STACK);
+
+    char *delimitadores = " \t \n";
+    for (char *token = strtok(line, delimitadores); token != NULL; token = strtok(NULL, delimitadores))
+    {
+        //Coloquei o resto a iniciar a abc porcausa das flags
+        // mas temos de ver se isto não provoca merda
+
+        char *resto = "abc";
+        int val_tipo;
+
+        check_type(&resto, &token, &val_tipo);
+
+        if (strlen(resto) == 0)
+            put_token(ptr_STACK, val_tipo, token);
+        else
+            go_filter(ptr_STACK, token);
+    }
+    PRINT_STACK(ptr_STACK);
 }

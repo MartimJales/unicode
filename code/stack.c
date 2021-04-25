@@ -53,6 +53,7 @@ void PRINT_STACK(struct stack *stack)
     char *resto;
     for (int i = 0; i <= (*stack).top; i++)
     {
+
         if ((*stack).array[i].tipo == T_int || (*stack).array[i].tipo == T_long)
             printf("%ld", strtol((*stack).array[i].valor, &resto, 10));
         else if ((*stack).array[i].tipo == T_float || (*stack).array[i].tipo == T_double)
@@ -79,6 +80,7 @@ void PRINT_STACK(struct stack *stack)
  */
 void initStack(struct stack *ptr_STACK)
 {
+    (*ptr_STACK).top = -1;
     struct var var_tmp;
     struct elemento val;
     val.tipo = T_long;

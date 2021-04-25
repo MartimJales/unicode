@@ -10,10 +10,8 @@
  * 
  * @param stack
  * @param i (índice)
- * 
- * @returns Um elemento da Stack.
  */
-struct elemento dollarfunction(struct stack *stack, int i);
+void dollarfunction(struct stack *stack);
 
 /**
  * \brief Função maths do programa
@@ -64,3 +62,26 @@ void inoutput(struct stack *ptr_STACK, char *token);
  * @param token
  */
 void logic(struct stack *ptr_STACK, char *token);
+
+void double_top(struct stack *ptr_STACK);
+
+void switch_top(struct stack *ptr_STACK);
+
+void rotate_elem(struct stack *ptr_STACK);
+
+void convert_i(struct stack *ptr_STACK);
+
+void convert_f(struct stack *ptr_STACK);
+
+void convert_c(struct stack *ptr_STACK);
+
+void convert_s(struct stack *ptr_STACK);
+
+void read_line(struct stack *ptr_STACK);
+
+void decrement(struct stack *ptr_STACK);
+
+void increment(struct stack *ptr_STACK);
+void complement(struct stack *ptr_STACK);
+
+void call_operator(struct stack *ptr_STACK, char *token);

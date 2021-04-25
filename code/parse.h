@@ -21,6 +21,18 @@
 void parse(char *line);
 
 /**
+ * \brief Função check_type do programa
+ * 
+ * recebe um token, um apontador para o resto da função e outro apontador para o tipo desse token.
+ * Irá verificar o tipo correspondente ao token e atualizar a stack com o elemento correspondente.
+ *
+ * @param resto
+ * @param token
+ * @param val_tipo 
+ */
+void check_type(char **resto, char **token, int *val_tipo);
+
+/**
  * \brief Função filter do programa
  * 
  * recebe um token e devolve o número correspondente ao conjunto de operações onde o mesmo pertence.
@@ -32,3 +44,6 @@ void parse(char *line);
  */
 int filter(char *token);
 
+void put_token(struct stack *ptr_STACK, int val_tipo, char *token);
+
+void go_filter(struct stack *ptr_STACK, char *token);

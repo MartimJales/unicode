@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "parse.h"
 #include "stack.h"
 #include "g1.h"
+#include "g2.h"
 #include "g3.h"
 #include <assert.h>
 
@@ -22,9 +22,13 @@
  * 
  * @returns Um elemento da Stack.
  */
-struct elemento dollarfunction(struct stack *stack, int i)
+void dollarfunction(struct stack *ptr_STACK)
 {
-    return (*stack).array[(*stack).top - i];
+
+    struct elemento x = POP(ptr_STACK);
+    int i = atoi(x.valor);
+    struct elemento y = (*ptr_STACK).array[(*ptr_STACK).top - i];
+    PUSH(ptr_STACK, y);
 }
 
 /**
@@ -37,32 +41,20 @@ struct elemento dollarfunction(struct stack *stack, int i)
  */
 void maths(struct stack *ptr_STACK, char *token)
 {
-    if (*token == '(')
+    switch (*token)
     {
-        struct elemento x = POP(ptr_STACK);
-        long l = atol(x.valor);
-        sprintf(x.valor, "%ld", --l);
-        PUSH(ptr_STACK, x);
-    }
-    else if (*token == ')')
-    {
-        struct elemento x = POP(ptr_STACK);
-        long l = atol(x.valor);
-        sprintf(x.valor, "%ld", ++l);
-        PUSH(ptr_STACK, x);
-    }
-    else if (*token == '~')
-    {
-        struct elemento x = POP(ptr_STACK);
-        long l = atol(x.valor);
-        sprintf(x.valor, "%ld", ~l);
-        PUSH(ptr_STACK, x);
-    }
-    else
-    {
-        struct elemento x = POP(ptr_STACK);
-        struct elemento y = POP(ptr_STACK);
-        PUSH(ptr_STACK, operador(x, y, token));
+    case '(':
+        decrement(ptr_STACK);
+        break;
+    case ')':
+        increment(ptr_STACK);
+        break;
+    case '~':
+        complement(ptr_STACK);
+        break;
+    default:
+        call_operator(ptr_STACK, token);
+        break;
     }
 }
 
@@ -76,38 +68,23 @@ void maths(struct stack *ptr_STACK, char *token)
  */
 void manstack(struct stack *ptr_STACK, char *token)
 {
-    if (strcmp(token, "_") == 0)
+    switch (*token)
     {
-        struct elemento x = POP(ptr_STACK);
-        PUSH(ptr_STACK, x);
-        PUSH(ptr_STACK, x);
-    }
-    else if (strcmp(token, ";") == 0)
-    {
+    case '_':
+        double_top(ptr_STACK);
+        break;
+    case ';':
         POP(ptr_STACK);
-    }
-    else if (strcmp(token, "\\") == 0)
-    {
-        struct elemento x = POP(ptr_STACK);
-        struct elemento y = POP(ptr_STACK);
-        PUSH(ptr_STACK, x);
-        PUSH(ptr_STACK, y);
-    }
-    else if (strcmp(token, "@") == 0)
-    {
-        struct elemento x = POP(ptr_STACK);
-        struct elemento y = POP(ptr_STACK);
-        struct elemento z = POP(ptr_STACK);
-        PUSH(ptr_STACK, y);
-        PUSH(ptr_STACK, x);
-        PUSH(ptr_STACK, z);
-    }
-    else if (strcmp(token, "$") == 0)
-    {
-        struct elemento x = POP(ptr_STACK);
-        int i = atoi(x.valor);
-        struct elemento y = dollarfunction(ptr_STACK, i);
-        PUSH(ptr_STACK, y);
+        break;
+    case '\\':
+        switch_top(ptr_STACK);
+        break;
+    case '@':
+        rotate_elem(ptr_STACK);
+        break;
+    case '$':
+        dollarfunction(ptr_STACK);
+        break;
     }
 }
 
@@ -121,29 +98,20 @@ void manstack(struct stack *ptr_STACK, char *token)
  */
 void conversion(struct stack *ptr_STACK, char *token)
 {
-    if (strcmp(token, "i") == 0) //converter para int
+    switch (*token)
     {
-        struct elemento x = POP(ptr_STACK);
-        x.tipo = T_int;
-        PUSH(ptr_STACK, x);
-    }
-    else if (strcmp(token, "f") == 0) //converter para float
-    {
-        struct elemento x = POP(ptr_STACK);
-        x.tipo = T_float;
-        PUSH(ptr_STACK, x);
-    }
-    else if (strcmp(token, "c") == 0) //converter para char
-    {
-        struct elemento x = POP(ptr_STACK);
-        x.tipo = T_char;
-        PUSH(ptr_STACK, x);
-    }
-    else if (strcmp(token, "s") == 0) //converter para
-    {
-        struct elemento x = POP(ptr_STACK);
-        x.tipo = T_string;
-        PUSH(ptr_STACK, x);
+    case 'i':
+        convert_i(ptr_STACK);
+        break;
+    case 'f':
+        convert_f(ptr_STACK);
+        break;
+    case 'c':
+        convert_c(ptr_STACK);
+        break;
+    case 's':
+        convert_s(ptr_STACK);
+        break;
     }
 }
 
@@ -157,12 +125,11 @@ void conversion(struct stack *ptr_STACK, char *token)
  */
 void inoutput(struct stack *ptr_STACK, char *token)
 {
-    if (strcmp(token, "l") == 0) //ler linha
+    switch (*token)
     {
-        struct elemento x;
-        assert(fgets(x.valor, 100, stdin) != NULL);
-        x.tipo = T_string;
-        PUSH(ptr_STACK, x);
+    case 'l':
+        read_line(ptr_STACK);
+        break;
     }
 }
 
@@ -197,4 +164,95 @@ void logic(struct stack *ptr_STACK, char *token)
         efunction(ptr_STACK, (token + 1));
         break;
     }
+}
+
+void double_top(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    PUSH(ptr_STACK, x);
+    PUSH(ptr_STACK, x);
+}
+
+void switch_top(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    PUSH(ptr_STACK, x);
+    PUSH(ptr_STACK, y);
+}
+
+void rotate_elem(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    struct elemento z = POP(ptr_STACK);
+    PUSH(ptr_STACK, y);
+    PUSH(ptr_STACK, x);
+    PUSH(ptr_STACK, z);
+}
+
+void convert_i(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    x.tipo = T_int;
+    PUSH(ptr_STACK, x);
+}
+
+void convert_f(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    x.tipo = T_float;
+    PUSH(ptr_STACK, x);
+}
+
+void convert_c(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    x.tipo = T_char;
+    PUSH(ptr_STACK, x);
+}
+
+void convert_s(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    x.tipo = T_string;
+    PUSH(ptr_STACK, x);
+}
+
+void read_line(struct stack *ptr_STACK)
+{
+    struct elemento x;
+    assert(fgets(x.valor, 100, stdin) != NULL);
+    x.tipo = T_string;
+    PUSH(ptr_STACK, x);
+}
+
+void decrement(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    long l = atol(x.valor);
+    sprintf(x.valor, "%ld", --l);
+    PUSH(ptr_STACK, x);
+}
+
+void increment(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    long l = atol(x.valor);
+    sprintf(x.valor, "%ld", ++l);
+    PUSH(ptr_STACK, x);
+}
+void complement(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    long l = atol(x.valor);
+    sprintf(x.valor, "%ld", ~l);
+    PUSH(ptr_STACK, x);
+}
+
+void call_operator(struct stack *ptr_STACK, char *token)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    PUSH(ptr_STACK, operador(x, y, token));
 }

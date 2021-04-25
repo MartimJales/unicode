@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "parse.h"
 #include "stack.h"
 #include "g1.h"
 #include "g3.h"
