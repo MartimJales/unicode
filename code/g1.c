@@ -100,6 +100,19 @@ struct elemento secondoperador(struct elemento x, struct elemento y, float dres)
     return val;
 }
 
+/**
+ * \brief Função secondoperador
+ * 
+ * É uma função auxiliar para aplicar as operações com os elementos com tipo long.
+ * 
+ * Retorna um double que representa o resultado da operaçõa desejada.
+ * 
+ * @param dx 
+ * @param dy
+ * @param op (operação para fazer)
+ * 
+ * @returns double dres (Resultado)
+ */
 double operator_long(double dx, double dy, char *op)
 {
     double dres = 0.0;
