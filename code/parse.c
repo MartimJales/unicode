@@ -12,6 +12,16 @@
 #include "g3.h"
 #include <assert.h>
 
+/**
+ * \brief Função check_type do programa
+ * 
+ * recebe um token, um apontador para o resto da função e outro apontador para o tipo desse token.
+ * Irá verificar o tipo correspondente ao token e atualizar a stack com o elemento correspondente.
+ *
+ * @param resto
+ * @param token
+ * @param val_tipo 
+ */
 void check_type(char **resto, char **token, int *val_tipo)
 {
     char *p = strstr(*token, ".");
@@ -125,6 +135,16 @@ int filter(char *token)
     return 0;
 }
 
+/**
+ * \brief Função put_token do programa
+ * 
+ * recebe um token, um apontador para o resto da função e outro apontador para a stack.
+ * Irá colocar o token respetivo a um elemento na stack.
+ *
+ * @param resto
+ * @param token
+ * @param val_tipo 
+ */
 void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
 {
     struct elemento val;
@@ -134,6 +154,15 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
     PUSH(ptr_STACK, val);
 }
 
+/**
+ * \brief Função go_filter do programa
+ * 
+ * verifica o nosso token e seleciona a função auxiliar correspondente à operação
+ * desejada.
+ *
+ * @param token
+ * @param val_tipo 
+ */
 void go_filter(struct stack *ptr_STACK, char *token)
 {
     switch (filter(token))

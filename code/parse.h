@@ -44,6 +44,25 @@ void check_type(char **resto, char **token, int *val_tipo);
  */
 int filter(char *token);
 
+/**
+ * \brief Função put_token do programa
+ * 
+ * recebe um token, um apontador para o resto da função e outro apontador para a stack.
+ * Irá colocar o token respetivo a um elemento na stack.
+ *
+ * @param resto
+ * @param token
+ * @param val_tipo 
+ */
 void put_token(struct stack *ptr_STACK, int val_tipo, char *token);
 
+/**
+ * \brief Função go_filter do programa
+ * 
+ * verifica o nosso token e seleciona a função auxiliar correspondente à operação
+ * desejada.
+ *
+ * @param token
+ * @param val_tipo 
+ */
 void go_filter(struct stack *ptr_STACK, char *token);
