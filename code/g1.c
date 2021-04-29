@@ -8,7 +8,6 @@
 #include "stack.h"
 #include "g1.h"
 #include <assert.h>
-
 /**
  * \brief Função operador
  * 
@@ -25,7 +24,8 @@
  * 
  * @returns Um struct elemento val
  */
-struct elemento operador(struct elemento x, struct elemento y, char *op)
+struct elemento
+operador(struct elemento x, struct elemento y, char *op)
 {
     float dx, dy, dres;
 

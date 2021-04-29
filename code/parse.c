@@ -198,18 +198,6 @@ void go_filter(struct stack *ptr_STACK, char *token)
     }
 }
 
-/**
- * \brief Função go_filter_array do programa.
- * 
- * Iremos verificar se esse token é o sinal +.
- * Se essa condição se verificar vamos chamar a função check_somma_array 
- * (Verifica as restrições para as ações com somas ou concatenações de arrays).
- * Se não se verificar, chamamos a função check_all_array
- * (Verifica as restrições para as outras operações com arrays). 
- * 
- * @param ptr_STACK Apontador para a stack.
- * @param token Token atual.
- */
 void go_filter_array(struct stack *ptr_STACK, char *token)
 {
     if (*token == '+')
@@ -244,7 +232,7 @@ void parse(char *line)
     char *resto;
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, line, &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
         //Coloquei o resto_num a iniciar a abc porcausa das flags
         // mas temos de ver se isto não provoca merda
@@ -259,8 +247,7 @@ void parse(char *line)
         else if (*token == '[')
         {
             printf("ARRAY!\n");
-            pinta_array(token);
-            parse_array(token, ptr_STACK);
+            pinta_array(&token, token);
             put_array(ptr_STACK, token);
         }
         else if (check_array(ptr_STACK, token))
@@ -273,17 +260,6 @@ void parse(char *line)
     PRINT_STACK(ptr_STACK);
 }
 
-/**
- * \brief Função check_soma_array do programa.
- * 
- * Iremos verificar se algum dos elementos do topo é array.
- * Se essa condição se verificar vamos concatenar o array. 
- * (concatenarray).
- * Se não se verificar, chamamos o operador para somar os dois elementos.
- *  
- * @param ptr_STACK Apontador para a stack.
- * @param token Token atual.
- */
 void check_soma_array(struct stack *ptr_STACK, char *token)
 {
 
@@ -303,18 +279,6 @@ void check_soma_array(struct stack *ptr_STACK, char *token)
     }
 }
 
-/**
- * \brief Função check_all_array do programa.
- * 
- * Iremos verificar se o topo da stack é array.
- * Se essa condição se verificar vamos chamar a função manarray. 
- * (Aplica as operações com arrays).
- * Se não se verificar, chamamos a função go_filter
- * (Aplica as operações dos guiões 1/2/3). 
- * 
- * @param ptr_STACK Apontador para a stack.
- * @param token Token atual.
- */
 void check_all_array(struct stack *ptr_STACK, char *token)
 {
     int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
@@ -326,14 +290,6 @@ void check_all_array(struct stack *ptr_STACK, char *token)
         go_filter(ptr_STACK, token);
 }
 
-/**
- * \brief Função put_array do programa.
- * 
- * Responsável por colocar o array na STACK.
- * 
- * @param ptr_STACK Apontador para a stack.
- * @param token Token atual.
- */
 void put_array(struct stack *ptr_STACK, char *token)
 {
     struct elemento val;
@@ -343,20 +299,7 @@ void put_array(struct stack *ptr_STACK, char *token)
     PUSH(ptr_STACK, val);
 }
 
-/**
- * \brief Função pinta_array do programa.
- * 
- * Recebe um apontador para a STACK e um token.
- * Iremos verificar se o topo da stack é array.
- * Se essa condição se verificar vamos chamar a função manarray. 
- * (Aplica as operações com arrays).
- * Se não se verificar, chamamos a função go_filter
- * (Aplica as operações dos guiões 1/2/3). 
- * 
- * @param pointer Apontador para a stack.
- * @param line Token atual.
- */
-void pinta_array(char *line)
+void pinta_array(char **pointer, char *line)
 {
     char *delimitadores = " \t\n";
     char *token;
@@ -373,21 +316,7 @@ void pinta_array(char *line)
     copi[j] = '\0';
     strcpy(line, copi);
 }
-// pInTA ARRAY ETÀ A DAR MERDA DEPOIS DE MUDAR AS CENAS
 
-/**
- * \brief Função check_array do programa.
- * 
- * Recebe um apontador para a Stack e um token.
- * Inicializa um apontador para uma string 
- * para testar se o token pertence a algum desses símbolos, 
- * se pertence retorna 1, caso contrário, 0.
- * 
- * @param ptr_STACK Apontador para a Stack
- * @param token Token atual
- * 
- * @return Um inteiro, pode ser 0 ou 1.
- */
 int check_array(struct stack *ptr_STACK, char *token)
 {
     char *arrays = "+~<>()*=,#/SN";
@@ -404,18 +333,6 @@ int check_array(struct stack *ptr_STACK, char *token)
 
 // FUction get_delimited
 
-/**
- * \brief Função isDelim do programa.
- * 
- * Recebe o caractere c e incializa uma variável do tipo inteiro a 0.
- * Percorrendo os delimitadores, se c pertencer a essa lista devolve 1,
- * caso contrário, 0.
- * 
- * @param c Caracter c
- * @param delim Apontador para delimitadores
- * 
- * @return bRet que corresponde a 0 ou 1
- */
 int isDelim(char c, char *delim)
 {
     int bRet = 0;
@@ -428,17 +345,38 @@ int isDelim(char c, char *delim)
     return bRet;
 }
 
-/**
- * \brief Função isDelim do programa.
- * 
- * ---------------------------------------------------------------------------
- * 
- * @param delim Apontador para delimitadores
- * @param line Apontador para a linha que será lida
- * @param rest
- * 
- * @return bRet que corresponde a 0 ou 1
- */
+// verifica se é delimitador
+
+int isLim(char token)
+{
+    if (token == ' ' || token == '\n' || token == '\t')
+    {
+        return 1;
+    }
+    else
+        return 0;
+}
+
+// número de delimitadores seguidos
+
+char *cleanLim(char line[])
+{
+    int i, j;
+    for (i = 0; line[i] != '\0'; i++)
+    {
+        if (isLim(line[i]) && isLim(line[i + 1]))
+        {
+            for (j = i; line[j] != '\0'; j++)
+            {
+                line[j] = line[j + 1];
+            }
+            line[j] = '\0';
+            i--;
+        }
+    }
+    return line;
+}
+
 char *get_token(char *delim, char *line, char **rest)
 {
     char *pRet = NULL;
@@ -502,7 +440,7 @@ char *get_token(char *delim, char *line, char **rest)
         if (isDelim(line[i], delim))
         {
             line[i] = 0;
-            *rest = line + i + 1;
+            *rest = line + i + 1; // problema está aqui
         }
         else
         {

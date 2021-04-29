@@ -30,7 +30,7 @@ void parse_array(char *line, struct stack *ptr_STACK)
     char *resto;
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, line, &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
         char *resto_num = "abc";
         int val_tipo;
@@ -85,7 +85,7 @@ void tamanho_range(struct stack *ptr_STACK)
     long n = 0;
     //printf("tipo line = %d", line.tipo);
     printf("line = %s\n", line.valor);
-    for (token = get_token(delimitadores, line.valor, &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line.valor), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
         printf("n = %ld\n", n);
         n++;
