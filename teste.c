@@ -35,7 +35,7 @@ int isLim (char token)
 char *cleanLim(char line[]){
     int i,j;
     for (i=0; line[i] != '\0'; i++){
-        if(isLim(line[i]) && (line[i+1] == line[i])){
+        if(isLim(line[i]) && isLim(line[i+1])){
             for (j=i; line[j] != '\0'; j++){
                 line[j] = line[j+1];
             }
@@ -132,7 +132,7 @@ void main()
     char *resto;
 
     strcpy(delimitadores," \n\t");
-    strcpy(line,"1402 2 [ 1 3 4 ] 7 8 9");
+    strcpy(line,"1402 2      [ 1 3 4 ] 7 8 9");
     
 
 
