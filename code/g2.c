@@ -341,3 +341,4 @@ void call_operator(struct stack *ptr_STACK, char *token)
     struct elemento y = POP(ptr_STACK);
     PUSH(ptr_STACK, operador(x, y, token));
 }
+

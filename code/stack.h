@@ -58,6 +58,14 @@
 #define T_string 6
 
 /**
+ * \brief T_array 7
+ * 
+ * o nº 6 representa o tipo "string".
+ * 
+ */
+#define T_array 7
+
+/**
  * \brief Struct elemento
  * 
  * com um inteiro referente ao tipo, e uma string que armazena o valor do mesmo.
@@ -65,8 +73,8 @@
  */
 struct elemento
 {
-    int tipo;/**< Representa o tipo do elemento */
-    char valor[100];/**< Representa o valor do elemento */
+    int tipo;        /**< Representa o tipo do elemento */
+    char valor[100]; /**< Representa o valor do elemento */
 };
 
 /**
@@ -78,8 +86,8 @@ struct elemento
  */
 struct var
 {
-    int index;/**< Representa o índice da variável */
-    struct elemento elemento;/**< Representa o conteúdo da variável */
+    int index;                /**< Representa o índice da variável */
+    struct elemento elemento; /**< Representa o conteúdo da variável */
 };
 
 /** @struct stack
@@ -87,9 +95,9 @@ struct var
  */
 struct stack
 {
-    int top;/**< Representa a variavél do topo da stack */
-    struct elemento array[100];/**< Representa o array de elementos */
-    struct var vars[26];/**< Representa as variáveis do programa */
+    int top;                    /**< Representa a variavél do topo da stack */
+    struct elemento array[100]; /**< Representa o array de elementos */
+    struct var vars[26];        /**< Representa as variáveis do programa */
 };
 
 /**

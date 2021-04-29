@@ -39,10 +39,11 @@ void check_type(char **resto, char **token, int *val_tipo);
  *
  * 
  * @param token 
+ * @param array
  * 
  * @returns Um inteiro 
  */
-int filter(char *token);
+int filter(char *token, int array);
 
 /**
  * \brief Função put_token do programa
@@ -66,3 +67,16 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token);
  * @param val_tipo 
  */
 void go_filter(struct stack *ptr_STACK, char *token);
+
+char *get_token(char *delim, char *line, char **rest);
+void separa_array(struct stack *ptr_STACK, char *token);
+
+void put_array(struct stack *ptr_STACK, char *token);
+void pinta_array(char **token, char *line);
+
+int check_array(struct stack *ptr_STACK, char *token);
+
+void go_filter_array(struct stack *ptr_STACK, char *token);
+int check_array(struct stack *ptr_STACK, char *token);
+void check_soma_array(struct stack *ptr_STACK, char *token);
+void check_all_array(struct stack *ptr_STACK, char *token);
