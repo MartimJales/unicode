@@ -375,6 +375,19 @@ void pinta_array(char *line)
 }
 // pInTA ARRAY ETÀ A DAR MERDA DEPOIS DE MUDAR AS CENAS
 
+/**
+ * \brief Função check_array do programa.
+ * 
+ * Recebe um apontador para a Stack e um token.
+ * Inicializa um apontador para uma string 
+ * para testar se o token pertence a algum desses símbolos, 
+ * se pertence retorna 1, caso contrário, 0.
+ * 
+ * @param ptr_STACK Apontador para a Stack
+ * @param token Token atual
+ * 
+ * @return Um inteiro, pode ser 0 ou 1.
+ */
 int check_array(struct stack *ptr_STACK, char *token)
 {
     char *arrays = "+~<>()*=,#/SN";
@@ -391,6 +404,18 @@ int check_array(struct stack *ptr_STACK, char *token)
 
 // FUction get_delimited
 
+/**
+ * \brief Função isDelim do programa.
+ * 
+ * Recebe o caractere c e incializa uma variável do tipo inteiro a 0.
+ * Percorrendo os delimitadores, se c pertencer a essa lista devolve 1,
+ * caso contrário, 0.
+ * 
+ * @param c Caracter c
+ * @param delim Apontador para delimitadores
+ * 
+ * @return bRet que corresponde a 0 ou 1
+ */
 int isDelim(char c, char *delim)
 {
     int bRet = 0;
@@ -403,6 +428,17 @@ int isDelim(char c, char *delim)
     return bRet;
 }
 
+/**
+ * \brief Função isDelim do programa.
+ * 
+ * ---------------------------------------------------------------------------
+ * 
+ * @param delim Apontador para delimitadores
+ * @param line Apontador para a linha que será lida
+ * @param rest
+ * 
+ * @return bRet que corresponde a 0 ou 1
+ */
 char *get_token(char *delim, char *line, char **rest)
 {
     char *pRet = NULL;
