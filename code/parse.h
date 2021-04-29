@@ -68,16 +68,101 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token);
  */
 void go_filter(struct stack *ptr_STACK, char *token);
 
+/**
+ * \brief Função get_token do programa.
+ * 
+ * ---------------------------------------------------------------------------
+ * 
+ * @param delim Apontador para delimitadores
+ * @param line Apontador para a linha que será lida
+ * @param rest
+ * 
+ * @return bRet que corresponde a 0 ou 1
+ */
 char *get_token(char *delim, char *line, char **rest);
+
+// Nao ha funçao ---
 void separa_array(struct stack *ptr_STACK, char *token);
 
+/**
+ * \brief Função put_array do programa.
+ * 
+ * Responsável por colocar o array na STACK.
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void put_array(struct stack *ptr_STACK, char *token);
+
+/**
+ * \brief Função pinta_array do programa.
+ * 
+ * Recebe um apontador para a STACK e um token.
+ * Iremos verificar se o topo da stack é array.
+ * Se essa condição se verificar vamos chamar a função manarray. 
+ * (Aplica as operações com arrays).
+ * Se não se verificar, chamamos a função go_filter
+ * (Aplica as operações dos guiões 1/2/3). 
+ * 
+ * @param pointer Apontador para a stack.
+ * @param line Token atual.
+ */
 void pinta_array(char **token, char *line);
 
+/**
+ * \brief Função check_array do programa.
+ * 
+ * Recebe um apontador para a Stack e um token.
+ * Inicializa um apontador para uma string 
+ * para testar se o token pertence a algum desses símbolos, 
+ * se pertence retorna 1, caso contrário, 0.
+ * 
+ * @param ptr_STACK Apontador para a Stack
+ * @param token Token atual
+ * 
+ * @return Um inteiro, pode ser 0 ou 1.
+ */
 int check_array(struct stack *ptr_STACK, char *token);
 
+/**
+ * \brief Função go_filter_array do programa.
+ * 
+ * Iremos verificar se esse token é o sinal +.
+ * Se essa condição se verificar vamos chamar a função check_somma_array 
+ * (Verifica as restrições para as ações com somas ou concatenações de arrays).
+ * Se não se verificar, chamamos a função check_all_array
+ * (Verifica as restrições para as outras operações com arrays). 
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void go_filter_array(struct stack *ptr_STACK, char *token);
-int check_array(struct stack *ptr_STACK, char *token);
+
+/**
+ * \brief Função check_soma_array do programa.
+ * 
+ * Iremos verificar se algum dos elementos do topo é array.
+ * Se essa condição se verificar vamos concatenar o array. 
+ * (concatenarray).
+ * Se não se verificar, chamamos o operador para somar os dois elementos.
+ *  
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void check_soma_array(struct stack *ptr_STACK, char *token);
+
+/**
+ * \brief Função check_all_array do programa.
+ * 
+ * Iremos verificar se o topo da stack é array.
+ * Se essa condição se verificar vamos chamar a função manarray. 
+ * (Aplica as operações com arrays).
+ * Se não se verificar, chamamos a função go_filter
+ * (Aplica as operações dos guiões 1/2/3). 
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void check_all_array(struct stack *ptr_STACK, char *token);
+
 char *cleanLim(char line[]);

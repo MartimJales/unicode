@@ -198,6 +198,18 @@ void go_filter(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função go_filter_array do programa.
+ * 
+ * Iremos verificar se esse token é o sinal +.
+ * Se essa condição se verificar vamos chamar a função check_somma_array 
+ * (Verifica as restrições para as ações com somas ou concatenações de arrays).
+ * Se não se verificar, chamamos a função check_all_array
+ * (Verifica as restrições para as outras operações com arrays). 
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void go_filter_array(struct stack *ptr_STACK, char *token)
 {
     if (*token == '+')
@@ -207,6 +219,7 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
     else
         check_all_array(ptr_STACK, token);
 }
+
 /**
  * \brief Função parse do programa
  * 
@@ -260,6 +273,17 @@ void parse(char *line)
     PRINT_STACK(ptr_STACK);
 }
 
+/**
+ * \brief Função check_soma_array do programa.
+ * 
+ * Iremos verificar se algum dos elementos do topo é array.
+ * Se essa condição se verificar vamos concatenar o array. 
+ * (concatenarray).
+ * Se não se verificar, chamamos o operador para somar os dois elementos.
+ *  
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void check_soma_array(struct stack *ptr_STACK, char *token)
 {
 
@@ -279,6 +303,18 @@ void check_soma_array(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função check_all_array do programa.
+ * 
+ * Iremos verificar se o topo da stack é array.
+ * Se essa condição se verificar vamos chamar a função manarray. 
+ * (Aplica as operações com arrays).
+ * Se não se verificar, chamamos a função go_filter
+ * (Aplica as operações dos guiões 1/2/3). 
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void check_all_array(struct stack *ptr_STACK, char *token)
 {
     int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
@@ -290,6 +326,14 @@ void check_all_array(struct stack *ptr_STACK, char *token)
         go_filter(ptr_STACK, token);
 }
 
+/**
+ * \brief Função put_array do programa.
+ * 
+ * Responsável por colocar o array na STACK.
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void put_array(struct stack *ptr_STACK, char *token)
 {
     struct elemento val;
@@ -299,6 +343,19 @@ void put_array(struct stack *ptr_STACK, char *token)
     PUSH(ptr_STACK, val);
 }
 
+/**
+ * \brief Função pinta_array do programa.
+ * 
+ * Recebe um apontador para a STACK e um token.
+ * Iremos verificar se o topo da stack é array.
+ * Se essa condição se verificar vamos chamar a função manarray. 
+ * (Aplica as operações com arrays).
+ * Se não se verificar, chamamos a função go_filter
+ * (Aplica as operações dos guiões 1/2/3). 
+ * 
+ * @param pointer Apontador para a stack.
+ * @param line Token atual.
+ */
 void pinta_array(char **pointer, char *line)
 {
     char *delimitadores = " \t\n";
@@ -317,6 +374,19 @@ void pinta_array(char **pointer, char *line)
     strcpy(line, copi);
 }
 
+/**
+ * \brief Função check_array do programa.
+ * 
+ * Recebe um apontador para a Stack e um token.
+ * Inicializa um apontador para uma string 
+ * para testar se o token pertence a algum desses símbolos, 
+ * se pertence retorna 1, caso contrário, 0.
+ * 
+ * @param ptr_STACK Apontador para a Stack
+ * @param token Token atual
+ * 
+ * @return Um inteiro, pode ser 0 ou 1.
+ */
 int check_array(struct stack *ptr_STACK, char *token)
 {
     char *arrays = "+~<>()*=,#/SN";
@@ -333,6 +403,18 @@ int check_array(struct stack *ptr_STACK, char *token)
 
 // FUction get_delimited
 
+/**
+ * \brief Função isDelim do programa.
+ * 
+ * Recebe o caractere c e incializa uma variável do tipo inteiro a 0.
+ * Percorrendo os delimitadores, se c pertencer a essa lista devolve 1,
+ * caso contrário, 0.
+ * 
+ * @param c Caracter c
+ * @param delim Apontador para delimitadores
+ * 
+ * @return bRet que corresponde a 0 ou 1
+ */
 int isDelim(char c, char *delim)
 {
     int bRet = 0;
@@ -347,6 +429,15 @@ int isDelim(char c, char *delim)
 
 // verifica se é delimitador
 
+/**
+ * \brief Função isLim do programa.
+ * 
+ * testa se o token é um delimitador.
+ * 
+ * @param token
+ * 
+ * @return 0 ou 1
+ */
 int isLim(char token)
 {
     if (token == ' ' || token == '\n' || token == '\t')
@@ -377,6 +468,17 @@ char *cleanLim(char line[])
     return line;
 }
 
+/**
+ * \brief Função get_token do programa.
+ * 
+ * ---------------------------------------------------------------------------
+ * 
+ * @param delim Apontador para delimitadores
+ * @param line Apontador para a linha que será lida
+ * @param rest
+ * 
+ * @return bRet que corresponde a 0 ou 1
+ */
 char *get_token(char *delim, char *line, char **rest)
 {
     char *pRet = NULL;
