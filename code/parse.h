@@ -81,9 +81,6 @@ void go_filter(struct stack *ptr_STACK, char *token);
  */
 char *get_token(char *delim, char *line, char **rest);
 
-// Nao ha funçao ---
-void separa_array(struct stack *ptr_STACK, char *token);
-
 /**
  * \brief Função put_array do programa.
  * 
@@ -165,4 +162,13 @@ void check_soma_array(struct stack *ptr_STACK, char *token);
  */
 void check_all_array(struct stack *ptr_STACK, char *token);
 
+/**
+ * \brief Função cleanLim do programa.
+ * 
+ * remove os delimitadores da linha recebida.
+ * 
+ * @param line
+ * 
+ * @return line
+ */
 char *cleanLim(char line[]);

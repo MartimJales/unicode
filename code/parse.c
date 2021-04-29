@@ -450,6 +450,15 @@ int isLim(char token)
 
 // número de delimitadores seguidos
 
+/**
+ * \brief Função cleanLim do programa.
+ * 
+ * remove os delimitadores da linha recebida.
+ * 
+ * @param line
+ * 
+ * @return line
+ */
 char *cleanLim(char line[])
 {
     int i, j;
