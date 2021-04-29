@@ -198,6 +198,18 @@ void go_filter(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função go_filter_array do programa.
+ * 
+ * Iremos verificar se esse token é o sinal +.
+ * Se essa condição se verificar vamos chamar a função check_somma_array 
+ * (Verifica as restrições para as ações com somas ou concatenações de arrays).
+ * Se não se verificar, chamamos a função check_all_array
+ * (Verifica as restrições para as outras operações com arrays). 
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void go_filter_array(struct stack *ptr_STACK, char *token)
 {
     if (*token == '+')
@@ -247,7 +259,8 @@ void parse(char *line)
         else if (*token == '[')
         {
             printf("ARRAY!\n");
-            pinta_array(&token, token);
+            pinta_array(token);
+            parse_array(token, ptr_STACK);
             put_array(ptr_STACK, token);
         }
         else if (check_array(ptr_STACK, token))
@@ -260,6 +273,17 @@ void parse(char *line)
     PRINT_STACK(ptr_STACK);
 }
 
+/**
+ * \brief Função check_soma_array do programa.
+ * 
+ * Iremos verificar se algum dos elementos do topo é array.
+ * Se essa condição se verificar vamos concatenar o array. 
+ * (concatenarray).
+ * Se não se verificar, chamamos o operador para somar os dois elementos.
+ *  
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void check_soma_array(struct stack *ptr_STACK, char *token)
 {
 
@@ -279,6 +303,18 @@ void check_soma_array(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função check_all_array do programa.
+ * 
+ * Iremos verificar se o topo da stack é array.
+ * Se essa condição se verificar vamos chamar a função manarray. 
+ * (Aplica as operações com arrays).
+ * Se não se verificar, chamamos a função go_filter
+ * (Aplica as operações dos guiões 1/2/3). 
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void check_all_array(struct stack *ptr_STACK, char *token)
 {
     int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
@@ -290,6 +326,14 @@ void check_all_array(struct stack *ptr_STACK, char *token)
         go_filter(ptr_STACK, token);
 }
 
+/**
+ * \brief Função put_array do programa.
+ * 
+ * Responsável por colocar o array na STACK.
+ * 
+ * @param ptr_STACK Apontador para a stack.
+ * @param token Token atual.
+ */
 void put_array(struct stack *ptr_STACK, char *token)
 {
     struct elemento val;
@@ -299,7 +343,20 @@ void put_array(struct stack *ptr_STACK, char *token)
     PUSH(ptr_STACK, val);
 }
 
-void pinta_array(char **pointer, char *line)
+/**
+ * \brief Função pinta_array do programa.
+ * 
+ * Recebe um apontador para a STACK e um token.
+ * Iremos verificar se o topo da stack é array.
+ * Se essa condição se verificar vamos chamar a função manarray. 
+ * (Aplica as operações com arrays).
+ * Se não se verificar, chamamos a função go_filter
+ * (Aplica as operações dos guiões 1/2/3). 
+ * 
+ * @param pointer Apontador para a stack.
+ * @param line Token atual.
+ */
+void pinta_array(char *line)
 {
     char *delimitadores = " \t\n";
     char *token;
@@ -316,6 +373,7 @@ void pinta_array(char **pointer, char *line)
     copi[j] = '\0';
     strcpy(line, copi);
 }
+// pInTA ARRAY ETÀ A DAR MERDA DEPOIS DE MUDAR AS CENAS
 
 int check_array(struct stack *ptr_STACK, char *token)
 {

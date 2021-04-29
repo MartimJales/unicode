@@ -72,7 +72,7 @@ char *get_token(char *delim, char *line, char **rest);
 void separa_array(struct stack *ptr_STACK, char *token);
 
 void put_array(struct stack *ptr_STACK, char *token);
-void pinta_array(char **token, char *line);
+void pinta_array(char *line);
 
 int check_array(struct stack *ptr_STACK, char *token);
 
