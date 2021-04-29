@@ -17,6 +17,37 @@ int isDelim(char c,char *delim)
     return bRet;
 }
 
+// verifica se é delimitador
+
+int isLim (char token)
+{
+    if (token == ' ' ||token == '\n' ||token == '\t')
+    {
+        return 1;
+    } 
+    else return 0;
+}
+
+
+
+// número de delimitadores seguidos
+
+char *cleanLim(char line[]){
+    int i,j;
+    for (i=0; line[i] != '\0'; i++){
+        if(isLim(line[i]) && (line[i+1] == line[i])){
+            for (j=i; line[j] != '\0'; j++){
+                line[j] = line[j+1];
+            }
+            line[j]= '\0';
+            i--;
+        }
+    }
+    return line;
+
+}
+
+
 
 char * get_token(char *delim, char *line,char **rest)
 {
@@ -30,16 +61,16 @@ char * get_token(char *delim, char *line,char **rest)
 
     for(i=0;line[i] && isDelim(line[i],delim)==0 && bTratado==0 ;i++)
     {
-        if (line[i]=='['  )
+        if (line[i]=='[')
         {
             int nParentesis=1;
             int j;
            
             for(j=1;nParentesis>0 && line[i+j];j++)
             {
-                if (line[i+j]==']' )
+                if (line[i+j]==']')
                     nParentesis--;
-                if (line[i+j]=='[' )
+                if (line[i+j]=='[')
                     nParentesis++;        
             }
             if (nParentesis>0)
@@ -54,7 +85,7 @@ char * get_token(char *delim, char *line,char **rest)
          
             }
         }
-        if (line[i]=='"'  )
+        if (line[i]=='"')
         {
             int nAspas=1;
             int j;
@@ -82,7 +113,7 @@ char * get_token(char *delim, char *line,char **rest)
         if (isDelim(line[i],delim))
         {
                 line[i]=0;
-                *rest=line+i+1;
+                *rest=line+i+1; // problema está aqui
         }
         else  
         {
@@ -101,12 +132,14 @@ void main()
     char *resto;
 
     strcpy(delimitadores," \n\t");
-    strcpy(line,"1 2 3 [ 1 2 3 [ a b c ] ] 3 + [ 4 5 6 23434] \"abcd dd\" ttt");
+    strcpy(line,"1402 2 [ 1 3 4 ] 7 8 9");
+    
 
-    for(token=get_token(delimitadores, line, &resto);strcmp(token,"")!=0;token=get_token(delimitadores, resto, &resto))
+
+
+    for(token=get_token(delimitadores,cleanLim(line), &resto);strcmp(token,"")!=0;token=get_token(delimitadores, resto, &resto))
     {
         printf("%s\n",token);
 
     }
-
 }
