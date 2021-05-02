@@ -10,7 +10,7 @@
 #include "g1.h"
 #include "g2.h"
 #include "g3.h"
-#include "g4.h"
+//#include "g4.h"
 #include <assert.h>
 
 /**
@@ -29,6 +29,7 @@ void check_type(char **resto_num, char **token, int *val_tipo)
     if (p)
     {
         strtod(*token, resto_num);
+        *val_tipo = T_double;
     }
     else
     {
@@ -51,10 +52,27 @@ float convertToDouble(struct elemento x)
     double ret;
 
     ret = 0.0;
-    if (x.tipo == T_int || x.tipo == T_long || x.tipo == T_double || x.tipo == T_float)
+    switch (x.tipo)
     {
-        ret = strtof(x.valor, NULL);
+    case T_int:
+        ret = x.data.val_i * 1.0;
+        break;
+    case T_long:
+        ret = x.data.val_l * 1.0;
+        break;
+    case T_float:
+        ret = x.data.val_f * 1.0;
+        break;
+    case T_double:
+        ret = x.data.val_d * 1.0;
+        break;
+    case T_char:
+        ret = (float)x.data.val_c * 1.0;
+        break;
+    default: //falta as strings e os arrays
+        break;
     }
+    //printf("O retorno da função converto double é : %f ", ret);
     return ret;
 }
 
@@ -68,7 +86,7 @@ float convertToDouble(struct elemento x)
  * 
  * @returns Um inteiro 
  */
-int filter(char *token, int array)
+int filter(char *token)
 {
     char *maths = "+-/*%#&|^()~";
     char *manstack = "_;\\@$";
@@ -152,9 +170,43 @@ int filter(char *token, int array)
 void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
 {
     struct elemento val;
-    val.tipo = val_tipo;
+    switch (val_tipo)
+    {
+    case T_int:
+        val.tipo = T_int;
+        val.data.val_i = atoi(token);
+        break;
+    case T_float:
+        val.tipo = T_float;
+        val.data.val_f = atof(token);
+        break;
+    case T_char:
+        printf("Está a dar merda por causa do char!!!!! path: put_token\n");
+        val.tipo = T_char;
+        val.data.val_c = atoi(token);
+        break;
+    case T_double:
+        val.tipo = T_double;
+        val.data.val_d = atof(token);
+        break;
+    case T_long:
+        val.tipo = T_long;
+        val.data.val_l = atol(token);
+        break;
+    case T_string:
+        printf("Está a dar merda por causa da string!!!!! path: put_token\n");
+        val.tipo = T_string;
+        val.data.val_i = atoi(token);
+        break;
+    case T_array:
+        printf("Está a dar merda por causa do array!!!!! path: put_token\n");
+        val.tipo = T_array;
+        val.data.val_i = atoi(token);
+        break;
 
-    sprintf(val.valor, "%s", token);
+    default:
+        break;
+    }
     PUSH(ptr_STACK, val);
 }
 
@@ -169,7 +221,7 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
  */
 void go_filter(struct stack *ptr_STACK, char *token)
 {
-    switch (filter(token, check_array(ptr_STACK, token)))
+    switch (filter(token /*, check_array(ptr_STACK, token)*/))
     {
     case 1:
         maths(ptr_STACK, token);
@@ -255,6 +307,8 @@ void parse(char *line)
 
         check_type(&resto_num, &token, &val_tipo);
 
+        // printf("tipo dps %d\n", val_tipo);
+
         if (strlen(resto_num) == 0)
             put_token(ptr_STACK, val_tipo, token);
         else if (*token == '[')
@@ -263,12 +317,13 @@ void parse(char *line)
             pinta_array(&token, token);
             put_array(ptr_STACK, token);
         }
+        /*
         else if (check_array(ptr_STACK, token))
-            go_filter_array(ptr_STACK, token);
+            go_filter_array(ptr_STACK, token);*/
         else
             go_filter(ptr_STACK, token);
 
-        printf("Token atual: %s!\n", token);
+        //printf("Token atual: %s!\n", token);
     }
     PRINT_STACK(ptr_STACK);
 }
@@ -284,6 +339,7 @@ void parse(char *line)
  * @param ptr_STACK Apontador para a stack.
  * @param token Token atual.
  */
+
 void check_soma_array(struct stack *ptr_STACK, char *token)
 {
 
@@ -292,7 +348,7 @@ void check_soma_array(struct stack *ptr_STACK, char *token)
 
     if (x_tipo == T_array || y_tipo == T_array)
     {
-        concatenarray(ptr_STACK);
+        //  concatenarray(ptr_STACK);
     }
     else
     {
@@ -318,9 +374,9 @@ void check_soma_array(struct stack *ptr_STACK, char *token)
 void check_all_array(struct stack *ptr_STACK, char *token)
 {
     int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
-    if (x_tipo = T_array)
+    if (x_tipo == T_array)
     {
-        manarray(ptr_STACK, token);
+        //  manarray(ptr_STACK, token);
     }
     else
         go_filter(ptr_STACK, token);
@@ -339,7 +395,7 @@ void put_array(struct stack *ptr_STACK, char *token)
     struct elemento val;
     val.tipo = T_array;
 
-    sprintf(val.valor, "%s", token);
+    //parse_array(&val, token);
     PUSH(ptr_STACK, val);
 }
 
@@ -359,8 +415,6 @@ void put_array(struct stack *ptr_STACK, char *token)
 void pinta_array(char **pointer, char *line)
 {
     char *delimitadores = " \t\n";
-    char *token;
-    char *resto;
 
     char copi[100];
     int j = 0, i = 2;
@@ -387,7 +441,7 @@ void pinta_array(char **pointer, char *line)
  * 
  * @return Um inteiro, pode ser 0 ou 1.
  */
-int check_array(struct stack *ptr_STACK, char *token)
+int check_array(char *token)
 {
     char *arrays = "+~<>()*=,#/SN";
     while (*arrays)
@@ -490,9 +544,9 @@ char *cleanLim(char line[])
  */
 char *get_token(char *delim, char *line, char **rest)
 {
-    char *pRet = NULL;
+    //char *pRet = NULL;
     int i, bTratado = 0;
-    int iToken = 0;
+    //int iToken = 0;
 
     //printf("get_token('%s' ###  %s  ###)\n",delim,line);
 

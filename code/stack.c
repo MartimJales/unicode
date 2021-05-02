@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as função parse, a par, das funções que lhe dão suporte, POP, PUSH e PRINT_STACK
+ * @file Ficheiro que contém as função parse, a par, das funções que lhe dão suporte, POP, PUSH e PRINSTACK_STACK
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,8 +17,8 @@
  */
 struct elemento POP(struct stack *stack)
 {
-    (*stack).top--;
-    return (*stack).array[(*stack).top + 1];
+    stack->top--;
+    return stack->array[stack->top + 1];
 }
 
 /**
@@ -32,12 +32,16 @@ struct elemento POP(struct stack *stack)
 void
 PUSH(struct stack *stack, struct elemento n)
 {
-    (*stack).top++;
-    (*stack).array[(*stack).top] = n;
+    // printf(" o tipo  do que pediste para empurrar é : %d\n", n.tipo);
+    stack->top++;
+    //printf(" o q empurrei foi :%f\n", n.data.val_d);
+    stack->array[stack->top] = n;
+    //printf(" o q fixou no topo da stack foi : %f\n", stack->array[stack->top].data.val_d);
+    //printf(" o q empurrei  na verdade foi  %d\n", stack->array[stack->top].data.val_i);
 }
 
 /**
- * \brief Função PRINT_STACK do programa.
+ * \brief Função PRINSTACK_STACK do programa.
  * 
  * Inicia-se um ciclo for, onde uma variável é incializada também,
  * a condição de paragem ocorre se a variável é maior
@@ -50,25 +54,84 @@ PUSH(struct stack *stack, struct elemento n)
  */
 void PRINT_STACK(struct stack *stack)
 {
-    char *resto;
+    //char *resto;
     for (int i = 0; i <= (*stack).top; i++)
     {
-
-        if ((*stack).array[i].tipo == T_int || (*stack).array[i].tipo == T_long)
-            printf("%ld", strtol((*stack).array[i].valor, &resto, 10));
-        else if ((*stack).array[i].tipo == T_float || (*stack).array[i].tipo == T_double)
-            printf("%.6g", strtod((*stack).array[i].valor, &resto));
-        else if ((*stack).array[i].tipo == T_char)
+        switch ((*stack).array[i].tipo)
         {
-            char str[2];
-            str[0] = atoi((*stack).array[i].valor);
-            str[1] = 0;
-            printf("%s", str);
+        case T_int:
+            printf("%d", (*stack).array[i].data.val_i);
+            break;
+        case T_long:
+            printf("%ld", (*stack).array[i].data.val_l);
+            break;
+        case T_float:
+            printf("%.6g", stack->array[i].data.val_f);
+            break;
+        case T_double:
+            //  printf("double: ");
+            printf("%.6g", stack->array[i].data.val_d);
+            break;
+        case T_char:
+            //  printf("char: ");
+            printf("%c", stack->array[i].data.val_c);
+            break;
+        case T_string:
+            //  printf("string: ");
+            printf("%s", stack->array[i].data.val_s);
+            break;
+        case T_array:
+            //  printf("array: ");
+            print_array(*(stack->array[i].data.val_p));
+            break;
+        default: //falta as strings e os arrays
+            break;
         }
-        else
-            printf("%s", (*stack).array[i].valor);
     }
     printf("\n");
+}
+
+/**
+ * \brief Função PRINSTACK_STACK do programa.
+ * 
+ * Inicia-se um ciclo for, onde uma variável é incializada também,
+ * a condição de paragem ocorre se a variável é maior
+ * que o topo da da Stack, a cada iteração incrementa-se a variável.
+ * 
+ * É imprimido o valor da Stack no índice da variável, de acordo
+ * com o seu valor a cada iteração.
+ * 
+ * @param stack
+ */
+void print_array(struct array array)
+{
+    for (int i = 0; i < array.top; i++)
+    {
+        switch (array.elemento.tipo)
+        {
+        case T_int:
+            printf("%d", array.elemento.data.val_i);
+            break;
+        case T_long:
+            printf("%ld", array.elemento.data.val_l);
+            break;
+        case T_float:
+            printf("%.6g", array.elemento.data.val_f);
+            break;
+        case T_double:
+            //  printf("double: ");
+            printf("%.6g", array.elemento.data.val_d);
+            break;
+        case T_char:
+            //  printf("char: ");
+            printf("%c", array.elemento.data.val_c);
+            break;
+        case T_string:
+            //  printf("string: ");
+            printf("%s", array.elemento.data.val_s);
+            break;
+        }
+    }
 }
 
 /**
@@ -80,27 +143,26 @@ void PRINT_STACK(struct stack *stack)
  */
 void initStack(struct stack *ptr_STACK)
 {
-    (*ptr_STACK).top = -1;
+    ptr_STACK->top = -1;
     struct var var_tmp;
     struct elemento val;
-    val.tipo = T_long;
-
+    val.tipo = T_int;
     for (int i = 0; i < 6; i++)
     {
-        sprintf(val.valor, "%d", 10 + i);
+        val.data.val_i = 10 + i;
         var_tmp.index = i;
         var_tmp.elemento = val;
         (*ptr_STACK).vars[i] = var_tmp;
     }
-    sprintf(val.valor, "%d", 0);
+    val.data.val_i = 0;
     var_tmp.index = 23;
     var_tmp.elemento = val;
     (*ptr_STACK).vars[23] = var_tmp;
-    sprintf(val.valor, "%d", 1);
+    val.data.val_i = 1;
     var_tmp.index = 24;
     var_tmp.elemento = val;
     (*ptr_STACK).vars[24] = var_tmp;
-    sprintf(val.valor, "%d", 2);
+    val.data.val_i = 2;
     var_tmp.index = 25;
     var_tmp.elemento = val;
     (*ptr_STACK).vars[25] = var_tmp;

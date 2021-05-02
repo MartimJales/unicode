@@ -21,8 +21,8 @@ stack: stack.c stack.h
 parse: parse.c parse.h
 	$(CC) $(FLAGS) -o parse.o  -c parse.c
 
-allprog: main.c g1.o g2.o g3.o g4.o stack.o parse.o
-	$(CC) $(FLAGS) main.c g1.o g2.o g3.o g4.o stack.o parse.o -o program -lm
+allprog: main.c g1.o g2.o g3.o g4.o  stack.o parse.o
+	$(CC) $(FLAGS) main.c g1.o g2.o g3.o g4.o  stack.o parse.o -o program -lm
 
 memcheck:
 	valgrind --leak-check=yes ./program

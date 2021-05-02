@@ -9,72 +9,44 @@
  * Contém também todas as estrusturas criadas para a resolução dos guiões.
  */
 
-/**
- * \brief T_int 1
- * 
- * o nº 1 representa o tipo "int".
- * 
- */
-#define T_int 1
+enum stack_type
+{
+    T_int,
+    T_char,
+    T_float,
+    T_long,
+    T_double,
+    T_string,
+    T_array
+};
 
-/**
- * \brief T_char 2
- * 
- * o nº 2 representa o tipo "char".
- * 
- */
-#define T_char 2
-
-/**
- * \brief T_float 3
- * 
- * o nº 3 representa o tipo "float".
- * 
- */
-#define T_float 3
-
-/**
- * \brief T_long 4
- * 
- * o nº 4 representa o tipo "long".
- * 
- */
-#define T_long 4
-
-/**
- * \brief T_double 5
- * 
- * o nº 5 representa o tipo "double".
- * 
- */
-#define T_double 5
-
-/**
- * \brief T_string 6
- * 
- * o nº 6 representa o tipo "string".
- * 
- */
-#define T_string 6
-
-/**
- * \brief T_array 7
- * 
- * o nº 6 representa o tipo "string".
- * 
- */
-#define T_array 7
-
-/**
- * \brief Struct elemento
- * 
- * com um inteiro referente ao tipo, e uma string que armazena o valor do mesmo.
- * 
- */
 struct elemento
 {
-    int tipo;        /**< Representa o tipo do elemento */
-    char valor[100]; /**< Representa o valor do elemento */
+    enum stack_type tipo;
+    union
+    {
+        char val_c;
+        char val_s[200];
+        int val_i;
+        long val_l;
+        float val_f;
+        double val_d;
+        struct array *val_p;
+    } data;
+};
+
+/**
+ * \brief Struct var
+ * 
+ * com um char referente à variável que estamos a utilizar
+ * e um elemento que a mesma representa.
+ * 
+ */
+struct array
+{
+    int top;
+    struct elemento elemento;
+    struct array *next;
 };
 
 /**
@@ -86,18 +58,18 @@ struct elemento
  */
 struct var
 {
-    int index;                /**< Representa o índice da variável */
-    struct elemento elemento; /**< Representa o conteúdo da variável */
+    int index;                /**< Representa o índice da variável **/
+    struct elemento elemento; /**< Representa o conteúdo da variável **/
 };
 
-/** @struct stack
- *  @brief Esta struct representa a stack.
- */
+typedef struct stack *Stack;
+
 struct stack
 {
-    int top;                    /**< Representa a variavél do topo da stack */
-    struct elemento array[100]; /**< Representa o array de elementos */
-    struct var vars[26];        /**< Representa as variáveis do programa */
+    int top;
+    int capacity;
+    struct elemento array[100];
+    struct var vars[26];
 };
 
 /**
@@ -141,3 +113,7 @@ void PRINT_STACK(struct stack *stack);
  * @param ptr_STACK (apontador para a stack)
  */
 void initStack(struct stack *ptr_STACK);
+
+// Funções que faltam comentar
+
+void print_array(struct array array);

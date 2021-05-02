@@ -8,6 +8,7 @@
 #include "stack.h"
 #include "g1.h"
 #include <assert.h>
+
 /**
  * \brief Função operador
  * 
@@ -24,8 +25,7 @@
  * 
  * @returns Um struct elemento val
  */
-struct elemento
-operador(struct elemento x, struct elemento y, char *op)
+struct elemento operador(struct elemento x, struct elemento y, char *op)
 {
     float dx, dy, dres;
 
@@ -79,23 +79,27 @@ struct elemento secondoperador(struct elemento x, struct elemento y, float dres)
 
     if (x.tipo == T_double || y.tipo == T_double)
     {
+        //printf("PINTOU AQUI\n");
         val.tipo = T_double;
-        sprintf(val.valor, "%.16g", (double)dres);
+        val.data.val_d = (double)dres;
     }
     else if (x.tipo == T_float || y.tipo == T_float)
     {
+        // printf("PINTOU AQUI float\n");
         val.tipo = T_float;
-        sprintf(val.valor, "%.16g", (float)dres);
+        val.data.val_f = (float)dres;
     }
     else if (x.tipo == T_long || y.tipo == T_long)
     {
+        //printf("PINTOU AQUI long\n");
         val.tipo = T_long;
-        sprintf(val.valor, "%ld", (long)dres);
+        val.data.val_l = (long)dres;
     }
     else
     {
+        // printf("PINTOU AQUI int\n");
         val.tipo = T_int;
-        sprintf(val.valor, "%d", (int)dres);
+        val.data.val_i = (int)dres;
     }
     return val;
 }

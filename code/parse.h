@@ -43,7 +43,7 @@ void check_type(char **resto, char **token, int *val_tipo);
  * 
  * @returns Um inteiro 
  */
-int filter(char *token, int array);
+int filter(char *token);
 
 /**
  * \brief Função put_token do programa
@@ -114,12 +114,11 @@ void pinta_array(char **token, char *line);
  * para testar se o token pertence a algum desses símbolos, 
  * se pertence retorna 1, caso contrário, 0.
  * 
- * @param ptr_STACK Apontador para a Stack
  * @param token Token atual
  * 
  * @return Um inteiro, pode ser 0 ou 1.
  */
-int check_array(struct stack *ptr_STACK, char *token);
+int check_array(char *token);
 
 /**
  * \brief Função go_filter_array do programa.

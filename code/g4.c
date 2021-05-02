@@ -1,6 +1,4 @@
-/**
- * @file Ficheiro que contém as funçẽs relativas ao guião 4
- */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,14 +12,7 @@
 #include <assert.h>
 
 //funciona 100%
-
-/**
- * \brief Função concatenarray do programa
- * 
- * que faz o pop dos dois arrays no topo da Stack e concatena-os.
- * 
- * @param ptr_STACK Apontador para a Stack
- */
+/*
 void concatenarray(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -29,17 +20,10 @@ void concatenarray(struct stack *ptr_STACK)
     struct elemento y = POP(ptr_STACK);
 
     y.tipo = T_array;
-    sprintf(y.valor, "%s", strcat(y.valor, x.valor));
+    y.data.val_p = , "%s", strcat(y.valor, x.valor));
     PUSH(ptr_STACK, y);
-}
-
-/**
- * \brief Função concatenarray do programa
- * 
- * que faz o pop dos dois arrays no topo da Stack e concatena-os.
- * 
- * @param ptr_STACK Apontador para a Stack
- */
+}*/
+/*
 void parse_array(char *line, struct stack *ptr_STACK)
 {
     char *token;
@@ -54,33 +38,25 @@ void parse_array(char *line, struct stack *ptr_STACK)
         check_type(&resto_num, &token, &val_tipo);
 
         if (strlen(resto_num) == 0)
-            put_token(ptr_STACK, val_tipo, token);
+            put_token_array(, val_tipo, token);
         else if (*token == '[')
         {
             printf("ARRAY!\n");
-            pinta_array(&token, token);
             struct elemento val;
-            val.tipo = T_array;
-
-            sprintf(val.valor, "%s", token);
+            pinta_array(&token, token);
+            printf("TOKEN: %s\n", token);
+            //val.tipo = T_array;
+            //sprintf(val.valor, "%s", token);
         }
-        else if (check_array(ptr_STACK, token))
+        /*else if (check_array(ptr_STACK, token))
             go_filter_array(ptr_STACK, token);
         else
             go_filter(ptr_STACK, token);
-
-        printf("Token atual da parse array: %s!\n", token);
-    }
+        
+printf("Token atual da parse array: %s!\n", token);
+}
 }
 
-/**
- * \brief Função empurra_array do programa
- * 
- * esta função faz POP do topo da Stack e, depois de colocar o tipo desse elemento como array, 
- * invoca a função parse_array para tratar esse array internamente.
- * 
- * @param ptr_STACK 
- */
 void empurraarray(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -88,16 +64,6 @@ void empurraarray(struct stack *ptr_STACK)
     parse_array(x.valor, ptr_STACK);
 }
 
-/**
- * \brief Função repetearray do programa
- * 
- * faz POP do topo da stack e converte esse valor para um longo, 
- * posteriormente, faz POP de um outro elemento (que seja do tipo array)
- * e repete-o tantas vezes quantas o valor do elemento 
- * convertido para long.
- * 
- * @param ptr_STACK 
- */
 void repetearray(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -109,14 +75,6 @@ void repetearray(struct stack *ptr_STACK)
     }
 }
 
-/**
- * \brief Função tamanho_range do programa
- * 
- * descobre a quantidade de elementos presentes no array e,
- * após isto faz PUSH deste valor para o topo da Stack.
- * 
- * @param ptr_STACK 
- */
 void tamanho_range(struct stack *ptr_STACK)
 {
 
@@ -138,14 +96,6 @@ void tamanho_range(struct stack *ptr_STACK)
     PUSH(ptr_STACK, val);
 }
 
-/**
- * \brief Função tamanho_range do programa
- * 
- * descobre a quantidade de elementos presentes no array e,
- * após isto faz PUSH deste valor para o topo da Stack.
- * 
- * @param ptr_STACK 
- */
 void buscavalindice(struct stack *ptr_STACK)
 {
     int i = 0;
@@ -183,14 +133,6 @@ void buscavalindice(struct stack *ptr_STACK)
     }
 }
 
-/**
- * \brief Função manaarray do programa.
- * 
- * ao receber o token aplica a função que se destina a cada token.
- * 
- * @param ptr_STACK
- * @param token
- */
 void manarray(struct stack *ptr_STACK, char *token)
 {
     switch (*token)
@@ -212,9 +154,6 @@ void manarray(struct stack *ptr_STACK, char *token)
     case '=':
         buscavalindice(ptr_STACK);
         break;
-    }
-}
-/*
     case '<':
         buscaantes(ptr_STACK);
         break;
@@ -231,7 +170,5 @@ void manarray(struct stack *ptr_STACK, char *token)
         call_operator(ptr_STACK, token);
         break;
     }
-    
-}
 }
 */

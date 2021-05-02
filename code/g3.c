@@ -20,15 +20,15 @@
 void greater(struct stack *ptr_STACK)
 {
     struct elemento val;
-    val.tipo = T_long;
+    val.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
+    double y_ret = convertToDouble(y);
     if (y_ret > x_ret)
-        sprintf(val.valor, "%d", 1);
+        val.data.val_i = 1;
     else
-        sprintf(val.valor, "%d", 0);
+        val.data.val_i = 0;
     PUSH(ptr_STACK, val);
 }
 
@@ -42,15 +42,15 @@ void greater(struct stack *ptr_STACK)
 void smaller(struct stack *ptr_STACK)
 {
     struct elemento val;
-    val.tipo = T_long;
+    val.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
+    double y_ret = convertToDouble(y);
     if (y_ret < x_ret)
-        sprintf(val.valor, "%d", 1);
+        val.data.val_i = 1;
     else
-        sprintf(val.valor, "%d", 0);
+        val.data.val_i = 0;
     PUSH(ptr_STACK, val);
 }
 
@@ -64,15 +64,15 @@ void smaller(struct stack *ptr_STACK)
 void equal(struct stack *ptr_STACK)
 {
     struct elemento val;
-    val.tipo = T_long;
+    val.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
+    double y_ret = convertToDouble(y);
     if (y_ret == x_ret)
-        sprintf(val.valor, "%d", 1);
+        val.data.val_i = 1;
     else
-        sprintf(val.valor, "%d", 0);
+        val.data.val_i = 0;
     PUSH(ptr_STACK, val);
 }
 
@@ -86,13 +86,14 @@ void equal(struct stack *ptr_STACK)
 void no(struct stack *ptr_STACK)
 {
     struct elemento val;
-    val.tipo = T_long;
+    val.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
+    //printf("Esta menina deu: %f\n", x_ret);
     if (x_ret)
-        sprintf(val.valor, "%d", 0);
+        val.data.val_i = 0;
     else
-        sprintf(val.valor, "%d", 1);
+        val.data.val_i = 1;
     PUSH(ptr_STACK, val);
 }
 
@@ -109,10 +110,10 @@ void ifthenelse(struct stack *ptr_STACK)
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
     struct elemento condition = POP(ptr_STACK);
-    if (strcmp(condition.valor, "0") == 0)
-        PUSH(ptr_STACK, x);
-    else
+    if (condition.data.val_i)
         PUSH(ptr_STACK, y);
+    else
+        PUSH(ptr_STACK, x);
 }
 
 /**
@@ -155,9 +156,9 @@ void efunction(struct stack *ptr_STACK, char *token)
 void ebigger(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
+    double y_ret = convertToDouble(y);
     if (y_ret > x_ret)
         PUSH(ptr_STACK, y);
     else
@@ -174,9 +175,9 @@ void ebigger(struct stack *ptr_STACK)
 void esmaller(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
+    double y_ret = convertToDouble(y);
     if (y_ret > x_ret)
         PUSH(ptr_STACK, x);
     else
@@ -193,15 +194,15 @@ void esmaller(struct stack *ptr_STACK)
 void eshortcut(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
 
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
-    if (strcmp(y.valor, "0") == 0)
+    double y_ret = convertToDouble(y);
+    if (!(y.data.val_i))
     {
         PUSH(ptr_STACK, y);
     }
-    else if (strcmp(x.valor, "0") == 0)
+    else if (!(x.data.val_i))
     {
         PUSH(ptr_STACK, x);
     }
@@ -226,9 +227,9 @@ void eshortcut(struct stack *ptr_STACK)
 void orshortcut(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
+    double y_ret = convertToDouble(y);
     if (x_ret == 0 && y_ret == 0)
     {
         PUSH(ptr_STACK, x);
@@ -252,14 +253,14 @@ void orshortcut(struct stack *ptr_STACK)
 void epequeno(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    double x_ret = strtof(x.valor, NULL);
+    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = strtof(y.valor, NULL);
-    if (strcmp(y.valor, "0") == 0)
+    double y_ret = convertToDouble(y);
+    if (!(y.data.val_i))
     {
         PUSH(ptr_STACK, x);
     }
-    else if (strcmp(x.valor, "0") == 0)
+    else if (!(x.data.val_i))
     {
         PUSH(ptr_STACK, y);
     }
@@ -299,15 +300,16 @@ void variables2(struct stack *ptr_STACK, char *token)
     {
         struct elemento x;
         x.tipo = T_string;
-        sprintf(x.valor, "%s", "\n");
+        sprintf(x.data.val_s, "\n");
         PUSH(ptr_STACK, x);
     }
     else if (strcmp(token, "S") == 0)
     {
         struct elemento x;
         x.tipo = T_string;
-        sprintf(x.valor, "%s", " ");
+        sprintf(x.data.val_s, " ");
         PUSH(ptr_STACK, x);
+        //printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
     }
     else if (*token == ':')
     {

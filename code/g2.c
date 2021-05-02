@@ -26,7 +26,7 @@ void dollarfunction(struct stack *ptr_STACK)
 {
 
     struct elemento x = POP(ptr_STACK);
-    int i = atoi(x.valor);
+    int i = (x.data.val_i);
     struct elemento y = (*ptr_STACK).array[(*ptr_STACK).top - i];
     PUSH(ptr_STACK, y);
 }
@@ -221,9 +221,36 @@ void rotate_elem(struct stack *ptr_STACK)
  */
 void convert_i(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    x.tipo = T_int;
-    PUSH(ptr_STACK, x);
+    struct elemento val = POP(ptr_STACK);
+    switch (val.tipo)
+    {
+    case T_int:
+        break;
+    case T_float:
+        val.tipo = T_int;
+        val.data.val_i = (int)val.data.val_f;
+        break;
+    case T_double:
+        val.tipo = T_int;
+        val.data.val_i = (int)val.data.val_d;
+        break;
+    case T_long:
+        val.tipo = T_int;
+        val.data.val_i = (int)val.data.val_l;
+        break;
+    case T_string:
+        val.tipo = T_int;
+        val.data.val_i = atoi(val.data.val_s);
+        break;
+    case T_char:
+        val.tipo = T_int;
+        val.data.val_i = (int)(val.data.val_c);
+        break;
+    default:
+        printf("Deu bagulho na função convert_i\n");
+        break;
+    }
+    PUSH(ptr_STACK, val);
 }
 
 /**
@@ -235,9 +262,32 @@ void convert_i(struct stack *ptr_STACK)
  */
 void convert_f(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    x.tipo = T_float;
-    PUSH(ptr_STACK, x);
+    struct elemento val = POP(ptr_STACK);
+    switch (val.tipo)
+    {
+    case T_int:
+        val.tipo = T_float;
+        val.data.val_f = (float)val.data.val_i;
+        break;
+    case T_float:
+        break;
+    case T_double:
+        val.tipo = T_float;
+        val.data.val_f = (float)val.data.val_d;
+        break;
+    case T_long:
+        val.tipo = T_float;
+        val.data.val_f = (float)val.data.val_l;
+        break;
+    case T_string:
+        val.tipo = T_float;
+        val.data.val_f = atof(val.data.val_s);
+        break;
+    default:
+        printf("Deu bagulho na função convert_f\n");
+        break;
+    }
+    PUSH(ptr_STACK, val);
 }
 
 /**
@@ -249,9 +299,30 @@ void convert_f(struct stack *ptr_STACK)
  */
 void convert_c(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    x.tipo = T_char;
-    PUSH(ptr_STACK, x);
+    struct elemento val = POP(ptr_STACK);
+    switch (val.tipo)
+    {
+    case T_int:
+        val.tipo = T_char;
+        val.data.val_c = (int)val.data.val_i;
+        break;
+    case T_float:
+        val.tipo = T_char;
+        val.data.val_c = (int)val.data.val_f;
+        break;
+    case T_double:
+        val.tipo = T_char;
+        val.data.val_c = (int)val.data.val_d;
+        break;
+    case T_long:
+        val.tipo = T_char;
+        val.data.val_c = (int)val.data.val_l;
+        break;
+    default:
+        printf("Deu bagulho na função convert_c\n");
+        break;
+    }
+    PUSH(ptr_STACK, val);
 }
 
 /**
@@ -263,9 +334,34 @@ void convert_c(struct stack *ptr_STACK)
  */
 void convert_s(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    x.tipo = T_string;
-    PUSH(ptr_STACK, x);
+    struct elemento val = POP(ptr_STACK);
+    switch (val.tipo)
+    {
+    case T_int:
+        val.tipo = T_string;
+        sprintf(val.data.val_s, "%d", val.data.val_i);
+        break;
+    case T_float:
+        val.tipo = T_string;
+        sprintf(val.data.val_s, "%f", val.data.val_f);
+        break;
+    case T_double:
+        val.tipo = T_string;
+        sprintf(val.data.val_s, "%f", val.data.val_d);
+        break;
+    case T_long:
+        val.tipo = T_string;
+        sprintf(val.data.val_s, "%ld", val.data.val_l);
+        break;
+    case T_char:
+        val.tipo = T_string;
+        sprintf(val.data.val_s, "%c", val.data.val_c);
+        break;
+    default:
+        printf("Deu bagulho na função convert_s\n");
+        break;
+    }
+    PUSH(ptr_STACK, val);
 }
 
 /**
@@ -278,7 +374,7 @@ void convert_s(struct stack *ptr_STACK)
 void read_line(struct stack *ptr_STACK)
 {
     struct elemento x;
-    assert(fgets(x.valor, 100, stdin) != NULL);
+    assert(fgets(x.data.val_s, 100, stdin) != NULL); //tem de ser val_s
     x.tipo = T_string;
     PUSH(ptr_STACK, x);
 }
@@ -293,8 +389,7 @@ void read_line(struct stack *ptr_STACK)
 void decrement(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    long l = atol(x.valor);
-    sprintf(x.valor, "%ld", --l);
+    x.data.val_l--;
     PUSH(ptr_STACK, x);
 }
 
@@ -308,8 +403,7 @@ void decrement(struct stack *ptr_STACK)
 void increment(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    long l = atol(x.valor);
-    sprintf(x.valor, "%ld", ++l);
+    x.data.val_l++;
     PUSH(ptr_STACK, x);
 }
 
@@ -323,8 +417,7 @@ void increment(struct stack *ptr_STACK)
 void complement(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    long l = atol(x.valor);
-    sprintf(x.valor, "%ld", ~l);
+    (x.data.val_l) = ~(x.data.val_l);
     PUSH(ptr_STACK, x);
 }
 
@@ -341,4 +434,3 @@ void call_operator(struct stack *ptr_STACK, char *token)
     struct elemento y = POP(ptr_STACK);
     PUSH(ptr_STACK, operador(x, y, token));
 }
-
