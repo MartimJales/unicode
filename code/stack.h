@@ -42,20 +42,6 @@ struct elemento
  * e um elemento que a mesma representa.
  * 
  */
-struct array
-{
-    int top;
-    struct elemento elemento;
-    struct array *next;
-};
-
-/**
- * \brief Struct var
- * 
- * com um char referente à variável que estamos a utilizar
- * e um elemento que a mesma representa.
- * 
- */
 struct var
 {
     int index;                /**< Representa o índice da variável **/
@@ -116,4 +102,14 @@ void initStack(struct stack *ptr_STACK);
 
 // Funções que faltam comentar
 
-void print_array(struct array array);
+void print_array(struct array *array);
+
+//  Struct do ficheiro conaça
+struct array
+{
+    int index;
+    int capacity;
+    struct elemento *values;
+};
+
+void initArray(struct array *array);

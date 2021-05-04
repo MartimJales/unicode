@@ -82,56 +82,13 @@ void PRINT_STACK(struct stack *stack)
             break;
         case T_array:
             //  printf("array: ");
-            print_array(*(stack->array[i].data.val_p));
+            print_array((stack->array[i].data.val_p));
             break;
         default: //falta as strings e os arrays
             break;
         }
     }
     printf("\n");
-}
-
-/**
- * \brief Função PRINSTACK_STACK do programa.
- * 
- * Inicia-se um ciclo for, onde uma variável é incializada também,
- * a condição de paragem ocorre se a variável é maior
- * que o topo da da Stack, a cada iteração incrementa-se a variável.
- * 
- * É imprimido o valor da Stack no índice da variável, de acordo
- * com o seu valor a cada iteração.
- * 
- * @param stack
- */
-void print_array(struct array array)
-{
-    for (int i = 0; i < array.top; i++)
-    {
-        switch (array.elemento.tipo)
-        {
-        case T_int:
-            printf("%d", array.elemento.data.val_i);
-            break;
-        case T_long:
-            printf("%ld", array.elemento.data.val_l);
-            break;
-        case T_float:
-            printf("%.6g", array.elemento.data.val_f);
-            break;
-        case T_double:
-            //  printf("double: ");
-            printf("%.6g", array.elemento.data.val_d);
-            break;
-        case T_char:
-            //  printf("char: ");
-            printf("%c", array.elemento.data.val_c);
-            break;
-        case T_string:
-            //  printf("string: ");
-            printf("%s", array.elemento.data.val_s);
-            break;
-        }
-    }
 }
 
 /**
@@ -166,4 +123,95 @@ void initStack(struct stack *ptr_STACK)
     var_tmp.index = 25;
     var_tmp.elemento = val;
     (*ptr_STACK).vars[25] = var_tmp;
+}
+
+// Funções do ficheiro conaça
+
+void dupArray(struct array *s)
+{
+    int r = 0, i;
+    struct elemento *t = malloc(2 * s->capacity * sizeof(struct elemento));
+
+    if (t == NULL)
+        r = 1;
+    else
+    {
+        for (i = 0; i < s->capacity; i++)
+            t[i] = s->values[i];
+        free(s->values);
+        s->values = t;
+        s->capacity *= 2;
+    }
+}
+
+void pushArray(struct array *arr, struct elemento x)
+{
+    int r = 0;
+    printf(">>> COMEÇOU O PUSH <<<\n");
+    printf("index  push : %d capacity = %d \n", arr->index, arr->capacity);
+    if (arr->index == arr->capacity)
+    {
+        dupArray(arr);
+    }
+    if (!r)
+    {
+        arr->values[arr->index] = x;
+        arr->index++;
+    }
+
+    printf("index depois : %d capacity = %d \n", arr->index, arr->capacity);
+}
+
+void print_array(struct array *array)
+{
+    int i;
+    for (i = 0; i < array->index; i++)
+    {
+        switch (array->values[i].tipo)
+        {
+        case T_int:
+            printf("%d", array->values[i].data.val_i);
+            break;
+        case T_long:
+            printf("%ld", array->values[i].data.val_l);
+            break;
+        case T_float:
+            printf("%.6g", array->values[i].data.val_f);
+            break;
+        case T_double:
+            //  printf("double: ");
+            printf("%.6g", array->values[i].data.val_d);
+            break;
+        case T_char:
+            //  printf("char: ");
+            printf("%c", array->values[i].data.val_c);
+            break;
+        case T_string:
+            //  printf("string: ");
+            printf("%s", array->values[i].data.val_s);
+            break;
+        case T_array:
+            //  printf("array: ");
+            print_array(array->values[i].data.val_p);
+            break;
+        default: //falta as strings e os arrays
+            break;
+        }
+        putchar('\n');
+    }
+}
+
+/*
+void free_array(struct array *array)
+{
+    free(array->values);
+}
+*/
+
+void initArray(struct array *array)
+{
+    printf("Caiu no inicio \n");
+    array->index = 0;
+    array->capacity = 10;
+    array->values = malloc(array->capacity * sizeof(struct elemento));
 }
