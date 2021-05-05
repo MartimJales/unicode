@@ -10,7 +10,7 @@
 #include "g1.h"
 #include "g2.h"
 #include "g3.h"
-//#include "g4.h"
+#include "g4.h"
 #include <assert.h>
 
 /**
@@ -264,12 +264,52 @@ void go_filter(struct stack *ptr_STACK, char *token)
  */
 void go_filter_array(struct stack *ptr_STACK, char *token)
 {
-    if (*token == '+')
+    if (existe_array(ptr_STACK))
     {
-        check_soma_array(ptr_STACK, token);
     }
-    else
-        check_all_array(ptr_STACK, token);
+    switch (*token)
+    {
+    case '~':
+        empurraarray(ptr_STACK);
+        break;
+
+    case '*':
+        printf("entrei na manarray \n");
+        repetearray(ptr_STACK);
+        break;
+    case ',':
+        printf("Caiu na virgula");
+        tamanho_array(ptr_STACK);
+        break;
+    case '=':
+        printf("VAPOVAPO\n");
+        buscavalindice(ptr_STACK);
+        break;
+    case '<':
+        left_elementos(ptr_STACK);
+        break;
+    case '>':
+        right_elementos(ptr_STACK);
+        break;
+    case '(':
+        left_parentesis(ptr_STACK);
+        break;
+
+    /*case ')':
+        right_parentesis(ptr_STACK);
+        break;
+        */
+    default:
+        call_operator(ptr_STACK, token);
+        break;
+    }
+}
+
+int existe_array(struct stack *ptr_STACK)
+{
+    if (ptr_STACK->array[ptr_STACK->top].tipo == T_array || ptr_STACK->array[ptr_STACK->top - 1].tipo == T_array)
+        return 1;
+    return 0;
 }
 
 /**
@@ -304,7 +344,7 @@ void parse(char *line)
 
         char *resto_num = "abc";
         int val_tipo;
-
+        printf("Token atual: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         // printf("tipo dps %d\n", val_tipo);
@@ -315,15 +355,17 @@ void parse(char *line)
         {
             printf("ARRAY!\n");
             pinta_array(&token, token);
-            put_array(ptr_STACK, token);
+            struct elemento val;
+            val.tipo = T_array;
+            struct stack *new_stack = malloc(sizeof(struct stack));
+            initStack(new_stack);
+            val.data.val_p = new_stack;
+            put_array(ptr_STACK, token, &val);
         }
-        /*
-        else if (check_array(ptr_STACK, token))
-            go_filter_array(ptr_STACK, token);*/
+        else if (check_array(token))
+            go_filter_array(ptr_STACK, token);
         else
             go_filter(ptr_STACK, token);
-
-        //printf("Token atual: %s!\n", token);
     }
     PRINT_STACK(ptr_STACK);
 }
@@ -342,13 +384,17 @@ void parse(char *line)
 
 void check_soma_array(struct stack *ptr_STACK, char *token)
 {
-
     int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
     int y_tipo = (*ptr_STACK).array[(*ptr_STACK).top - 1].tipo;
 
-    if (x_tipo == T_array || y_tipo == T_array)
+    if (x_tipo == T_array || y_tipo == T_array && *token == '+')
     {
-        //  concatenarray(ptr_STACK);
+        concatenarray(ptr_STACK);
+    }
+    else if (x_tipo == T_array || y_tipo == T_array && *token == '*')
+    {
+        printf("cai na check soma array\n");
+        repetearray(ptr_STACK);
     }
     else
     {
@@ -376,7 +422,7 @@ void check_all_array(struct stack *ptr_STACK, char *token)
     int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
     if (x_tipo == T_array)
     {
-        //  manarray(ptr_STACK, token);
+        manarray(ptr_STACK, token);
     }
     else
         go_filter(ptr_STACK, token);
@@ -390,13 +436,13 @@ void check_all_array(struct stack *ptr_STACK, char *token)
  * @param ptr_STACK Apontador para a stack.
  * @param token Token atual.
  */
-void put_array(struct stack *ptr_STACK, char *token)
+void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem)
 {
-    struct elemento val;
-    val.tipo = T_array;
-
-    //parse_array(&val, token);
-    PUSH(ptr_STACK, val);
+    parse_array(token, ptr_elem->data.val_p);
+    printf("put_array na localização %ld\n", (long)ptr_STACK);
+    //   printf("Top antes %d\n", ptr_STACK->top);
+    PUSH(ptr_STACK, *ptr_elem);
+    //   printf("Top depois %d\n", ptr_STACK->top);
 }
 
 /**

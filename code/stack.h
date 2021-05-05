@@ -31,7 +31,7 @@ struct elemento
         long val_l;
         float val_f;
         double val_d;
-        struct array *val_p;
+        struct stack *val_p;
     } data;
 };
 
@@ -101,15 +101,16 @@ void PRINT_STACK(struct stack *stack);
 void initStack(struct stack *ptr_STACK);
 
 // Funções que faltam comentar
-
+/*
 void print_array(struct array *array);
 
-//  Struct do ficheiro conaça
-struct array
-{
-    int index;
-    int capacity;
-    struct elemento *values;
-};
-
 void initArray(struct array *array);
+
+void dupArray(struct array *s);
+
+void pushArray(struct array *arr, struct elemento x);
+*/
+
+void parse_array(char *line, struct stack *ptr_STACK);
+
+void PRINT_ARRAY(struct stack *stack);

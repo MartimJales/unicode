@@ -89,7 +89,7 @@ char *get_token(char *delim, char *line, char **rest);
  * @param ptr_STACK Apontador para a stack.
  * @param token Token atual.
  */
-void put_array(struct stack *ptr_STACK, char *token);
+void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem);
 
 /**
  * \brief Função pinta_array do programa.
