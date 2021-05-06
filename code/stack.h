@@ -26,7 +26,7 @@ struct elemento
     union
     {
         char val_c;
-        char val_s[200];
+        char val_s[1000];
         int val_i;
         long val_l;
         float val_f;
@@ -54,8 +54,8 @@ struct stack
 {
     int top;
     int capacity;
-    struct elemento array[100];
-    struct var vars[26];
+    struct elemento array[20000];
+    struct var *vars;
 };
 
 /**
@@ -97,8 +97,9 @@ void PRINT_STACK(struct stack *stack);
  * inicia a stack
  * 
  * @param ptr_STACK (apontador para a stack)
+ * @param ptr_vars (apontador para o array das variáveis)
  */
-void initStack(struct stack *ptr_STACK);
+void initStack(struct stack *ptr_STACK, struct var *ptr_vars);
 
 // Funções que faltam comentar
 /*

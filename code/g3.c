@@ -19,17 +19,47 @@
  */
 void greater(struct stack *ptr_STACK)
 {
-    struct elemento val;
-    val.tipo = T_int;
+    struct elemento r;
+    r.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = convertToDouble(y);
-    if (y_ret > x_ret)
-        val.data.val_i = 1;
+
+    if (x.tipo == T_string && y.tipo == T_string)
+    {
+        if (strcmp(y.data.val_s, x.data.val_s) > 0)
+        {
+            r.data.val_i = 1;
+        }
+        else
+        {
+            r.data.val_i = 0;
+        }
+        PUSH(ptr_STACK, r);
+    }
+    else if (x.tipo == T_char && y.tipo == T_char)
+    {
+        if (x.data.val_c > y.data.val_c)
+        {
+            r.data.val_i = 1;
+        }
+        else
+        {
+            r.data.val_i = 0;
+        }
+        PUSH(ptr_STACK, r);
+    }
     else
-        val.data.val_i = 0;
-    PUSH(ptr_STACK, val);
+    {
+        struct elemento val;
+        double x_ret = convertToDouble(x);
+        double y_ret = convertToDouble(y);
+        val.tipo = T_int;
+        if (y_ret > x_ret)
+            val.data.val_i = 1;
+        else
+            val.data.val_i = 0;
+        PUSH(ptr_STACK, val);
+    }
 }
 
 /**
@@ -41,17 +71,49 @@ void greater(struct stack *ptr_STACK)
  */
 void smaller(struct stack *ptr_STACK)
 {
-    struct elemento val;
-    val.tipo = T_int;
+    struct elemento r;
+    r.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = convertToDouble(y);
-    if (y_ret < x_ret)
-        val.data.val_i = 1;
+
+    if (x.tipo == T_string && y.tipo == T_string)
+    {
+        // printf("resultado do strcmp %d\n", strcmp(y.data.val_s, x.data.val_s));
+        if (strcmp(y.data.val_s, x.data.val_s) < 0)
+        {
+            r.data.val_i = 1;
+        }
+        else
+        {
+            r.data.val_i = 0;
+        }
+        PUSH(ptr_STACK, r);
+    }
+    else if (x.tipo == T_char && y.tipo == T_char)
+    {
+        if (x.data.val_c < y.data.val_c)
+        {
+            r.data.val_i = 1;
+        }
+        else
+        {
+            r.data.val_i = 0;
+        }
+        PUSH(ptr_STACK, r);
+    }
     else
-        val.data.val_i = 0;
-    PUSH(ptr_STACK, val);
+    {
+        r.tipo = T_int;
+        struct elemento val;
+        val.tipo = T_int;
+        double x_ret = convertToDouble(x);
+        double y_ret = convertToDouble(y);
+        if (y_ret < x_ret)
+            val.data.val_i = 1;
+        else
+            val.data.val_i = 0;
+        PUSH(ptr_STACK, val);
+    }
 }
 
 /**
@@ -63,17 +125,45 @@ void smaller(struct stack *ptr_STACK)
  */
 void equal(struct stack *ptr_STACK)
 {
-    struct elemento val;
-    val.tipo = T_int;
+    struct elemento r;
+    r.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
-    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = convertToDouble(y);
-    if (y_ret == x_ret)
-        val.data.val_i = 1;
+
+    if (x.tipo == T_string && y.tipo == T_string)
+    {
+        // printf("entrou aqui fofinho \n");
+        if (strcmp(x.data.val_s, y.data.val_s) == 0)
+            r.data.val_i = 1;
+        else
+            r.data.val_i = 0;
+        PUSH(ptr_STACK, r);
+    }
+    else if (x.tipo == T_char && y.tipo == T_char)
+    {
+        if (x.data.val_c == y.data.val_c)
+        {
+            r.data.val_i = 1;
+        }
+        else
+        {
+            r.data.val_i = 0;
+        }
+        PUSH(ptr_STACK, r);
+    }
     else
-        val.data.val_i = 0;
-    PUSH(ptr_STACK, val);
+    {
+
+        struct elemento val;
+        val.tipo = T_int;
+        double x_ret = convertToDouble(x);
+        double y_ret = convertToDouble(y);
+        if (y_ret == x_ret)
+            val.data.val_i = 1;
+        else
+            val.data.val_i = 0;
+        PUSH(ptr_STACK, val);
+    }
 }
 
 /**
@@ -110,10 +200,45 @@ void ifthenelse(struct stack *ptr_STACK)
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
     struct elemento condition = POP(ptr_STACK);
-    if (condition.data.val_i)
+    if (validade(condition))
         PUSH(ptr_STACK, y);
     else
         PUSH(ptr_STACK, x);
+}
+
+int validade(struct elemento val)
+{
+    switch (val.tipo)
+    {
+    case T_int:
+        return val.data.val_i;
+        break;
+    case T_long:
+        return val.data.val_l;
+        break;
+    case T_float:
+        return val.data.val_f;
+        break;
+    case T_double:
+        return val.data.val_d;
+        break;
+    case T_string:
+        printf("Falta testar strigns no ifthenelse|\n");
+        break;
+    case T_char:
+        printf("Falta testar char no ifthenelse|\n");
+        break;
+    case T_array:
+        if (val.data.val_p->top == -1)
+            return 0;
+        else
+            return 1;
+        break;
+    default:
+        printf("Deu muita merda!!! abort!!!\n");
+        return 0;
+    }
+    return 0;
 }
 
 /**
@@ -156,13 +281,40 @@ void efunction(struct stack *ptr_STACK, char *token)
 void ebigger(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
-    double x_ret = convertToDouble(x);
     struct elemento y = POP(ptr_STACK);
-    double y_ret = convertToDouble(y);
-    if (y_ret > x_ret)
-        PUSH(ptr_STACK, y);
+
+    if (x.tipo == T_string && y.tipo == T_string)
+    {
+        // printf("resultado do strcmp %d\n", strcmp(y.data.val_s, x.data.val_s));
+        if (strcmp(y.data.val_s, x.data.val_s) < 0)
+        {
+            PUSH(ptr_STACK, x);
+        }
+        else
+        {
+            PUSH(ptr_STACK, y);
+        }
+    }
+    else if (x.tipo == T_char && y.tipo == T_char)
+    {
+        if (x.data.val_c < y.data.val_c)
+        {
+            PUSH(ptr_STACK, y);
+        }
+        else
+        {
+            PUSH(ptr_STACK, x);
+        }
+    }
     else
-        PUSH(ptr_STACK, x);
+    {
+        double x_ret = convertToDouble(x);
+        double y_ret = convertToDouble(y);
+        if (y_ret > x_ret)
+            PUSH(ptr_STACK, y);
+        else
+            PUSH(ptr_STACK, x);
+    }
 }
 
 /**
@@ -174,16 +326,44 @@ void ebigger(struct stack *ptr_STACK)
  */
 void esmaller(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    double x_ret = convertToDouble(x);
-    struct elemento y = POP(ptr_STACK);
-    double y_ret = convertToDouble(y);
-    if (y_ret > x_ret)
-        PUSH(ptr_STACK, x);
-    else
-        PUSH(ptr_STACK, y);
-}
 
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+
+    if (x.tipo == T_string && y.tipo == T_string)
+    {
+        // printf("resultado do strcmp %d\n", strcmp(y.data.val_s, x.data.val_s));
+        if (strcmp(y.data.val_s, x.data.val_s) < 0)
+        {
+            PUSH(ptr_STACK, y);
+        }
+        else
+        {
+            PUSH(ptr_STACK, x);
+        }
+    }
+    else if (x.tipo == T_char && y.tipo == T_char)
+    {
+        if (x.data.val_c < y.data.val_c)
+        {
+            PUSH(ptr_STACK, x);
+        }
+        else
+        {
+            PUSH(ptr_STACK, y);
+        }
+    }
+    else
+    {
+
+        double x_ret = convertToDouble(x);
+        double y_ret = convertToDouble(y);
+        if (y_ret > x_ret)
+            PUSH(ptr_STACK, x);
+        else
+            PUSH(ptr_STACK, y);
+    }
+}
 /**
  * \brief Função eshortcut  do programa
  * 
@@ -309,7 +489,7 @@ void variables2(struct stack *ptr_STACK, char *token)
         x.tipo = T_string;
         sprintf(x.data.val_s, " ");
         PUSH(ptr_STACK, x);
-        //printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
+        // printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
     }
     else if (*token == ':')
     {

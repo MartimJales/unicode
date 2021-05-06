@@ -104,7 +104,7 @@ void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem);
  * @param pointer Apontador para a stack.
  * @param line Token atual.
  */
-void pinta_array(char **token, char *line);
+void pinta_array(char *line);
 
 /**
  * \brief Função check_array do programa.
@@ -171,3 +171,9 @@ void check_all_array(struct stack *ptr_STACK, char *token);
  * @return line
  */
 char *cleanLim(char line[]);
+
+int existe_array(struct stack *ptr_STACK);
+
+int existe_string(struct stack *ptr_STACK);
+
+void initVars(struct var *ptr_vars);

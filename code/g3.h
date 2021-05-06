@@ -122,3 +122,5 @@ void variables1(struct stack *ptr_STACK, char *token);
  * @param ptr_STACK (apontador para a stack)
  */
 void variables2(struct stack *ptr_STACK, char *token);
+
+int validade(struct elemento val);

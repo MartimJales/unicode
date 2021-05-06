@@ -15,13 +15,13 @@
 
 void concatenarray(struct stack *ptr_STACK)
 {
-    printf("Cheguei ao concatena!\n");
+    //printf("Cheguei ao concatena!\n");
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
     if ((x.tipo == T_array) && (y.tipo == T_array))
     {
-        printf("Temos dois arrays!!!!\n");
-        printf("Topo do array %d\n", x.data.val_p->top);
+        //printf("Temos dois arrays!!!!\n");
+        //printf("Topo do array %d\n", x.data.val_p->top);
 
         for (int i = 0; i <= x.data.val_p->top; i++)
         {
@@ -36,11 +36,11 @@ void concatenarray(struct stack *ptr_STACK)
     }
     else if ((x.tipo == T_array) && (y.tipo != T_array))
     {
-        printf("Caiu aqui\n");
+        //printf("Caiu aqui\n");
         struct elemento array;
         array.tipo = T_array;
         struct stack *new_stack = malloc(sizeof(struct stack));
-        initStack(new_stack);
+        initStack(new_stack, ptr_STACK->vars);
         array.data.val_p = new_stack;
         PUSH(array.data.val_p, y);
         for (int i = 0; i <= x.data.val_p->top; i++)
@@ -53,10 +53,9 @@ void concatenarray(struct stack *ptr_STACK)
 
 void empurraarray(struct stack *ptr_STACK)
 {
-    int i = 0;
     struct elemento x = POP(ptr_STACK);
     x.tipo = T_array;
-    for (i; i <= x.data.val_p->top; i++)
+    for (int i = 0; i <= x.data.val_p->top; i++)
     {
         PUSH(ptr_STACK, x.data.val_p->array[i]);
     }
@@ -64,25 +63,33 @@ void empurraarray(struct stack *ptr_STACK)
 
 void repetearray(struct stack *ptr_STACK)
 {
-    int i = 0, n = 0;
-
+    int n = 0;
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
 
-    if (x.tipo = T_int)
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+
+    if (x.tipo == T_int)
     {
         n = x.data.val_i;
     }
 
-    else if (x.tipo = T_long)
+    else if (x.tipo == T_long)
     {
         n = x.data.val_l;
     }
-
-    for (i; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        PUSH(ptr_STACK, y);
+        for (int j = 0; j <= y.data.val_p->top; j++)
+        {
+            PUSH(new_stack, y.data.val_p->array[j]);
+        }
     }
+    PUSH(ptr_STACK, val);
 }
 
 void parse_array(char *line, struct stack *ptr_STACK)
@@ -102,20 +109,41 @@ void parse_array(char *line, struct stack *ptr_STACK)
             put_token(ptr_STACK, val_tipo, token);
         else if (*token == '[')
         {
-            printf("ARRAY!\n");
-            pinta_array(&token, token);
+            //printf("ARRAY!\n");
+            pinta_array(token);
             struct elemento val;
             val.tipo = T_array;
             struct stack *new_stack = malloc(sizeof(struct stack));
-            initStack(new_stack);
+            initStack(new_stack, ptr_STACK->vars);
             val.data.val_p = new_stack;
             put_array(ptr_STACK, token, &val);
         }
-        else if (check_array(token))
-            go_filter_array(ptr_STACK, token);
+        else if (*token == '"')
+        {
+            criaStr(ptr_STACK, token);
+        }
         else
+        {
             go_filter(ptr_STACK, token);
+        }
     }
+}
+
+void criaStr(struct stack *ptr_STACK, char *token)
+{
+    printf("CAIU NAS STRINGS!\n");
+    int size, i;
+    size = strlen(token);
+
+    struct elemento x;
+    x.tipo = T_string;
+
+    for (i = 0; i < size - 2; i++)
+    {
+        x.data.val_s[i] = token[i + 1];
+    }
+    x.data.val_s[i] = '\0';
+    PUSH(ptr_STACK, x);
 }
 
 void tamanho_array(struct stack *ptr_STACK)
@@ -155,24 +183,25 @@ void range_array(struct stack *ptr_STACK)
     struct elemento y;
     y.tipo = T_int;
 
-    struct elemento array;
-    array.tipo = T_array;
-    struct stack new;
-    array.data.val_p = &new;
-    //struct array *ptr_array = (array.data.val_p);
-    int i = 0;
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
 
-    for (i; i < x.data.val_i; i++)
+    //struct array *ptr_array = (array.data.val_p);
+    // printf("Range: %d\n\n", x.data.val_i);
+    for (int i = 0; i < x.data.val_i; i++)
     {
         y.data.val_i = i;
-        PUSH(&new, y);
+        PUSH(new_stack, y);
     }
-    PUSH(ptr_STACK, array);
+    PUSH(ptr_STACK, val);
 }
 
 void buscavalindice(struct stack *ptr_STACK)
 {
-    printf("entrei na busaca val indice \n");
+    //printf("entrei na busaca val indice \n");
     struct elemento x = POP(ptr_STACK);
     if (x.tipo == T_long)
     {
@@ -205,6 +234,7 @@ void buscavalindice(struct stack *ptr_STACK)
 void left_elementos(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
     if (x.tipo == T_long)
     {
         x.tipo = T_int;
@@ -226,16 +256,24 @@ void left_elementos(struct stack *ptr_STACK)
     else
         printf("Deu erro na função left_elementos");
 
-    struct elemento y = POP(ptr_STACK);
-    for (int i = 0; i < x.data.val_i; i++)
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+    for (int i = 0; i <= x.data.val_i; i++)
     {
-        PUSH(ptr_STACK, y.data.val_p->array[i]);
+        PUSH(new_stack, y.data.val_p->array[i]);
     }
+    PUSH(ptr_STACK, val);
 }
 
+// feita e empurra o array.flta saber se empurra array ou elemento a elemento
 void right_elementos(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+    //  printf("Tipo do y: %d\n", y.tipo);
     if (x.tipo == T_long)
     {
         x.tipo = T_int;
@@ -255,32 +293,52 @@ void right_elementos(struct stack *ptr_STACK)
         x.data.val_i = (int)x.data.val_d;
     }
     else
-        printf("Deu erro na função range");
-    struct elemento y = POP(ptr_STACK);
-    for (int i = y.data.val_p->top; i > x.data.val_i; i--)
     {
-        PUSH(ptr_STACK, y.data.val_p->array[i]);
+        printf("Deu erro na função range");
     }
+
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+
+    for (int i = x.data.val_i; i <= y.data.val_p->top; i++)
+    {
+        //printf("Quero o elemento  : %d\n", y.data.val_p->array[i].data.val_i);
+        PUSH(new_stack, y.data.val_p->array[i]);
+    }
+    PUSH(ptr_STACK, val);
 }
-/*
+
 void right_parentesis(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    struct elemento new;
-    POP(x.data.val_p);
+    struct elemento x = POP(ptr_STACK); // array;
+    // printf("Teste de debgging manhoso antes!!!\n");
+    // PRINT_ARRAY(x.data.val_p);
+    // printf("\n");
+    // printf("Topo do array antes: %d!\n", x.data.val_p->top);
+    // printf("\n");
+    struct elemento new = POP(x.data.val_p);
+    // printf("TEste de debgging manhoso depois!!!\n");
+    // PRINT_ARRAY(x.data.val_p);
+    // printf("\n");
+
     PUSH(ptr_STACK, x);
-    PUSH(ptr_STACK, y.data.val_p->array[y.data.array.top - 1]);
-}*/
+    PUSH(ptr_STACK, new);
+}
 
 void left_parentesis(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);
-    struct elemento new = x.data.val_p->array[0];
-    POP(x.data.val_p);
-    for (int i = 0; i < x.data.val_p->top - 1; i++)
+    struct elemento x = POP(ptr_STACK);           // array;
+    struct elemento new = x.data.val_p->array[0]; // elemento inicial do array;
+    //printf("New -> %d\n", new.data.val_i);
+
+    for (int i = 0; i < x.data.val_p->top; i++)
     {
         x.data.val_p->array[i] = x.data.val_p->array[i + 1];
     }
+    x.data.val_p->top--;
     PUSH(ptr_STACK, x);
     PUSH(ptr_STACK, new);
 }
@@ -292,17 +350,16 @@ void manarray(struct stack *ptr_STACK, char *token)
     case '~':
         empurraarray(ptr_STACK);
         break;
-
     case '*':
-        printf("entrei na manarray \n");
+        //printf("entrei na manarray \n");
         repetearray(ptr_STACK);
         break;
     case ',':
-        printf("Caiu na virgula");
+        //printf("Caiu na virgula");
         tamanho_array(ptr_STACK);
         break;
     case '=':
-        printf("VAPOVAPO\n");
+        //printf("VAPOVAPO\n");
         buscavalindice(ptr_STACK);
         break;
     case '<':
@@ -314,13 +371,230 @@ void manarray(struct stack *ptr_STACK, char *token)
     case '(':
         left_parentesis(ptr_STACK);
         break;
-
-    /*case ')':
+    case ')':
         right_parentesis(ptr_STACK);
         break;
-        */
     default:
         call_operator(ptr_STACK, token);
         break;
     }
 }
+
+void concaString(struct stack *ptr_STACK)
+{
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+
+    printf("Deu certo com o strcat!\n");
+    strcat(y.data.val_s, x.data.val_s);
+    PUSH(ptr_STACK, y);
+}
+
+//Funciona a 100 %
+
+void repeteStr(struct stack *ptr_STACK)
+{
+    int n = 0;
+    int n_linha = 0;
+
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+
+    if (x.tipo == T_int)
+    {
+        n = x.data.val_i;
+        n_linha = x.data.val_i;
+    }
+
+    else if (x.tipo == T_long)
+    {
+        n = x.data.val_l;
+        n_linha = x.data.val_l;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        PUSH(ptr_STACK, y);
+    }
+
+    for (int i = n_linha; i > 1; i -= 1)
+    {
+        concaString(ptr_STACK);
+    }
+}
+
+//certa
+
+void tamanho_str(struct stack *ptr_STACK, struct elemento x)
+{
+    struct elemento z;
+    z.tipo = T_int;
+    z.data.val_i = strlen(x.data.val_s);
+    // printf("entrou na tamanho str \n");
+
+    PUSH(ptr_STACK, z);
+}
+
+void val_index_Str(struct stack *ptr_STACK, struct elemento x)
+{
+    struct elemento y = POP(ptr_STACK);
+    struct elemento z;
+    z.tipo = T_char;
+    z.data.val_c = y.data.val_s[x.data.val_i];
+
+    PUSH(ptr_STACK, z);
+}
+
+/*
+void catch_elem_Str(struct stack *ptr_STACK, struct elemento x)
+{
+    int i;
+    struct elemento y = POP(ptr_STACK);
+    struct elemento z;
+    z.tipo = T_string;
+
+    for (i = 0; i < x.data.val_i; i++)
+    {
+        z.data.val_s[i] = y.data.val_s[i];
+    }
+
+    PUSH(ptr_STACK, z);
+}
+*/
+void delete_fst_Str(struct stack *ptr_STACK)
+{
+
+    int i;
+    struct elemento y = POP(ptr_STACK);
+    int t = strlen(y.data.val_s);
+    struct elemento z;
+    z.tipo = T_string;
+    struct elemento w;
+    w.tipo = T_char;
+
+    for (i = 0; i < t; i++)
+    {
+        w.data.val_c = y.data.val_s[0];
+        z.data.val_s[i] = y.data.val_s[i + 1];
+    }
+
+    PUSH(ptr_STACK, z);
+    PUSH(ptr_STACK, w);
+}
+
+void delete_snd_Str(struct stack *ptr_STACK)
+{
+
+    int i;
+    struct elemento y = POP(ptr_STACK);
+    int t = strlen(y.data.val_s);
+    struct elemento z;
+    z.tipo = T_string;
+
+    struct elemento w;
+    w.tipo = T_char;
+
+    for (i = 0; i < t - 1; i++)
+    {
+        z.data.val_s[i] = y.data.val_s[i];
+    }
+
+    z.data.val_s[i] = '\0';
+    w.data.val_c = y.data.val_s[t - 1];
+
+    PUSH(ptr_STACK, z);
+    PUSH(ptr_STACK, w);
+}
+/*
+void find_subStr(struct stack *ptr_STACK, struct elemento x)
+{
+    int i;
+    struct elemento y = POP(ptr_STACK);
+    int t = strlen(y.data.val_s);
+    struct elemento z;
+    z.tipo = T_int;
+
+    for (i = 0; i < t; i++)
+    {
+        if (ptr_STACK->array[i].tipo == T_string)
+            z.data.val_i = i;
+    }
+
+    PUSH(ptr_STACK, z);
+}
+
+void read_All_Str(struct elemento *ptr_STACK, char *line)
+{
+
+    struct elemento x;
+    x.tipo = T_string;
+    *x.data.val_s = line;
+
+    PUSH(ptr_STACK, x);
+}
+
+void sub_String(struct elemento *ptr_STACK, struct elemento z)
+{
+    int i;
+    struct elemento y = POP(ptr_STACK);
+    int t = strlen(y.data.val_s);
+    char *copy;
+    strcpy(copy, y.data.val_s);
+    struct elemento x;
+    x.tipo = T_string;
+    *x.data.val_s = copy;
+
+    for (i = 0; i < t; i++)
+    {
+        if (even(i))
+            copy[i] = y.data.val_s[i];
+        else
+            copy[i] = z.data.val_s[i];
+    }
+    PUSH(ptr_STACK, x);
+}
+
+void div_WhiteS_Str(struct elemento *ptr_STACK)
+{
+    struct elemento y = POP(ptr_STACK);
+    int t = strlen(y.data.val_s);
+    int i, j, u;
+    char *copy;
+    strcpy(copy, y.data.val_s);
+    struct elemento x;
+    x.tipo = T_string;
+    *x.data.val_s = copy;
+
+    for (i = 0; i < t; i++)
+    {
+        for (j = 0; j != " "; j++)
+        {
+            copy[j] = y.data.val_s[j];
+        }
+
+        PUSH(ptr_STACK, x);
+
+        for (u = 0; u < t; u++)
+        {
+            copy[u] = '\0';
+        }
+
+        i = j + 1;
+    }
+}
+
+void div_newLines_Str(struct elemento *ptr_STACK)
+{
+    struct elemento y = POP(ptr_STACK);
+    int t = strlen(y.data.val_s);
+    int i;
+
+    for (i = 0; i < t; i++)
+    {
+        if (y.data.val_s[i] == " ")
+            y.data.val_s[i] = '\n';
+    }
+    PUSH(ptr_STACK, y);
+}
+
+*/
