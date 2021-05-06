@@ -145,7 +145,7 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
  */
 void go_filter(struct stack *ptr_STACK, char *token)
 {
-    // printf("Caiu na go_filter!\n");
+    // printf("Caiu na go_filter como token %c!\n", *token);
     switch (filter(token))
     {
     case 0:
@@ -441,7 +441,7 @@ void parse(char *line)
         }
         else
         {
-            // printf("Caiu no filter suposto!\n");
+            //  printf("Caiu no filter suposto como token %c!\n", *token);
             go_filter(ptr_STACK, token);
         }
     }

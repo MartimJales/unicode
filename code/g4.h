@@ -38,3 +38,5 @@ void sub_String(struct elemento *ptr_STACK, struct elemento z);
 void div_WhiteS_Str(struct elemento *ptr_STACK);
 
 void div_newLines_Str(struct elemento *ptr_STACK);
+
+void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);

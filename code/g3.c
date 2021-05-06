@@ -480,6 +480,7 @@ void variables2(struct stack *ptr_STACK, char *token)
     {
         struct elemento x;
         x.tipo = T_string;
+        x.data.val_s = NULL;
         sprintf(x.data.val_s, "\n");
         PUSH(ptr_STACK, x);
     }
@@ -487,9 +488,14 @@ void variables2(struct stack *ptr_STACK, char *token)
     {
         struct elemento x;
         x.tipo = T_string;
-        sprintf(x.data.val_s, " ");
+        char space[] = " ";
+        x.data.val_s = space;
+        // x.data.val_s[0] = ' ';
+        //x.data.val_s[1] = '\0';
+        //char *space = " ";
+        //sprintf(x.data.val_s, space);
         PUSH(ptr_STACK, x);
-        // printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
+        printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
     }
     else if (*token == ':')
     {

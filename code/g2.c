@@ -68,6 +68,7 @@ void maths(struct stack *ptr_STACK, char *token)
  */
 void manstack(struct stack *ptr_STACK, char *token)
 {
+    // printf("Caiu no manstack!\n");
     switch (*token)
     {
     case '_':
@@ -374,8 +375,14 @@ void convert_s(struct stack *ptr_STACK)
 void read_line(struct stack *ptr_STACK)
 {
     struct elemento x;
-    assert(fgets(x.data.val_s, 100, stdin) != NULL); //tem de ser val_s
     x.tipo = T_string;
+    //   x.data.val_s = NULL;
+
+    //x.data.val_s = fgets(x.data.val_s, 10000, stdin);
+
+    x.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!!
+    assert(scanf("\n%s", x.data.val_s) == 1);
+
     PUSH(ptr_STACK, x);
 }
 

@@ -26,7 +26,7 @@ struct elemento
     union
     {
         char val_c;
-        char val_s[1000];
+        char *val_s;
         int val_i;
         long val_l;
         float val_f;

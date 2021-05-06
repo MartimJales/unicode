@@ -15,7 +15,7 @@
 
 int filter(char *token)
 {
-    // printf("Caiu no filter!\n!!!");
+    // printf("Caiu no filter com o tokeen %c!\n", *token);
     char *maths = "-&|^";
     char *manstack = "_;\\@";
     char *conversion = "ifcs";
@@ -96,7 +96,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (haveonearray(ptr_STACK))
         {
-            printf("Caiu aqui a menina!!!");
+
             concatenarray(ptr_STACK);
         }
         else if (haveonestring(ptr_STACK))
@@ -105,7 +105,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: +\n");
+            printf("Deu merda na condição do poli_filter: +\n  Falta fazer as condições para char-char \n");
         }
         break;
     case '/':
@@ -352,15 +352,22 @@ void manhosos_filter(struct stack *ptr_STACK, char *token)
     }
     else if (*token == 'N')
     {
-        val.data.val_s[0] = '\n';
+        val.data.val_s = token;
+        val.data.val_s[0] = ' ';
         val.data.val_s[1] = '\0';
         PUSH(ptr_STACK, val);
     }
     else if (*token == 'S')
     {
+        // printf("Caiu aqui a pikena!\n");
+        //char space[] = " ";
+        val.data.val_s = token;
         val.data.val_s[0] = ' ';
         val.data.val_s[1] = '\0';
+        // printf("String depois das mudancças monstras : [%s]!\n", val.data.val_s);
         PUSH(ptr_STACK, val);
+        // printf("O tipo do menino é %d\n", ptr_STACK->array[ptr_STACK->top].tipo);
+        // printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
     }
     else
     {

@@ -102,7 +102,7 @@ void parse_array(char *line, struct stack *ptr_STACK)
     {
         char *resto_num = "abc";
         int val_tipo;
-        printf("Token atual da parse array: %s!\n", token);
+        // printf("Token atual da parse array: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         if (strlen(resto_num) == 0)
@@ -131,18 +131,42 @@ void parse_array(char *line, struct stack *ptr_STACK)
 
 void criaStr(struct stack *ptr_STACK, char *token)
 {
-    printf("CAIU NAS STRINGS!\n");
-    int size, i;
-    size = strlen(token);
-
+    //printf("CAIU NAS STRINGS!\n");
+    int i = 0;
+    // size = strlen(token);
+    /*
+    printf("Token na criaStr: \n\n");
+    printf("%s\n", token);
+*/
+    //printf("Tudo ok com a strlen: %zu\n"), strlen(token);
+    //printf("Tudo ok com a strlen: %d\n"), sizeof(token);
     struct elemento x;
     x.tipo = T_string;
+    x.data.val_s = token;
+    /*
+    printf("Token[1]: %c\n", token[1]);
+    x.data.val_s = *(token + 1);
+    */
+    //printf("Token[1]: %c\n", x.data.val_s[0]);
 
+    while (token[i + 2] != '\0')
+    {
+        x.data.val_s[i] = token[i + 1];
+        i++;
+    }
+    /*
     for (i = 0; i < size - 2; i++)
     {
         x.data.val_s[i] = token[i + 1];
     }
+     x.data.val_s = "cona!!";
+    printf("Poiinter criado no elemento na criaStr: \n\n");
+    printf("%s\n", (x.data.val_s));
+
+    //printf("%s\n", token);
+*/
     x.data.val_s[i] = '\0';
+
     PUSH(ptr_STACK, x);
 }
 
@@ -380,13 +404,86 @@ void manarray(struct stack *ptr_STACK, char *token)
     }
 }
 
+void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
+{
+    char test1 = s1.data.val_c;
+    char test2 = s2.data.val_c;
+
+    s1.tipo = T_string;
+    s1.data.val_s[0] = test1;
+    s1.data.val_s[1] = test2;
+    s1.data.val_s[2] = '\0';
+
+    PUSH(ptr_STACK, s1);
+}
+/*
+char *mystrcat2(char s1, char s2[])
+{
+    int t = strlen(s2) + 1;
+    char total[t];
+    int i, j;
+    total[0] = s1;
+
+    for (i = 0; s2[i] != '\0'; i++)
+        total[i + 1] = s2[i];
+    total[i + 1] = '\0';
+    return total;
+}
+
+char *mystrcat3(char s2[], char s1)
+{
+    int i;
+    int t = strlen(s2) + 2;
+    char total[t];
+
+    for (i = 0; s2[i] != '\0'; i++)
+        total[i] = s2[i];
+
+    total[t] = s1;
+
+    total[t + 1] = '\0';
+
+    return total;
+}
+*/
+void mystrcat4(char s1[], char s2[])
+{
+    int i, j;
+    for (i = 0; s1[i] != '\0'; i++)
+        ;
+    for (j = 0; s2[j] != '\0'; j++)
+    {
+        s1[i] = s2[j];
+        i++;
+    }
+    s1[i] = '\0';
+    //return s1;
+}
+
 void concaString(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
 
-    printf("Deu certo com o strcat!\n");
-    strcat(y.data.val_s, x.data.val_s);
+    if (y.tipo == T_char || x.tipo == T_char)
+    {
+        printf("DOIS CHARS!\n");
+        mystrcat(y, x, ptr_STACK);
+    } /*
+    else if (y.tipo == T_char || x.tipo == T_string)
+    {
+        mystrcat2(y.data.val_c, x.data.val_s);
+    }
+    else if (y.tipo == T_string || x.tipo == T_char)
+    {
+        mystrcat3(y.data.val_s, x.data.val_c);
+    }*/
+    else if (y.tipo == T_string || x.tipo == T_string)
+    {
+        mystrcat4(y.data.val_s, x.data.val_s);
+    }
+
+    //printf("Deu certo com o strcat!\n");
     PUSH(ptr_STACK, y);
 }
 
@@ -394,36 +491,24 @@ void concaString(struct stack *ptr_STACK)
 
 void repeteStr(struct stack *ptr_STACK)
 {
-    int n = 0;
-    int n_linha = 0;
+    int i, j;
 
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
+    struct elemento copy;
+    copy.tipo = T_string;
+    copy.data.val_s = malloc(1000 * sizeof(char));
+    int t = x.data.val_i * strlen(y.data.val_s);
 
-    if (x.tipo == T_int)
+    for (i = 0, j = 0; i < t; i++, j++)
     {
-        n = x.data.val_i;
-        n_linha = x.data.val_i;
+        if (j == 3)
+            j = 0;
+        copy.data.val_s[i] = y.data.val_s[j];
     }
 
-    else if (x.tipo == T_long)
-    {
-        n = x.data.val_l;
-        n_linha = x.data.val_l;
-    }
-
-    for (int i = 0; i < n; i++)
-    {
-        PUSH(ptr_STACK, y);
-    }
-
-    for (int i = n_linha; i > 1; i -= 1)
-    {
-        concaString(ptr_STACK);
-    }
+    PUSH(ptr_STACK, copy);
 }
-
-//certa
 
 void tamanho_str(struct stack *ptr_STACK, struct elemento x)
 {
@@ -467,18 +552,15 @@ void delete_fst_Str(struct stack *ptr_STACK)
     int i;
     struct elemento y = POP(ptr_STACK);
     int t = strlen(y.data.val_s);
-    struct elemento z;
-    z.tipo = T_string;
     struct elemento w;
     w.tipo = T_char;
+    w.data.val_c = y.data.val_s[0];
 
     for (i = 0; i < t; i++)
     {
-        w.data.val_c = y.data.val_s[0];
-        z.data.val_s[i] = y.data.val_s[i + 1];
+        y.data.val_s[i] = y.data.val_s[i + 1];
     }
-
-    PUSH(ptr_STACK, z);
+    PUSH(ptr_STACK, y);
     PUSH(ptr_STACK, w);
 }
 
@@ -488,21 +570,18 @@ void delete_snd_Str(struct stack *ptr_STACK)
     int i;
     struct elemento y = POP(ptr_STACK);
     int t = strlen(y.data.val_s);
-    struct elemento z;
-    z.tipo = T_string;
-
     struct elemento w;
     w.tipo = T_char;
 
     for (i = 0; i < t - 1; i++)
     {
-        z.data.val_s[i] = y.data.val_s[i];
+        y.data.val_s[i] = y.data.val_s[i];
     }
 
-    z.data.val_s[i] = '\0';
+    y.data.val_s[i] = '\0';
     w.data.val_c = y.data.val_s[t - 1];
 
-    PUSH(ptr_STACK, z);
+    PUSH(ptr_STACK, y);
     PUSH(ptr_STACK, w);
 }
 /*
