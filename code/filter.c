@@ -15,7 +15,7 @@
 
 int filter(char *token)
 {
-    // printf("Caiu no filter com o tokeen %c!\n", *token);
+    //printf("Caiu no filter com o tokeen %c!\n", *token);
     char *maths = "-&|^";
     char *manstack = "_;\\@";
     char *conversion = "ifcs";
@@ -96,16 +96,11 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (haveonearray(ptr_STACK))
         {
-
             concatenarray(ptr_STACK);
-        }
-        else if (haveonestring(ptr_STACK))
-        {
-            concaString(ptr_STACK);
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: +\n  Falta fazer as condições para char-char \n");
+            concaString(ptr_STACK);
         }
         break;
     case '/':
@@ -190,7 +185,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (onlystring(ptr_STACK))
         {
-            // Procura substring e devolve o indice da badalhoca!!!
+            find_subStr(ptr_STACK);
         }
         else
         {
@@ -261,7 +256,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (secondstring(ptr_STACK))
         {
-            printf("Deu merda na condição do poli_filter: <\n");
+            catch_elem_Str(ptr_STACK);
             // Retira os primeiros n-ésimos elementos da string
         }
         else
@@ -280,7 +275,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (secondstring(ptr_STACK))
         {
-            // Retira os ultimos elementos da string a partir de n
+            catch_ultimos_Str(ptr_STACK);
         }
         else
         {
@@ -346,14 +341,16 @@ void manhosos_filter(struct stack *ptr_STACK, char *token)
 
     if (strcmp(token, "S/") == 0)
     {
+        div_WhiteS_Str(ptr_STACK);
     }
     else if (strcmp(token, "N/") == 0)
     {
+        div_newLines_Str(ptr_STACK);
     }
     else if (*token == 'N')
     {
         val.data.val_s = token;
-        val.data.val_s[0] = ' ';
+        val.data.val_s[0] = '\n';
         val.data.val_s[1] = '\0';
         PUSH(ptr_STACK, val);
     }

@@ -264,9 +264,6 @@ void left_elementos(struct stack *ptr_STACK)
         x.tipo = T_int;
         x.data.val_i = (int)x.data.val_l;
     }
-    else if (x.tipo == T_int)
-    {
-    }
     else if (x.tipo == T_float)
     {
         x.tipo = T_int;
@@ -285,7 +282,7 @@ void left_elementos(struct stack *ptr_STACK)
     struct stack *new_stack = malloc(sizeof(struct stack));
     initStack(new_stack, ptr_STACK->vars);
     val.data.val_p = new_stack;
-    for (int i = 0; i <= x.data.val_i; i++)
+    for (int i = 0; i < x.data.val_i; i++)
     {
         PUSH(new_stack, y.data.val_p->array[i]);
     }
@@ -327,7 +324,7 @@ void right_elementos(struct stack *ptr_STACK)
     initStack(new_stack, ptr_STACK->vars);
     val.data.val_p = new_stack;
 
-    for (int i = x.data.val_i; i <= y.data.val_p->top; i++)
+    for (int i = y.data.val_p->top - x.data.val_i + 1; i <= y.data.val_p->top; i++)
     {
         //printf("Quero o elemento  : %d\n", y.data.val_p->array[i].data.val_i);
         PUSH(new_stack, y.data.val_p->array[i]);
@@ -406,46 +403,44 @@ void manarray(struct stack *ptr_STACK, char *token)
 
 void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
 {
+
     char test1 = s1.data.val_c;
     char test2 = s2.data.val_c;
-
     s1.tipo = T_string;
+    s1.data.val_s = malloc(100 * sizeof(char));
+    printf("S1: %s\n", s1.data.val_s);
+
     s1.data.val_s[0] = test1;
     s1.data.val_s[1] = test2;
     s1.data.val_s[2] = '\0';
 
     PUSH(ptr_STACK, s1);
 }
-/*
-char *mystrcat2(char s1, char s2[])
-{
-    int t = strlen(s2) + 1;
-    char total[t];
-    int i, j;
-    total[0] = s1;
 
-    for (i = 0; s2[i] != '\0'; i++)
-        total[i + 1] = s2[i];
-    total[i + 1] = '\0';
-    return total;
+void mystrcat2(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
+{
+    char test1 = s1.data.val_c;
+    s1.tipo = T_string;
+    s1.data.val_s = malloc(100 * sizeof(char));
+    s1.data.val_s[0] = test1;
+
+    mystrcat4(s1.data.val_s, s2.data.val_s);
+
+    PUSH(ptr_STACK, s1);
 }
 
-char *mystrcat3(char s2[], char s1)
+void mystrcat3(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
 {
-    int i;
-    int t = strlen(s2) + 2;
-    char total[t];
+    char test1 = s2.data.val_c;
+    s2.tipo = T_string;
+    s2.data.val_s = malloc(100 * sizeof(char));
+    s2.data.val_s[0] = test1;
 
-    for (i = 0; s2[i] != '\0'; i++)
-        total[i] = s2[i];
+    mystrcat4(s1.data.val_s, s2.data.val_s);
 
-    total[t] = s1;
-
-    total[t + 1] = '\0';
-
-    return total;
+    PUSH(ptr_STACK, s1);
 }
-*/
+
 void mystrcat4(char s1[], char s2[])
 {
     int i, j;
@@ -457,7 +452,6 @@ void mystrcat4(char s1[], char s2[])
         i++;
     }
     s1[i] = '\0';
-    //return s1;
 }
 
 void concaString(struct stack *ptr_STACK)
@@ -465,29 +459,29 @@ void concaString(struct stack *ptr_STACK)
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
 
-    if (y.tipo == T_char || x.tipo == T_char)
+    if (y.tipo == T_char && x.tipo == T_char)
     {
-        printf("DOIS CHARS!\n");
+        // printf("DOIS CHARS!\n");
         mystrcat(y, x, ptr_STACK);
-    } /*
-    else if (y.tipo == T_char || x.tipo == T_string)
-    {
-        mystrcat2(y.data.val_c, x.data.val_s);
     }
-    else if (y.tipo == T_string || x.tipo == T_char)
+
+    else if (y.tipo == T_char && x.tipo == T_string)
     {
-        mystrcat3(y.data.val_s, x.data.val_c);
-    }*/
-    else if (y.tipo == T_string || x.tipo == T_string)
+        // printf("1-char 2 -string!\n");
+        mystrcat2(y, x, ptr_STACK);
+    }
+
+    else if (y.tipo == T_string && x.tipo == T_char)
+    {
+        mystrcat3(y, x, ptr_STACK);
+    }
+
+    else if (y.tipo == T_string && x.tipo == T_string)
     {
         mystrcat4(y.data.val_s, x.data.val_s);
+        PUSH(ptr_STACK, y);
     }
-
-    //printf("Deu certo com o strcat!\n");
-    PUSH(ptr_STACK, y);
 }
-
-//Funciona a 100 %
 
 void repeteStr(struct stack *ptr_STACK)
 {
@@ -530,22 +524,76 @@ void val_index_Str(struct stack *ptr_STACK, struct elemento x)
     PUSH(ptr_STACK, z);
 }
 
-/*
-void catch_elem_Str(struct stack *ptr_STACK, struct elemento x)
+void catch_elem_Str(struct stack *ptr_STACK)
 {
-    int i;
+    struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
+
+    /*
     struct elemento z;
+    z.data.val_s = malloc(100 * sizeof(char));
     z.tipo = T_string;
-
-    for (i = 0; i < x.data.val_i; i++)
-    {
-        z.data.val_s[i] = y.data.val_s[i];
-    }
-
-    PUSH(ptr_STACK, z);
-}
 */
+
+    if (x.tipo == T_int)
+    {
+        y.data.val_s[x.data.val_i] = '\0';
+        /*
+        for (i = 0; i < x.data.val_i; i++)
+        {
+            z.data.val_s[i] = y.data.val_s[i];
+        }
+        */
+    }
+    else if (x.tipo == T_long)
+    {
+        y.data.val_s[x.data.val_l] = '\0';
+        /*
+        for (i = 0; i < x.data.val_l; i++)
+        {
+            z.data.val_s[i] = y.data.val_s[i];
+        }
+        */
+    }
+    else
+        printf("Deu merd na função catch_elem_Str\n");
+    PUSH(ptr_STACK, y);
+    //PUSH(ptr_STACK, z);
+}
+
+void catch_ultimos_Str(struct stack *ptr_STACK)
+{
+    int i = 0;
+    long j = 0;
+    struct elemento x = POP(ptr_STACK);
+    struct elemento y = POP(ptr_STACK);
+
+    int len = strlen(y.data.val_s);
+
+    if (x.tipo == T_int)
+    {
+        while (y.data.val_s[len - x.data.val_i + i])
+        {
+            y.data.val_s[i] = y.data.val_s[len - x.data.val_i + i];
+            i++;
+        }
+        y.data.val_s[i] = '\0';
+    }
+    else if (x.tipo == T_long)
+    {
+        while (y.data.val_s[len - x.data.val_l + j] != '\0')
+        {
+            y.data.val_s[j] = y.data.val_s[len - x.data.val_l + j];
+            j++;
+        }
+        y.data.val_s[j] = '\0';
+    }
+    else
+        printf("Deu merd na função catch_elem_Str\n");
+
+    PUSH(ptr_STACK, y);
+}
+
 void delete_fst_Str(struct stack *ptr_STACK)
 {
 
@@ -584,8 +632,8 @@ void delete_snd_Str(struct stack *ptr_STACK)
     PUSH(ptr_STACK, y);
     PUSH(ptr_STACK, w);
 }
-/*
-void find_subStr(struct stack *ptr_STACK, struct elemento x)
+
+void find_subStr(struct stack *ptr_STACK)
 {
     int i;
     struct elemento y = POP(ptr_STACK);
@@ -602,6 +650,7 @@ void find_subStr(struct stack *ptr_STACK, struct elemento x)
     PUSH(ptr_STACK, z);
 }
 
+/*
 void read_All_Str(struct elemento *ptr_STACK, char *line)
 {
 
@@ -633,47 +682,84 @@ void sub_String(struct elemento *ptr_STACK, struct elemento z)
     PUSH(ptr_STACK, x);
 }
 
-void div_WhiteS_Str(struct elemento *ptr_STACK)
-{
-    struct elemento y = POP(ptr_STACK);
-    int t = strlen(y.data.val_s);
-    int i, j, u;
-    char *copy;
-    strcpy(copy, y.data.val_s);
-    struct elemento x;
-    x.tipo = T_string;
-    *x.data.val_s = copy;
-
-    for (i = 0; i < t; i++)
-    {
-        for (j = 0; j != " "; j++)
-        {
-            copy[j] = y.data.val_s[j];
-        }
-
-        PUSH(ptr_STACK, x);
-
-        for (u = 0; u < t; u++)
-        {
-            copy[u] = '\0';
-        }
-
-        i = j + 1;
-    }
-}
-
-void div_newLines_Str(struct elemento *ptr_STACK)
-{
-    struct elemento y = POP(ptr_STACK);
-    int t = strlen(y.data.val_s);
-    int i;
-
-    for (i = 0; i < t; i++)
-    {
-        if (y.data.val_s[i] == " ")
-            y.data.val_s[i] = '\n';
-    }
-    PUSH(ptr_STACK, y);
-}
-
 */
+
+void div_WhiteS_Str(struct stack *ptr_STACK)
+{
+    struct elemento y = POP(ptr_STACK);
+
+    // printf("%s \n", y.data.val_s);
+
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+
+    int t = strlen(y.data.val_s);
+    struct elemento string;
+    string.tipo = T_string;
+    string.data.val_s = malloc(t * sizeof(char));
+    int j = 0;
+
+    for (int i = 0; i < t; i++)
+    {
+        if (y.data.val_s[i] == ' ')
+        {
+            string.data.val_s[i] = '\0';
+            // printf("String tratda: %s\n", string.data.val_s);
+            PUSH(val.data.val_p, string);
+            // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
+            string.data.val_s = malloc(t * sizeof(char));
+            j = -1;
+        }
+        string.data.val_s[j] = y.data.val_s[i];
+        j++;
+    }
+    string.data.val_s[j] = '\0';
+    //  printf("String tratda: %s\n", string.data.val_s);
+    PUSH(val.data.val_p, string);
+    // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
+
+    PUSH(ptr_STACK, val);
+}
+
+void div_newLines_Str(struct stack *ptr_STACK)
+{
+    struct elemento y = POP(ptr_STACK);
+
+    // printf("%s \n", y.data.val_s);
+
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+
+    int t = strlen(y.data.val_s);
+    struct elemento string;
+    string.tipo = T_string;
+    string.data.val_s = malloc(t * sizeof(char));
+    int j = 0;
+
+    for (int i = 0; i < t; i++)
+    {
+        if (y.data.val_s[i] == '\n')
+        {
+            string.data.val_s[i] = '\0';
+            // printf("String tratda: %s\n", string.data.val_s);
+            PUSH(val.data.val_p, string);
+            // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
+            string.data.val_s = malloc(t * sizeof(char));
+            j = -1;
+        }
+        string.data.val_s[j] = y.data.val_s[i];
+        j++;
+    }
+    string.data.val_s[j] = '\0';
+    //  printf("String tratda: %s\n", string.data.val_s);
+    PUSH(val.data.val_p, string);
+    // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
+
+    PUSH(ptr_STACK, val);
+}

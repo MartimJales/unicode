@@ -92,7 +92,7 @@ void PRINT_STACK(struct stack *stack)
             printf("%s", stack->array[i].data.val_s);
             break;
         case T_array:
-            //printf("array: ");
+            // printf("array: ");
             PRINT_ARRAY((stack->array[i].data.val_p));
             break;
         default:

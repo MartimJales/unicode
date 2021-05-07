@@ -9,6 +9,7 @@
 #include "g1.h"
 #include "g2.h"
 #include "g3.h"
+#include "g4.h"
 #include <assert.h>
 
 /**
@@ -130,6 +131,9 @@ void inoutput(struct stack *ptr_STACK, char *token)
     {
     case 'l':
         read_line(ptr_STACK);
+        break;
+    case 't':
+        read_all_lines(ptr_STACK);
         break;
     }
 }
@@ -376,16 +380,71 @@ void read_line(struct stack *ptr_STACK)
 {
     struct elemento x;
     x.tipo = T_string;
-    //   x.data.val_s = NULL;
 
+    //   x.data.val_s = NULL;
     //x.data.val_s = fgets(x.data.val_s, 10000, stdin);
 
-    x.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!!
-    assert(scanf("\n%s", x.data.val_s) == 1);
+    x.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    assert(fgets(x.data.val_s, 1000, stdin) != NULL);
+
+    if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
+        x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
+
+    //assert(scanf("\n%[100]c", x.data.val_s) == 1);
 
     PUSH(ptr_STACK, x);
 }
 
+void read_all_lines(struct stack *ptr_STACK)
+{
+    struct elemento total;
+    total.tipo = T_string;
+    total.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    assert(fgets(total.data.val_s, 1000, stdin) != NULL);
+
+    if ((strlen(total.data.val_s) > 0) && (total.data.val_s[strlen(total.data.val_s) - 1] == '\n'))
+        total.data.val_s[strlen(total.data.val_s) - 1] = '\0';
+
+    // printf("Total: %s\n", total.data.val_s);
+
+    struct elemento x;
+    x.tipo = T_string;
+
+    while ((strlen(total.data.val_s) > 0) && (total.data.val_s[strlen(total.data.val_s) - 1] != '\n') && (total.data.val_s[strlen(total.data.val_s) - 2] != '\n'))
+    {
+        x.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+        assert(fgets(x.data.val_s, 1000, stdin) != NULL);
+        /*
+        printf("Ultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 1]);
+        printf("Penultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 2]);
+        printf("Tamanho: %ld\n", (strlen(x.data.val_s)));
+*/
+        if ((strlen(x.data.val_s) == 1))
+        {
+            //x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
+            mystrcat4(total.data.val_s, x.data.val_s);
+            // printf("Total: %s\n", total.data.val_s);
+            break;
+        }
+        //if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
+        //  x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
+        mystrcat4(total.data.val_s, x.data.val_s);
+        // printf("Total: %s\n", total.data.val_s);
+    }
+
+    PUSH(ptr_STACK, total);
+}
+
+/*
+void read_all_lines(struct stack *ptr_STACK)
+{
+    struct elemento total;
+    total.tipo = T_string;
+    total.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    size_t size = 1000;                             // * sizeof(char);
+    assert(getdelim(&(total.data.val_s), &size, "\n\n", stdin) != 0);
+}
+*/
 /**
  * \brief Função decrement do programa
  * 

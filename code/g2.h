@@ -170,3 +170,7 @@ void complement(struct stack *ptr_STACK);
  * @param ptr_STACK
  */
 void call_operator(struct stack *ptr_STACK, char *token);
+
+
+
+void read_all_lines(struct stack *ptr_STACK);

@@ -406,14 +406,14 @@ void parse(char *line)
     char *resto;
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, (line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
         //Coloquei o resto_num a iniciar a abc porcausa das flags
         // mas temos de ver se isto não provoca merda
 
         char *resto_num = "abc";
         int val_tipo;
-        // printf("Token atual: %s!\n", token);
+        //printf("Token atual: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         // printf("tipo dps %d\n", val_tipo);
@@ -568,7 +568,7 @@ void pinta_array(char *line)
 {
     // char *delimitadores = " \t\n";
 
-    char copi[1000];
+    char copi[10000];
     int j = 0, i = 2;
     while (line[i + 2] != '\0')
     {
@@ -741,7 +741,7 @@ char *get_token(char *delim, char *line, char **rest)
             }
             if (nAspas > 0)
             {
-                printf("Falta Fechar Aspas");
+                //  printf("Falta Fechar Aspas");
             }
             else
             {

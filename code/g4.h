@@ -27,16 +27,20 @@ void repeteStr(struct stack *ptr_STACK);
 void tamanho_str(struct stack *ptr_STACK, struct elemento x);
 void val_index_Str(struct stack *ptr_STACK, struct elemento x);
 
-void catch_elem_Str(struct stack *ptr_STACK, struct elemento x);
+void catch_elem_Str(struct stack *ptr_STACK);
+void catch_ultimos_Str(struct stack *ptr_STACK);
 
 void delete_fst_Str(struct stack *ptr_STACK);
 void delete_snd_Str(struct stack *ptr_STACK);
-void find_subStr(struct stack *ptr_STACK, struct elemento x);
+void find_subStr(struct stack *ptr_STACK);
 void read_All_Str(struct elemento *ptr_STACK, char *line);
 
 void sub_String(struct elemento *ptr_STACK, struct elemento z);
-void div_WhiteS_Str(struct elemento *ptr_STACK);
+void div_WhiteS_Str(struct stack *ptr_STACK);
 
-void div_newLines_Str(struct elemento *ptr_STACK);
+void div_newLines_Str(struct stack *ptr_STACK);
 
 void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);
+void mystrcat2(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);
+void mystrcat3(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);
+void mystrcat4(char s1[], char s2[]);
