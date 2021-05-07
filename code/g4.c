@@ -491,7 +491,7 @@ void repeteStr(struct stack *ptr_STACK)
     struct elemento y = POP(ptr_STACK);
     struct elemento copy;
     copy.tipo = T_string;
-    copy.data.val_s = malloc(1000 * sizeof(char));
+    copy.data.val_s = malloc(10000 * sizeof(char));
     int t = x.data.val_i * strlen(y.data.val_s);
 
     for (i = 0, j = 0; i < t; i++, j++)
@@ -614,20 +614,13 @@ void delete_fst_Str(struct stack *ptr_STACK)
 
 void delete_snd_Str(struct stack *ptr_STACK)
 {
-
-    int i;
     struct elemento y = POP(ptr_STACK);
     int t = strlen(y.data.val_s);
     struct elemento w;
     w.tipo = T_char;
 
-    for (i = 0; i < t - 1; i++)
-    {
-        y.data.val_s[i] = y.data.val_s[i];
-    }
-
-    y.data.val_s[i] = '\0';
     w.data.val_c = y.data.val_s[t - 1];
+    y.data.val_s[t - 1] = '\0';
 
     PUSH(ptr_STACK, y);
     PUSH(ptr_STACK, w);
@@ -675,58 +668,81 @@ void find_subStr(struct stack *ptr_STACK)
 
 void sub_String(struct stack *ptr_STACK)
 {
-    printf("Caiu na sub_String!\n");
-
-    PRINT_STACK(ptr_STACK);
-    PRINT_STACK(ptr_STACK);
-
     struct elemento y = POP(ptr_STACK);
-    printf("Tipo de y: %d\n", y.tipo);
     struct elemento x = POP(ptr_STACK);
-    printf("Tipo de x: %d\n", x.tipo);
-    printf("String_x: %s\n", x.data.val_s);
-    printf("String_y: %s\n", y.data.val_s);
+    // printf("String_x: %s\n", x.data.val_s);
+    // printf("String_y: %s\n", y.data.val_s);
     int tamanho = strlen(x.data.val_s);
     int t = strlen(y.data.val_s);
-    printf("Tamanho de x: %d, tamnho de y: %d\n", tamanho, t);
+    // printf("Tamanho de x: %d, tamnho de y: %d\n", tamanho, t);
 
-    int i;
-    int pos;
-    int j;
+    // Criação do array!
 
     struct elemento val;
     val.tipo = T_array;
     struct stack *new_stack = malloc(sizeof(struct stack));
     initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
 
-    char *copy = malloc(t * (sizeof(char)));
+    // Criação da string auxiliar paa trnsferir os elementos para o array!
+    struct elemento string;
+    string.tipo = T_string;
+    string.data.val_s = malloc(t * sizeof(char));
 
-    struct elemento cona;
-    cona.tipo = T_string;
-    cona.data.val_s = copy;
-
-    strcpy(cona.data.val_s, y.data.val_s);
-    printf("Cona: %s\n", cona.data.val_s);
-
-    pos = isSubstring(x.data.val_s, y.data.val_s);
-    printf("Posição: %d\n", pos);
-
-    // ESTAVAS A FAZER O DEBUGGING AQUI E ATÈ AGORA A POSIÇÂO ESTÀ BEM!\n
-
-    for (i = 0; i < t; i++)
+    int true = 0;
+    int i = 0;
+    int j = i;
+    for (i = 0; x.data.val_s[i] != '\0'; i++)
     {
-        for (j = 0; j != pos; j++)
+        true = compareStrandSub(x.data.val_s, y.data.val_s, t, i);
+        // printf("Index do menino >>> %d --- true >>>%d\n", i, true);
+        if (true)
         {
-            copy[j] = y.data.val_s[j];
+            pinta_a_linda(string.data.val_s, x.data.val_s, j, i);
+            // printf("Meti a linda: %s\n", string.data.val_s);
+            // printf("Big boy: %s\n", x.data.val_s);
+            PUSH(val.data.val_p, string);
+            string.data.val_s = malloc(tamanho * sizeof(char));
+            j = i + t;
         }
-        copy[j] = '\0';
-        printf("Cona: %s", copy);
-        PUSH(new_stack, cona);
-        i = j + tamanho;
+        //        printf("Esta aqui o resultado ---->>> %s\n\n\n", string);
     }
-    /*
+    if (i != j)
+    {
+        pinta_a_linda(string.data.val_s, x.data.val_s, j, i);
+        PUSH(val.data.val_p, string);
+    }
     PUSH(ptr_STACK, val);
-    */
+}
+
+void pinta_a_linda(char *aux, char *main, int begin, int j)
+{
+    // printf("Main: %s\n", main);
+    // printf("Estamos com o begin a %d e o i a %d\n", begin, j);
+    int i;
+    // printf("Querida criei: ");
+    for (i = 0; i + begin < j; i++)
+    {
+        // printf("%d", i);
+        // printf("%c", main[begin + i]);
+        aux[i] = main[i + begin];
+    }
+    aux[i] = '\0';
+}
+
+int compareStrandSub(char str[], char substr[], int N, int i)
+{
+    int j = 0;
+    while (str[i] != '\0' && j < N)
+    {
+        if (str[i] != substr[j])
+            return 0;
+        j++;
+        i++;
+    }
+    if (substr[j] == '\0')
+        return 1;
+    return 0;
 }
 
 void div_WhiteS_Str(struct stack *ptr_STACK)
@@ -747,13 +763,20 @@ void div_WhiteS_Str(struct stack *ptr_STACK)
     string.data.val_s = malloc(t * sizeof(char));
     int j = 0;
 
+    int count = 0;
     for (int i = 0; i < t; i++)
     {
-        if (y.data.val_s[i] == ' ')
+        if (y.data.val_s[i] == ' ' || y.data.val_s[i] == '\n')
         {
             string.data.val_s[i] = '\0';
-            // printf("String tratda: %s\n", string.data.val_s);
-            PUSH(val.data.val_p, string);
+            // printf("String tratda: {%s} ---> ", string.data.val_s);
+            if (strlen(string.data.val_s) != 0)
+            {
+                count++;
+                // printf("Levou push!  %d", count);
+                PUSH(val.data.val_p, string);
+            }
+            //printf("\n");
             // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
             string.data.val_s = malloc(t * sizeof(char));
             j = -1;
@@ -761,11 +784,14 @@ void div_WhiteS_Str(struct stack *ptr_STACK)
         string.data.val_s[j] = y.data.val_s[i];
         j++;
     }
-    string.data.val_s[j] = '\0';
-    //  printf("String tratda: %s\n", string.data.val_s);
-    PUSH(val.data.val_p, string);
-    // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
-
+    if (strlen(string.data.val_s) != 0)
+    {
+        string.data.val_s[j] = '\0';
+        //printf("String tratda: {%s} ---> ", string.data.val_s);
+        //count++;
+        //printf("Levou push!  %d\n", count);
+        PUSH(val.data.val_p, string);
+    }
     PUSH(ptr_STACK, val);
 }
 

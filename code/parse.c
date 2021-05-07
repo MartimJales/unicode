@@ -406,14 +406,14 @@ void parse(char *line)
     char *resto;
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, (line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
         //Coloquei o resto_num a iniciar a abc porcausa das flags
         // mas temos de ver se isto não provoca merda
 
         char *resto_num = "abc";
         int val_tipo;
-        //printf("Token atual: %s!\n", token);
+        // printf("Token atual: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         // printf("tipo dps %d\n", val_tipo);
@@ -668,9 +668,21 @@ int isLim(char token)
 char *cleanLim(char line[])
 {
     int i, j;
+    int found_string = 0;
     for (i = 0; line[i] != '\0'; i++)
     {
-        if (isLim(line[i]) && isLim(line[i + 1]))
+        if (line[i] == '"')
+        {
+            if (found_string == 0)
+            {
+                found_string = 1;
+            }
+            else
+            {
+                found_string = 0;
+            }
+        }
+        if (isLim(line[i]) && isLim(line[i + 1]) && found_string == 0)
         {
             for (j = i; line[j] != '\0'; j++)
             {
@@ -683,6 +695,29 @@ char *cleanLim(char line[])
     return line;
 }
 
+/*
+
+char *cleanLim(char line[])
+{
+    int i, j;
+    // int found_string = 0;
+    for (i = 0; line[i] != '\0'; i++)
+    {
+
+        if (isLim(line[i]) && isLim(line[i + 1]))
+        {
+            for (j = i; line[j] != '\0'; j++)
+            {
+                line[j] = line[j + 1];
+            }
+            line[j] = '\0';
+            i--;
+        }
+        //}
+    }
+    return line;
+}
+*/
 /**
  * \brief Função get_token do programa.
  * 

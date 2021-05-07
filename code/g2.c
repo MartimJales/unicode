@@ -10,6 +10,7 @@
 #include "g2.h"
 #include "g3.h"
 #include "g4.h"
+#include "parse.h"
 #include <assert.h>
 
 /**
@@ -399,7 +400,6 @@ void read_line(struct stack *ptr_STACK)
 
 void read_all_lines(struct stack *ptr_STACK)
 {
-    // printf("caiu na read_all_line!\n");
     struct elemento total;
     total.tipo = T_string;
     total.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
@@ -420,6 +420,7 @@ void read_all_lines(struct stack *ptr_STACK)
         {
             x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
             mystrcat4(total.data.val_s, x.data.val_s);
+            free(x.data.val_s);
             //  printf("Total: %s\n", total.data.val_s);
             break;
         }
@@ -430,7 +431,7 @@ void read_all_lines(struct stack *ptr_STACK)
 
         //printf("Total: %s\n", total.data.val_s);
     }
-    free(x.data.val_s);
+
     /*
     while ((strlen(total.data.val_s) > 0))
     {

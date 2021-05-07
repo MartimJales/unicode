@@ -115,3 +115,5 @@ void pushArray(struct array *arr, struct elemento x);
 void parse_array(char *line, struct stack *ptr_STACK);
 
 void PRINT_ARRAY(struct stack *stack);
+
+void free_Stack(struct stack *stack);

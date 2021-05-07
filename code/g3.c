@@ -8,6 +8,7 @@
 #include "stack.h"
 #include "g1.h"
 #include "g3.h"
+#include "g4.h"
 #include <assert.h>
 
 /**
@@ -501,6 +502,40 @@ void variables2(struct stack *ptr_STACK, char *token)
     {
         int i = *(token + 1) % 65;
 
-        (*ptr_STACK).vars[i].elemento = ptr_STACK->array[(*ptr_STACK).top];
+        struct elemento new_elem = POP(ptr_STACK); // ptr_STACK->array[(*ptr_STACK).top];
+
+        if (new_elem.tipo == T_array)
+        {
+            // printf("Caiuu nos arrays!\n");
+            struct elemento val;
+            val.tipo = T_array;
+            struct stack *new_stack = malloc(sizeof(struct stack));
+            initStack(new_stack, ptr_STACK->vars);
+            val.data.val_p = new_stack;
+            new_stack->top = new_elem.data.val_p->top;
+            for (int i = 0; i <= new_elem.data.val_p->top; i++)
+                new_stack->array[i] = new_elem.data.val_p->array[i];
+            ptr_STACK->vars[i].elemento = val;
+        }
+        else if (new_elem.tipo == T_string)
+        {
+            // printf("CAIU NAS STRINGS!\n");
+
+            int t = strlen(new_elem.data.val_s);
+            // printf("Tamanho da var: %d\n", t);
+            char *new_string = malloc((t + 1) * sizeof(char));
+
+            //printf("A menina doida: %s\n", new_elem.data.val_s);
+            mystrcat4(new_string, new_elem.data.val_s);
+            //printf("A menina desejada: %s!", new_string);
+
+            ptr_STACK->vars[i].elemento.tipo = T_string;
+            ptr_STACK->vars[i].elemento.data.val_s = new_string;
+        }
+        else
+        {
+            ptr_STACK->vars[i].elemento = new_elem;
+        }
+        PUSH(ptr_STACK, new_elem);
     }
 }

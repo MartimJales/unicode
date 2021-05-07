@@ -99,9 +99,10 @@ void PRINT_STACK(struct stack *stack)
             printf("FALTA AS STRINGS na print_array!\n");
             break;
         }
-        printf("_");
+        // printf("_");
     }
     printf("\n");
+    free_Stack(stack);
 }
 
 void PRINT_ARRAY(struct stack *stack)
@@ -146,7 +147,7 @@ void PRINT_ARRAY(struct stack *stack)
             printf("FALTA AS STRINGS na print_array!\n");
             break;
         }
-        // printf("\n");
+        //printf("\n", i);
     }
 }
 
@@ -161,6 +162,17 @@ void initStack(struct stack *ptr_STACK, struct var *ptr_vars)
 {
     ptr_STACK->top = -1;
     ptr_STACK->vars = ptr_vars;
+}
+
+void free_Stack(struct stack *ptr_STACK)
+{
+    for (int i = 0; i < ptr_STACK->top; i++)
+    {
+        if (ptr_STACK->array[i].tipo == T_array)
+            free_Stack(ptr_STACK->array[i].data.val_p);
+        //else if (ptr_STACK->array[i].tipo == T_string)
+        //free(ptr_STACK->array[i].data.val_s);
+    }
 }
 
 // Funções do ficheiro conaça

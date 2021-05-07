@@ -44,3 +44,6 @@ void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);
 void mystrcat2(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);
 void mystrcat3(struct elemento s1, struct elemento s2, struct stack *ptr_STACK);
 void mystrcat4(char s1[], char s2[]);
+
+int compareStrandSub(char str[], char substr[], int N, int i);
+void pinta_a_linda(char aux[], char main[], int j, int i);
