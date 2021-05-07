@@ -106,14 +106,14 @@ void poli_filter(struct stack *ptr_STACK, char *token)
     case '/':
         if (isnumber(ptr_STACK))
         {
+            //    printf("Cai na divisão de nums\n");
             struct elemento x = POP(ptr_STACK);
             struct elemento y = POP(ptr_STACK);
             PUSH(ptr_STACK, operador(x, y, token));
         }
         else if (haveonestring(ptr_STACK))
         {
-            //  struct elemento x = POP(ptr_STACK);
-            // sub_String(ptr_STACK, x);
+            sub_String(ptr_STACK);
         }
         else
         {

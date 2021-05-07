@@ -633,56 +633,101 @@ void delete_snd_Str(struct stack *ptr_STACK)
     PUSH(ptr_STACK, w);
 }
 
+int isSubstring(char *haystack, char *needle)
+{
+    size_t d;
+    int i = 0;
+    if (strlen(haystack) >= strlen(needle))
+    {
+        for (i = strlen(haystack) - strlen(needle); i >= 0; i--)
+        {
+            int found = 1;
+            for (d = 0; d < strlen(needle); d++)
+            {
+                if (haystack[i + d] != needle[d])
+                {
+                    found = 0;
+                    break;
+                }
+            }
+            if (found == 1)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    return -1;
+}
+
 void find_subStr(struct stack *ptr_STACK)
 {
-    int i;
     struct elemento y = POP(ptr_STACK);
-    int t = strlen(y.data.val_s);
+    struct elemento x = POP(ptr_STACK);
+
     struct elemento z;
     z.tipo = T_int;
 
-    for (i = 0; i < t; i++)
-    {
-        if (ptr_STACK->array[i].tipo == T_string)
-            z.data.val_i = i;
-    }
+    z.data.val_i = isSubstring(x.data.val_s, y.data.val_s);
 
     PUSH(ptr_STACK, z);
 }
 
-/*
-void read_All_Str(struct elemento *ptr_STACK, char *line)
+void sub_String(struct stack *ptr_STACK)
 {
+    printf("Caiu na sub_String!\n");
 
-    struct elemento x;
-    x.tipo = T_string;
-    *x.data.val_s = line;
+    PRINT_STACK(ptr_STACK);
+    PRINT_STACK(ptr_STACK);
 
-    PUSH(ptr_STACK, x);
-}
-
-void sub_String(struct elemento *ptr_STACK, struct elemento z)
-{
-    int i;
     struct elemento y = POP(ptr_STACK);
+    printf("Tipo de y: %d\n", y.tipo);
+    struct elemento x = POP(ptr_STACK);
+    printf("Tipo de x: %d\n", x.tipo);
+    printf("String_x: %s\n", x.data.val_s);
+    printf("String_y: %s\n", y.data.val_s);
+    int tamanho = strlen(x.data.val_s);
     int t = strlen(y.data.val_s);
-    char *copy;
-    strcpy(copy, y.data.val_s);
-    struct elemento x;
-    x.tipo = T_string;
-    *x.data.val_s = copy;
+    printf("Tamanho de x: %d, tamnho de y: %d\n", tamanho, t);
+
+    int i;
+    int pos;
+    int j;
+
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+
+    char *copy = malloc(t * (sizeof(char)));
+
+    struct elemento cona;
+    cona.tipo = T_string;
+    cona.data.val_s = copy;
+
+    strcpy(cona.data.val_s, y.data.val_s);
+    printf("Cona: %s\n", cona.data.val_s);
+
+    pos = isSubstring(x.data.val_s, y.data.val_s);
+    printf("Posição: %d\n", pos);
+
+    // ESTAVAS A FAZER O DEBUGGING AQUI E ATÈ AGORA A POSIÇÂO ESTÀ BEM!\n
 
     for (i = 0; i < t; i++)
     {
-        if (even(i))
-            copy[i] = y.data.val_s[i];
-        else
-            copy[i] = z.data.val_s[i];
+        for (j = 0; j != pos; j++)
+        {
+            copy[j] = y.data.val_s[j];
+        }
+        copy[j] = '\0';
+        printf("Cona: %s", copy);
+        PUSH(new_stack, cona);
+        i = j + tamanho;
     }
-    PUSH(ptr_STACK, x);
+    /*
+    PUSH(ptr_STACK, val);
+    */
 }
-
-*/
 
 void div_WhiteS_Str(struct stack *ptr_STACK)
 {
@@ -744,10 +789,19 @@ void div_newLines_Str(struct stack *ptr_STACK)
 
     for (int i = 0; i < t; i++)
     {
+        if (i == t - 1 && y.data.val_s[i] == '\n')
+
+            //string.data.val_s[i + 1] = '\0';
+            // printf("String tratada: %s\n", string.data.val_s);
+            //PUSH(val.data.val_p, string);
+            // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
+            //printf("caiu no sitio certo\n Com um char (%c)", y.data.val_s[i]);
+            break;
+
         if (y.data.val_s[i] == '\n')
         {
-            string.data.val_s[i] = '\0';
-            // printf("String tratda: %s\n", string.data.val_s);
+            string.data.val_s[i + 1] = '\0';
+            // printf("String tratada: %s\n", string.data.val_s);
             PUSH(val.data.val_p, string);
             // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
             string.data.val_s = malloc(t * sizeof(char));

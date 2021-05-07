@@ -99,7 +99,7 @@ void PRINT_STACK(struct stack *stack)
             printf("FALTA AS STRINGS na print_array!\n");
             break;
         }
-        // printf("_");
+        printf("_");
     }
     printf("\n");
 }
@@ -146,6 +146,7 @@ void PRINT_ARRAY(struct stack *stack)
             printf("FALTA AS STRINGS na print_array!\n");
             break;
         }
+        // printf("\n");
     }
 }
 

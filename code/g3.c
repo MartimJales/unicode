@@ -500,6 +500,7 @@ void variables2(struct stack *ptr_STACK, char *token)
     else if (*token == ':')
     {
         int i = *(token + 1) % 65;
+
         (*ptr_STACK).vars[i].elemento = ptr_STACK->array[(*ptr_STACK).top];
     }
 }

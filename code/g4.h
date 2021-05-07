@@ -35,7 +35,7 @@ void delete_snd_Str(struct stack *ptr_STACK);
 void find_subStr(struct stack *ptr_STACK);
 void read_All_Str(struct elemento *ptr_STACK, char *line);
 
-void sub_String(struct elemento *ptr_STACK, struct elemento z);
+void sub_String(struct stack *ptr_STACK);
 void div_WhiteS_Str(struct stack *ptr_STACK);
 
 void div_newLines_Str(struct stack *ptr_STACK);

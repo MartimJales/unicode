@@ -395,42 +395,67 @@ void read_line(struct stack *ptr_STACK)
     PUSH(ptr_STACK, x);
 }
 
+//// Condição -> Não ter mais chars para ler!!!!!
+
 void read_all_lines(struct stack *ptr_STACK)
 {
+    // printf("caiu na read_all_line!\n");
     struct elemento total;
     total.tipo = T_string;
-    total.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
-    assert(fgets(total.data.val_s, 1000, stdin) != NULL);
+    total.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    assert(fgets(total.data.val_s, 10000, stdin) != NULL);
 
-    if ((strlen(total.data.val_s) > 0) && (total.data.val_s[strlen(total.data.val_s) - 1] == '\n'))
-        total.data.val_s[strlen(total.data.val_s) - 1] = '\0';
+    //if ((strlen(total.data.val_s) > 0) && (total.data.val_s[strlen(total.data.val_s) - 1] == '\n'))
+    // total.data.val_s[strlen(total.data.val_s) - 1] = '\0';
 
     // printf("Total: %s\n", total.data.val_s);
-
     struct elemento x;
     x.tipo = T_string;
-
-    while ((strlen(total.data.val_s) > 0) && (total.data.val_s[strlen(total.data.val_s) - 1] != '\n') && (total.data.val_s[strlen(total.data.val_s) - 2] != '\n'))
+    x.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    while (fgets(x.data.val_s, 10000, stdin) != NULL)
     {
-        x.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
-        assert(fgets(x.data.val_s, 1000, stdin) != NULL);
-        /*
-        printf("Ultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 1]);
-        printf("Penultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 2]);
-        printf("Tamanho: %ld\n", (strlen(x.data.val_s)));
-*/
+        //x.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+        // assert(fgets(x.data.val_s, 10000, stdin) != NULL);
         if ((strlen(x.data.val_s) == 1))
         {
-            //x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
+            x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
             mystrcat4(total.data.val_s, x.data.val_s);
-            // printf("Total: %s\n", total.data.val_s);
+            //  printf("Total: %s\n", total.data.val_s);
             break;
         }
+
         //if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
         //  x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
         mystrcat4(total.data.val_s, x.data.val_s);
-        // printf("Total: %s\n", total.data.val_s);
+
+        //printf("Total: %s\n", total.data.val_s);
     }
+    free(x.data.val_s);
+    /*
+    while ((strlen(total.data.val_s) > 0))
+    {
+        x.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+                                                     //assert(fgets(x.data.val_s, 10000, stdin) != NULL);
+        fgets(x.data.val_s, 10000, stdin);
+
+        
+        printf("Ultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 1]);
+        printf("Penultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 2]);
+        printf("Tamanho: %ld\n", (strlen(x.data.val_s)));
+
+    if ((strlen(x.data.val_s) == 1))
+    {
+        x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
+        mystrcat4(total.data.val_s, x.data.val_s);
+        //  printf("Total: %s\n", total.data.val_s);
+        break;
+    }
+    //if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
+    //  x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
+    mystrcat4(total.data.val_s, x.data.val_s);
+    //printf("Total: %s\n", total.data.val_s);
+}
+*/
 
     PUSH(ptr_STACK, total);
 }
