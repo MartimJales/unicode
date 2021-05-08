@@ -558,6 +558,7 @@ void check_all_array(struct stack *ptr_STACK, char *token)
 void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem)
 {
     parse_array(token, ptr_elem->data.val_p);
+    //printf("%s",token);
     // printf("put_array na localização %ld\n", (long)ptr_STACK);
     //   printf("Top antes %d\n", ptr_STACK->top);
     PUSH(ptr_STACK, *ptr_elem);

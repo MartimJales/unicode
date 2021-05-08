@@ -98,13 +98,19 @@ void parse_array(char *line, struct stack *ptr_STACK)
     // printf("Caiu no parse array!\n");
     char *token;
     char *resto;
+    int tamanho=0;
+
+    int t = strlen (line);
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0 && tamanho+1<t; token = get_token(delimitadores, resto, &resto))
     {
+        
+        tamanho+=strlen(token);
+
         char *resto_num = "abc";
         int val_tipo;
-        printf("Token atual da parse array: %s!\n", token);
+        //printf("Token atual da parse array: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         if (strlen(resto_num) == 0)
@@ -140,7 +146,9 @@ void criaStr(struct stack *ptr_STACK, char *token)
 {
     //printf("CAIU NAS STRINGS!\n");
     int i = 0;
-    // size = strlen(token);
+    int size;
+
+     size = strlen(token);
     /*
     printf("Token na criaStr: \n\n");
     printf("%s\n", token);
@@ -149,18 +157,27 @@ void criaStr(struct stack *ptr_STACK, char *token)
     //printf("Tudo ok com a strlen: %d\n"), sizeof(token);
     struct elemento x;
     x.tipo = T_string;
-    x.data.val_s = token;
+    
+    x.data.val_s =malloc(size* sizeof(char));
     /*
     printf("Token[1]: %c\n", token[1]);
     x.data.val_s = *(token + 1);
     */
     //printf("Token[1]: %c\n", x.data.val_s[0]);
 
+    while (token[i+2] != '\0')
+    {
+        x.data.val_s[i] = token[i+1];
+        i++;
+    }
+/*
     while (token[i + 2] != '\0')
     {
         x.data.val_s[i] = token[i + 1];
         i++;
     }
+*/
+
     /*
     for (i = 0; i < size - 2; i++)
     {

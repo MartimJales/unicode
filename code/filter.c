@@ -310,7 +310,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
     case ',':
         if (onlyblock(ptr_STACK))
         {
-            // filter_block(ptr_STACK);
+            filter_function(ptr_STACK);
         }
         else if (onlynumber(ptr_STACK))
         {
