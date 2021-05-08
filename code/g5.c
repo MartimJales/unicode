@@ -100,7 +100,6 @@ void tilfunction(struct stack *ptr_STACK)
     parse_array(s, ptr_STACK);
 }
 
-
 char *pinta_block(char *line)
 {
     // char *delimitadores = " \t\n";
@@ -132,7 +131,7 @@ void percentagem_function(struct stack *ptr_STACK)
     // printf(" Deu certo na criação da string s\n");
     int top = arr.data.val_p->top;
     //printf("Temos o top a %d\n", top);
-    
+
     for (i = 0; i <= top; i++)
     {
         // arr.data.val_p->array[i].data.val_s = malloc(10000 * sizeof(char));
@@ -183,7 +182,7 @@ void percentagem_function(struct stack *ptr_STACK)
         mystrcat4(aux, " ");
         // mystrcat4(s, " ");
         mystrcat4(s, aux);
-       // printf("Na iteração %d temos a string: {%s}!\n", i, s);
+        // printf("Na iteração %d temos a string: {%s}!\n", i, s);
     }
     for (int i = 0; i <= top; i++)
         POP(arr.data.val_p);
@@ -194,8 +193,6 @@ void percentagem_function(struct stack *ptr_STACK)
     // printf("O topo da stack tem um elemento do tipo %d\n", ptr_STACK->array[ptr_STACK->top].tipo);
 }
 
-
-
 void w_function(struct stack *ptr_STACK)
 {
     // printf(" Caiu no filter_block!\n");
@@ -204,7 +201,7 @@ void w_function(struct stack *ptr_STACK)
     struct elemento arr = POP(ptr_STACK);
     //  PRINT_ARRAY(arr.data.val_p);
 
-    int i,j;
+    int i, j;
     char *s = malloc(10000 * sizeof(char));
     char *aux = malloc(1000 * sizeof(char));
     // printf(" Deu certo na criação da string s\n");
@@ -217,8 +214,7 @@ void w_function(struct stack *ptr_STACK)
     initStack(new_stack, ptr_STACK->vars);
     final.data.val_p = new_stack;
 
-
-    for(i = 0; i <= top && arr.data.val_p->array[i].data.val_l!=0; i++)
+    for (i = 0; i <= top && arr.data.val_p->array[i].data.val_l != 0; i++)
     {
         switch (arr.data.val_p->array[i].tipo)
         {
@@ -258,77 +254,71 @@ void w_function(struct stack *ptr_STACK)
         mystrcat4(aux, " ");
         // mystrcat4(s, " ");
         mystrcat4(s, aux);
-       // printf("Na iteração %d temos a string: {%s}!\n", i, s);
+        // printf("Na iteração %d temos a string: {%s}!\n", i, s);
     }
 
-parse_array(s, final.data.val_p);
-PRINT_ARRAY(final.data.val_p);
-printf("\n");
-PRINT_ARRAY(arr.data.val_p);
-printf("\n");
+    parse_array(s, final.data.val_p);
+    PRINT_ARRAY(final.data.val_p);
+    printf("\n");
+    PRINT_ARRAY(arr.data.val_p);
+    printf("\n");
 
+    int topo = arr.data.val_p->top;
 
-int topo = arr.data.val_p->top;
-
-    for(i=0,j=0;i<=final.data.val_p->array[i].data.val_l!=0 && j!=1;i++)
+    for (i = 0, j = 0; i <= final.data.val_p->array[i].data.val_l != 0 && j != 1; i++)
     {
         switch (final.data.val_p->array[i].tipo)
         {
         case T_int:
-        if(final.data.val_p->array[i].data.val_i!=0)
-        {
-            PUSH(arr.data.val_p, arr.data.val_p->array[i]);
-            j=1;
-        }
-        break;
+            if (final.data.val_p->array[i].data.val_i != 0)
+            {
+                PUSH(arr.data.val_p, arr.data.val_p->array[i]);
+                j = 1;
+            }
+            break;
 
         case T_float:
-        if(final.data.val_p->array[i].data.val_f!=0)
-        {
-            PUSH(new_stack, arr.data.val_p->array[i]);
-            j=1;
-        }
-        break;
+            if (final.data.val_p->array[i].data.val_f != 0)
+            {
+                PUSH(new_stack, arr.data.val_p->array[i]);
+                j = 1;
+            }
+            break;
 
         case T_double:
-        if(final.data.val_p->array[i].data.val_d!=0)
-        {
-            PUSH(new_stack, arr.data.val_p->array[i]);
-            j=1;
-        }
+            if (final.data.val_p->array[i].data.val_d != 0)
+            {
+                PUSH(new_stack, arr.data.val_p->array[i]);
+                j = 1;
+            }
             break;
 
         case T_long:
-        if(final.data.val_p->array[i].data.val_l!=0)
-        {
-            PUSH(new_stack, arr.data.val_p->array[i]);
-            j=1;
-        }
-        break;
+            if (final.data.val_p->array[i].data.val_l != 0)
+            {
+                PUSH(new_stack, arr.data.val_p->array[i]);
+                j = 1;
+            }
+            break;
 
         default:
             printf("Deu bagulho na função 2_function\n");
             break;
         }
-        
     }
-//printf("o top é: %d\n",arr.data.val_p->top);
-for (i;i<=arr.data.val_p->top+1;i++)
-{
-//    printf("o i é: %d\n",i);
+    //printf("o top é: %d\n",arr.data.val_p->top);
+    for (i; i <= arr.data.val_p->top + 1; i++)
+    {
+        //    printf("o i é: %d\n",i);
 
-    POP(arr.data.val_p);
-}
+        POP(arr.data.val_p);
+    }
 
     // PRINT_ARRAY(arr.data.val_p);
     // printf("Estoirou!\n");
     PUSH(ptr_STACK, arr);
     // printf("O topo da stack tem um elemento do tipo %d\n", ptr_STACK->array[ptr_STACK->top].tipo);
 }
-
-
-
-
 
 void filter_function(struct stack *ptr_STACK)
 {
@@ -350,8 +340,7 @@ void filter_function(struct stack *ptr_STACK)
     initStack(new_stack2, ptr_STACK->vars);
     final.data.val_p = new_stack2;
 
-
-    int i,j;
+    int i, j;
     char *s = malloc(10000 * sizeof(char));
     char *aux = malloc(1000 * sizeof(char));
     // printf(" Deu certo na criação da string s\n");
@@ -404,29 +393,29 @@ void filter_function(struct stack *ptr_STACK)
     //PRINT_ARRAY(val.data.val_p);
     //printf("\n");
 
-    for(i=0,j=0;i<=val.data.val_p->top;i++)
+    for (i = 0, j = 0; i <= val.data.val_p->top; i++)
     {
-        if(val.data.val_p->array[i].data.val_l!=0)
+        if (val.data.val_p->array[i].data.val_l != 0)
         {
             PUSH(new_stack2, arr.data.val_p->array[i]);
             j++;
         }
-        else if(val.data.val_p->array[i].data.val_i!=0)
+        else if (val.data.val_p->array[i].data.val_i != 0)
         {
             PUSH(new_stack2, arr.data.val_p->array[i]);
             j++;
         }
-        else if(val.data.val_p->array[i].data.val_d!=0)
+        else if (val.data.val_p->array[i].data.val_d != 0)
         {
             PUSH(new_stack2, arr.data.val_p->array[i]);
             j++;
         }
-        else if(val.data.val_p->array[i].data.val_f!=0)
+        else if (val.data.val_p->array[i].data.val_f != 0)
         {
             PUSH(new_stack2, arr.data.val_p->array[i]);
             j++;
         }
-      /*  
+        /*  
         else if(((val.data.val_p->array[i].data.val_c)-'\0')!=0)
         {
             PUSH(new_stack2, arr.data.val_p->array[i]);
@@ -437,13 +426,9 @@ void filter_function(struct stack *ptr_STACK)
     //PRINT_ARRAY(final.data.val_p);
     //printf("\n");
 
-
     PUSH(ptr_STACK, final);
     // printf("O topo da stack tem um elemento do tipo %d\n", ptr_STACK->array[ptr_STACK->top].tipo);
 }
-
-
-
 
 void convert_elem_s(struct elemento val)
 {
@@ -532,4 +517,351 @@ void convert_arr_string(struct elemento arr, char *s)
     mystrcat4(s, "] ");
 
     //  printf("Temos a string: {%s}!\n", s);
+}
+
+void dollar_block(struct stack *ptr_STACK)
+{
+    // printf(" Caiu no fold_block!\n");
+    struct elemento block = POP(ptr_STACK);
+    pinta_block(block.data.val_b);
+    struct elemento arr = POP(ptr_STACK);
+    //  PRINT_ARRAY(arr.data.val_p);
+
+    // << porque : A, gosta : B, > A B ? >> ;
+
+    struct stack *new_stack2 = malloc(sizeof(struct stack));
+
+    mergeSort(arr.data.val_p->array, 0, arr.data.val_p->top - 1, block.data.val_b, new_stack2);
+    PUSH(ptr_STACK, arr);
+}
+
+/// Funções da net:::
+
+void merge(struct elemento arr[], int l, int m, int r, char *bloco, struct stack *final)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    struct elemento L[n1];
+    struct elemento R[n2];
+
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2)
+    {
+        if (checka(L[i], R[i], bloco, final))
+        {
+            //     printf("O elem 1 é inferior ao elem2\n");
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            //  printf("O elem 1 é SUPERIOR ao elem2\n");
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+void mergeSort(struct elemento arr[], int l, int r, char *bloco, struct stack *final)
+{
+    if (l < r)
+    {
+        int m = l + (r - l) / 2;
+
+        mergeSort(arr, l, m, bloco, final);
+        mergeSort(arr, m + 1, r, bloco, final);
+        merge(arr, l, m, r, bloco, final);
+    }
+}
+
+// Devolve 1    <<fst bloco snd>> == true
+// Devolve 0    <<fst bloco snd>> == false
+/*
+
+1. Construir a linha 
+2. Criar uma stack à toa
+2. Fazer o parse dessa linha para uma stack à toa
+3. Verificar o que está na topo da stack!
+4. Se topo == fst devolve true
+5. Se topo == snd devolve false 
+
+*/
+
+int checka(struct elemento fst, struct elemento snd, char *bloco, struct stack *final)
+{
+    // printf(" Caiu no checka!\n");
+    pinta_block(bloco);
+    //  PRINT_ARRAY(arr.data.val_p);
+    char *s = malloc(10000 * sizeof(char));
+    char *aux = malloc(1000 * sizeof(char));
+    // printf(" Deu certo na criação da string s\n");
+
+    // Construir a linha
+
+    switch (fst.tipo)
+    {
+    case T_int:
+        sprintf(aux, "%d", fst.data.val_i);
+        break;
+    case T_float:
+        sprintf(aux, "%f", fst.data.val_f);
+        break;
+    case T_double:
+        sprintf(aux, "%f", fst.data.val_d);
+        break;
+    case T_long:
+        sprintf(aux, "%ld", fst.data.val_l);
+        break;
+    case T_char:
+        sprintf(aux, "%c", fst.data.val_c);
+        break;
+    case T_string:
+        sprintf(aux, "%c", '"');
+        mystrcat4(aux, fst.data.val_s);
+        mystrcat4(aux, "\"");
+        break;
+    case T_array:
+        convert_arr_string(fst, aux);
+        break;
+    default:
+        printf("Deu bagulho na função filter_block\n");
+        break;
+    }
+
+    mystrcat4(aux, " ");
+    mystrcat4(s, aux);
+
+    switch (snd.tipo)
+    {
+    case T_int:
+        sprintf(aux, "%d", snd.data.val_i);
+        break;
+    case T_float:
+        sprintf(aux, "%f", snd.data.val_f);
+        break;
+    case T_double:
+        sprintf(aux, "%f", snd.data.val_d);
+        break;
+    case T_long:
+        sprintf(aux, "%ld", snd.data.val_l);
+        break;
+    case T_char:
+        sprintf(aux, "%c", snd.data.val_c);
+        break;
+    case T_string:
+        sprintf(aux, "%c", '"');
+        mystrcat4(aux, snd.data.val_s);
+        mystrcat4(aux, "\"");
+        break;
+    case T_array:
+        convert_arr_string(snd, aux);
+        break;
+    default:
+        printf("Deu bagulho na função filter_block\n");
+        break;
+    }
+
+    mystrcat4(aux, " ");
+    mystrcat4(aux, bloco);
+
+    mystrcat4(s, aux);
+
+    //  printf("Depois da checka temos a string: {%s}!\n", s);
+    parse_array(s, final);
+
+    // double x = convertToDouble(fst);
+    double y = convertToDouble(final->array[final->top]);
+
+    // printf("O tipo do que está na stack é: %d\n", final->array[final->top].tipo);
+    // printf("O tipo do nosso fst é: %d\n", fst.tipo);
+
+    //    printf("O fst: %f  ---- O result: %f\n", x, y);
+
+    return y;
+    // return (x ==y);
+    //    return comichoes(final->array[final->top], fst);
+}
+
+int comichoes(struct elemento x, struct elemento y)
+{
+    if (y.tipo != x.tipo)
+        return 0;
+
+    if (y.tipo == T_int && x.tipo == T_int)
+    {
+        if (y.data.val_i != x.data.val_i)
+            return 0;
+    }
+
+    if (y.tipo == T_float && x.tipo == T_float)
+    {
+        if (y.data.val_f != x.data.val_f)
+            return 0;
+    }
+
+    if (y.tipo == T_double && x.tipo == T_double)
+    {
+        if (y.data.val_d != x.data.val_d)
+            return 0;
+    }
+
+    if (y.tipo == T_long && x.tipo == T_long)
+    {
+        if (y.data.val_l != x.data.val_l)
+            return 0;
+    }
+
+    if (y.tipo == T_char && x.tipo == T_char)
+    {
+        if (y.data.val_c != x.data.val_c)
+            return 0;
+    }
+
+    if (y.tipo == T_string && x.tipo == T_string)
+    {
+
+        if (strcmp(y.data.val_s, x.data.val_s) != 0)
+            return 0;
+    }
+
+    if (y.tipo == T_array && x.tipo == T_array)
+    {
+        if (y.data.val_p->top != x.data.val_p->top)
+            return 0;
+    }
+}
+
+void fold_function(struct stack *ptr_STACK)
+{
+    // printf(" Caiu no fold_block!\n");
+    struct elemento block = POP(ptr_STACK);
+    pinta_block(block.data.val_b);
+    struct elemento arr = POP(ptr_STACK);
+    //  PRINT_ARRAY(arr.data.val_p);
+
+    int i;
+    char *s = malloc(10000 * sizeof(char));
+    char *aux = malloc(1000 * sizeof(char));
+    // printf(" Deu certo na criação da string s\n");
+    int top = arr.data.val_p->top;
+    //printf("Temos o top a %d\n", top);
+
+    switch (arr.data.val_p->array[0].tipo)
+    {
+    case T_int:
+        sprintf(aux, "%d", arr.data.val_p->array[0].data.val_i);
+        break;
+    case T_float:
+        sprintf(aux, "%f", arr.data.val_p->array[0].data.val_f);
+        break;
+    case T_double:
+        sprintf(aux, "%f", arr.data.val_p->array[0].data.val_d);
+        break;
+    case T_long:
+        sprintf(aux, "%ld", arr.data.val_p->array[0].data.val_l);
+        break;
+    case T_char:
+        sprintf(aux, "%c", arr.data.val_p->array[0].data.val_c);
+        break;
+    case T_string:
+        sprintf(aux, "%c", '"');
+        mystrcat4(aux, arr.data.val_p->array[0].data.val_s);
+        mystrcat4(aux, "\"");
+        break;
+    case T_array:
+        convert_arr_string(arr.data.val_p->array[0], aux);
+        break;
+    default:
+        printf("Deu bagulho na função filter_block\n");
+        break;
+    }
+
+    mystrcat4(aux, " ");
+
+    mystrcat4(s, aux);
+    //  printf("Na iteração %d temos a string: {%s}!\n", 0, s);
+
+    for (i = 1; i <= top; i++)
+    {
+
+        // arr.data.val_p->array[i].data.val_s = malloc(10000 * sizeof(char));
+
+        //printf("O elem {%d} é do tipo %d\n", arr.data.val_p->array[i].data.val_i, arr.data.val_p->array[i].tipo);
+        // printf("O elem {%ld} é do tipo %d\n", arr.data.val_p->array[i].data.val_l, arr.data.val_p->array[i].tipo);
+        //printf("O elem {%f} é do tipo %d\n", arr.data.val_p->array[i].data.val_d, arr.data.val_p->array[i].tipo);
+        //printf("O elem {%f} é do tipo %d\n", arr.data.val_p->array[i].data.val_f, arr.data.val_p->array[i].tipo);
+        // printf("Temos aqui um elem do tipo %d\n", arr.data.val_p->array[i].tipo);
+
+        //  convert_elem_s(arr.data.val_p->array[i]);
+
+        switch (arr.data.val_p->array[i].tipo)
+        {
+        case T_int:
+            sprintf(aux, "%d", arr.data.val_p->array[i].data.val_i);
+            break;
+        case T_float:
+            sprintf(aux, "%f", arr.data.val_p->array[i].data.val_f);
+            break;
+        case T_double:
+            sprintf(aux, "%f", arr.data.val_p->array[i].data.val_d);
+            break;
+        case T_long:
+            sprintf(aux, "%ld", arr.data.val_p->array[i].data.val_l);
+            break;
+        case T_char:
+            sprintf(aux, "%c", arr.data.val_p->array[i].data.val_c);
+            break;
+        case T_string:
+            sprintf(aux, "%c", '"');
+            mystrcat4(aux, arr.data.val_p->array[i].data.val_s);
+            mystrcat4(aux, "\"");
+            break;
+        case T_array:
+            convert_arr_string(arr.data.val_p->array[i], aux);
+            break;
+        default:
+            printf("Deu bagulho na função filter_block\n");
+            break;
+        }
+
+        // printf("temos a string: {%s}!\n", s);
+
+        // mystrcat4(s, arr.data.val_p->array[i].data.val_s);
+        mystrcat4(aux, " ");
+        mystrcat4(aux, block.data.val_b);
+        mystrcat4(aux, " ");
+        // mystrcat4(s, " ");
+        mystrcat4(s, aux);
+        //  printf("Na iteração %d temos a string: {%s}!\n", i, s);
+    }
+    for (int i = 0; i <= top; i++)
+        POP(arr.data.val_p);
+    parse_array(s, arr.data.val_p);
+    // PRINT_ARRAY(arr.data.val_p);
+    // printf("Estoirou!\n");
+    PUSH(ptr_STACK, arr);
+    // printf("O topo da stack tem um elemento do tipo %d\n", ptr_STACK->array[ptr_STACK->top].tipo);
 }

@@ -80,7 +80,7 @@ int filter(char *token)
         }
         variables2++;
     }
-        while (*blocos)
+    while (*blocos)
     {
         if (*token == *blocos)
         {
@@ -175,7 +175,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (secondarray(ptr_STACK))
         {
-            // printf("Escudeiro vai pagar kitkats!\n");
+
             percentagem_function(ptr_STACK);
         }
         else if (secondstring(ptr_STACK))
@@ -222,15 +222,14 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         break;
     case '$':
-        if (onlynumber(ptr_STACK))
+        if (onlyblock(ptr_STACK))
+        {
+            dollar_block(ptr_STACK);
+        }
+        else if (onlynumber(ptr_STACK))
         {
             dollarfunction(ptr_STACK);
         }
-        /*
-        else if (onlyblock(ptr_STACK))
-        {
-            // Aplicar o bloco a todos os charda string
-        }*/
         else
         {
             printf("Deu merda na condição do poli_filter: $\n Falta fazer a condição dos blocos \n");
@@ -293,7 +292,11 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         break;
     case '*':
-        if (isnumber(ptr_STACK))
+        if (onlyblock(ptr_STACK))
+        {
+            fold_function(ptr_STACK);
+        }
+        else if (isnumber(ptr_STACK))
         {
             struct elemento x = POP(ptr_STACK);
             struct elemento y = POP(ptr_STACK);
@@ -306,11 +309,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         else if (secondstring(ptr_STACK))
         {
             repeteStr(ptr_STACK);
-        } /*
-        else if (onlyblock(ptr_STACK))
-        {
-            // Aplica o fold ao array ou à string
-        }*/
+        }
         else
         {
             printf("Deu merda na condição do poli_filter: *\n");
