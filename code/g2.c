@@ -269,6 +269,9 @@ void convert_i(struct stack *ptr_STACK)
 void convert_f(struct stack *ptr_STACK)
 {
     struct elemento val = POP(ptr_STACK);
+
+    printf("Na funcção f temos um elem de tipo %d\n", val.tipo);
+
     switch (val.tipo)
     {
     case T_int:
@@ -276,6 +279,8 @@ void convert_f(struct stack *ptr_STACK)
         val.data.val_f = (float)val.data.val_i;
         break;
     case T_float:
+        val.tipo = T_float;
+        val.data.val_f = (float)val.data.val_d;
         break;
     case T_double:
         val.tipo = T_float;
@@ -288,6 +293,12 @@ void convert_f(struct stack *ptr_STACK)
     case T_string:
         val.tipo = T_float;
         val.data.val_f = atof(val.data.val_s);
+        break;
+    case T_char:
+        printf("Caiu nos chars!\n");
+        break;
+    case T_block:
+        printf("Caiu nos chars!\n");
         break;
     default:
         printf("Deu bagulho na função convert_f\n");
