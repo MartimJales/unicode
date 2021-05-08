@@ -11,6 +11,7 @@
 #include "g2.h"
 #include "g3.h"
 #include "g4.h"
+#include "g5.h"
 #include "filter.h"
 #include <assert.h>
 
@@ -431,6 +432,14 @@ void parse(char *line)
             val.data.val_p = new_stack;
             put_array(ptr_STACK, token, &val);
         }
+        else if (*token == '{')
+        {
+            struct elemento blocko;
+            blocko.tipo = T_block;
+            blocko.data.val_b = token;
+            PUSH(ptr_STACK, blocko);
+            printf("o tipo do q pushei é : %d\n", blocko.tipo);
+        }
         else if (*token == '"')
         {
             criaStr(ptr_STACK, token);
@@ -764,7 +773,30 @@ char *get_token(char *delim, char *line, char **rest)
                 bTratado = 1;
             }
         }
-        if (line[i] == '"')
+        else if (line[i] == '{')
+        {
+            int nChaves = 1;
+            int j;
+
+            for (j = 1; nChaves > 0 && line[i + j]; j++)
+            {
+                if (line[i + j] == '}')
+                    nChaves--;
+                if (line[i + j] == '{')
+                    nChaves++;
+            }
+            if (nChaves > 0)
+            {
+                printf("Falta }");
+            }
+            else
+            {
+                line[i + j] = 0;
+                *rest = line + i + j + 1;
+                bTratado = 1;
+            }
+        }
+        else if (line[i] == '"')
         {
             int nAspas = 1;
             int j;

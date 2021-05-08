@@ -17,7 +17,8 @@ enum stack_type
     T_long,
     T_double,
     T_string,
-    T_array
+    T_array,
+    T_block
 };
 
 struct elemento
@@ -32,6 +33,7 @@ struct elemento
         float val_f;
         double val_d;
         struct stack *val_p;
+        char *val_b;
     } data;
 };
 

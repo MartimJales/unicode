@@ -95,6 +95,9 @@ void PRINT_STACK(struct stack *stack)
             // printf("array: ");
             PRINT_ARRAY((stack->array[i].data.val_p));
             break;
+        case T_block:
+            printf("%s", stack->array[i].data.val_b);
+            break;
         default:
             printf("FALTA AS STRINGS na print_array!\n");
             break;
@@ -142,6 +145,10 @@ void PRINT_ARRAY(struct stack *stack)
         case T_array:
             //printf(" array: ");
             PRINT_ARRAY((stack->array[i].data.val_p));
+            break;
+        case T_block:
+            printf(" block: ");
+            printf("%s", stack->array[i].data.val_b);
             break;
         default:
             printf("FALTA AS STRINGS na print_array!\n");
