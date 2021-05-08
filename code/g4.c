@@ -9,6 +9,7 @@
 #include "g2.h"
 #include "g3.h"
 #include "g4.h"
+#include "filter.h"
 #include <assert.h>
 
 //falta testar (dentro dos PUSH o 1º elemento temos que vereficar se necessita de apontadores ou nao)
@@ -94,6 +95,7 @@ void repetearray(struct stack *ptr_STACK)
 
 void parse_array(char *line, struct stack *ptr_STACK)
 {
+    // printf("Caiu no parse array!\n");
     char *token;
     char *resto;
 
@@ -102,15 +104,16 @@ void parse_array(char *line, struct stack *ptr_STACK)
     {
         char *resto_num = "abc";
         int val_tipo;
-        // printf("Token atual da parse array: %s!\n", token);
+        printf("Token atual da parse array: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         if (strlen(resto_num) == 0)
             put_token(ptr_STACK, val_tipo, token);
         else if (*token == '[')
         {
-            //printf("ARRAY!\n");
+            // printf("ARRAY!\n");
             pinta_array(token);
+            // printf("Token depois do pinta_array: {%s}!\n", token);
             struct elemento val;
             val.tipo = T_array;
             struct stack *new_stack = malloc(sizeof(struct stack));
@@ -121,6 +124,10 @@ void parse_array(char *line, struct stack *ptr_STACK)
         else if (*token == '"')
         {
             criaStr(ptr_STACK, token);
+        }
+        else if (*token == 'S' || *token == 'N')
+        {
+            manhosos_filter(ptr_STACK, token);
         }
         else
         {

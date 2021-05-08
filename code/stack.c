@@ -88,7 +88,7 @@ void PRINT_STACK(struct stack *stack)
             printf("%c", stack->array[i].data.val_c);
             break;
         case T_string:
-            // printf("string: ");
+            printf("string: ");
             printf("%s", stack->array[i].data.val_s);
             break;
         case T_array:
@@ -119,7 +119,7 @@ void PRINT_ARRAY(struct stack *stack)
         switch ((*stack).array[i].tipo)
         {
         case T_int:
-            // printf(" int: ");
+            //  printf(" int: ");
             printf("%d", (*stack).array[i].data.val_i);
             break;
         case T_long:
@@ -135,19 +135,19 @@ void PRINT_ARRAY(struct stack *stack)
             printf("%.6g", stack->array[i].data.val_d);
             break;
         case T_char:
-            // printf(" char: ");
+            //  printf(" char: ");
             printf("%c", stack->array[i].data.val_c);
             break;
         case T_string:
-            // printf(" string: ");
+            //  printf(" string: ");
             printf("%s", stack->array[i].data.val_s);
             break;
         case T_array:
-            //printf(" array: ");
+            // printf(" array: ");
             PRINT_ARRAY((stack->array[i].data.val_p));
             break;
         case T_block:
-            printf(" block: ");
+            //  printf(" block: ");
             printf("%s", stack->array[i].data.val_b);
             break;
         default:
@@ -155,7 +155,9 @@ void PRINT_ARRAY(struct stack *stack)
             break;
         }
         //printf("\n", i);
+        printf("-");
     }
+    //printf("\n");
 }
 
 /**

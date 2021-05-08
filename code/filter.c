@@ -166,7 +166,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (secondarray(ptr_STACK))
         {
-            printf("Escudeiro vai pagar kitkats!\n");
+            // printf("Escudeiro vai pagar kitkats!\n");
             percentagem_function(ptr_STACK);
         }
         else if (secondstring(ptr_STACK))
@@ -308,7 +308,11 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         break;
     case ',':
-        if (onlynumber(ptr_STACK))
+        if (onlyblock(ptr_STACK))
+        {
+            // filter_block(ptr_STACK);
+        }
+        else if (onlynumber(ptr_STACK))
         {
             range_array(ptr_STACK);
         }
@@ -321,15 +325,13 @@ void poli_filter(struct stack *ptr_STACK, char *token)
             struct elemento x = POP(ptr_STACK);
             tamanho_str(ptr_STACK, x);
         }
-        /*
-        else if (onlyblock(ptr_STACK))
-        {
-            // Aplica um filter à string ou ao array -> Verificar se não é necessário mais uma condição neste caso!!!
-        }*/
         else
         {
             printf("Deu merda na condição do poli_filter: ,\n Falta fazer a condição dos blocos \n");
         }
+        break;
+    default:
+        // printf("Poli filter nao meteu o menino la dentro!\n");
         break;
     }
 }

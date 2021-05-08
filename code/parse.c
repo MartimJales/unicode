@@ -236,6 +236,9 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
         case ')':
             right_parentesis(ptr_STACK);
             break;
+        default:
+            printf("Deu merda na go_filter_array\n");
+            break;
         }
     }
     else if (existe_string(ptr_STACK))
@@ -425,6 +428,7 @@ void parse(char *line)
         {
             //  printf("ARRAY!\n");
             pinta_array(token);
+            // printf("Token after parse_array: %s!\n", token);
             struct elemento val;
             val.tipo = T_array;
             struct stack *new_stack = malloc(sizeof(struct stack));
@@ -438,7 +442,7 @@ void parse(char *line)
             blocko.tipo = T_block;
             blocko.data.val_b = token;
             PUSH(ptr_STACK, blocko);
-            printf("o tipo do q pushei é : %d\n", blocko.tipo);
+            // printf("o tipo do q pushei é : %d\n", blocko.tipo);
         }
         else if (*token == '"')
         {

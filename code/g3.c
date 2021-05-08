@@ -532,6 +532,21 @@ void variables2(struct stack *ptr_STACK, char *token)
             ptr_STACK->vars[i].elemento.tipo = T_string;
             ptr_STACK->vars[i].elemento.data.val_s = new_string;
         }
+        else if (new_elem.tipo == T_block)
+        {
+            int t = strlen(new_elem.data.val_b);
+            // printf("Tamanho da var: %d\n", t);
+            char *new_string = malloc((t + 1) * sizeof(char));
+
+            //  printf("A menina doida: %s\n", new_elem.data.val_b);
+            // mystrcat4(new_string, "{ ");
+            mystrcat4(new_string, new_elem.data.val_b);
+            // mystrcat4(new_string, " }");
+            // printf("A menina desejada: %s!\n", new_string);
+
+            ptr_STACK->vars[i].elemento.tipo = T_block;
+            ptr_STACK->vars[i].elemento.data.val_b = new_string;
+        }
         else
         {
             ptr_STACK->vars[i].elemento = new_elem;
