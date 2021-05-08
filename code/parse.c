@@ -181,6 +181,10 @@ void go_filter(struct stack *ptr_STACK, char *token)
         // printf("Deu sete!\n");
         variables2(ptr_STACK, token);
         break;
+    case 8:
+        // printf("Deu sete!\n");
+        w_function(ptr_STACK);
+        break;
     default:
         printf("Deu bagalho no go_filter!\n");
         break;

@@ -24,6 +24,7 @@ int filter(char *token)
     char *io = "ltp";
     char *variables1 = "ABCDEFGHIJKLMOPQRTUVWXYZ";
     char *variables2 = ":";
+    char *blocos = "w";
 
     while (*maths)
     {
@@ -78,6 +79,14 @@ int filter(char *token)
             return 7;
         }
         variables2++;
+    }
+        while (*blocos)
+    {
+        if (*token == *blocos)
+        {
+            return 8;
+        }
+        blocos++;
     }
     // printf("Caiu no sitio certo!\n");
     return 0;
