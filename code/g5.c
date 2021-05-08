@@ -55,23 +55,13 @@ void criaBlock(struct stack *ptr_STACK, char *token)
     printf("o tipo do q pushei é : %d", x.tipo);
 }
 
+// Recebe um numero antes do bloco e aplic ao bloco ao numero!
+
 void tilfunction(struct stack *ptr_STACK)
 {
-
-    //char *snum;
-
-    printf("entrou aqui \n");
+    printf("entrou na tilfunction\n");
 
     char s[200];
-
-    int num = 321;
-    char snum[200] = {0};
-
-    // convert 123 to string [buf]
-    //itoa(num, snum, 10);
-
-    // print our string
-    //printf("%s\n", snum);
 
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
@@ -79,44 +69,98 @@ void tilfunction(struct stack *ptr_STACK)
     if (y.tipo == T_int)
     {
         // s[0]=x.data.val_i;
-        printf("entrou no int\n ");
-        strcat(s, snum);
-        //sprintf (s,"%d",y.data.val_i);
+        printf("entrou no int\n");
+        //strcat(s, snum);
+        sprintf(s, "%d", y.data.val_i);
     }
     else if (y.tipo == T_long)
     {
         //s[0]=x.data.val_l;
-        printf("entrou no long\n ");
+        printf("entrou no long\n");
         sprintf(s, "%ld", y.data.val_l);
     }
     else if (y.tipo == T_float)
     {
         //s[0]=x.data.val_f;
-        printf("entrou no float \n ");
+        printf("entrou no float \n");
         sprintf(s, "%.2f", y.data.val_f);
     }
     else if (y.tipo == T_double)
     {
         // s[0]=x.data.val_d;
-        printf("entrou no double \n ");
+        printf("entrou no double \n");
         sprintf(s, "%.2f", y.data.val_d);
     }
-    /*
-else if (x.tipo == T_string) {
-        s[0]=x.data.val_s;
+    pinta_block(x.data.val_b);
+    mystrcat4(s, " ");
+    mystrcat4(s, x.data.val_b);
 
-   // sprintf (s,"%f",x.data.val_d);
+    //    printf("%s", s);
+
+    parse_array(s, ptr_STACK);
 }
-*/
-    /*
-else if (x.tipo == T_char) {
-       s[0]=x.data.val_c;
 
-    //sprintf (s,"%c",x.data.val_c);
-}*/
+void percentagem_function(struct stack *ptr_STACK)
+{
+    printf("entrou na percentagem_function\n");
 
-    s[20] = '\0';
-    printf("%s", s);
+    char s[200];
+
+    struct elemento block = POP(ptr_STACK);
+    struct elemento arr = POP(ptr_STACK);
+
+    pinta_block(block.data.val_b);
+
+    for (int i = 0; i < arr.data.val_p->top; i++)
+    {
+    }
+
+    mystrcat4(s, " ");
+    mystrcat4(s, block.data.val_b);
+
+    //    printf("%s", s);
+
+    parse_array(s, ptr_STACK);
+}
+
+char *tilfunction2(struct elemento y, char *line, struct stack *array)
+{
+    printf("entrou na tilfunction2\n");
+
+    char s[200];
+
+    if (y.tipo == T_int)
+    {
+        // s[0]=x.data.val_i;
+        printf("entrou no int\n");
+        //strcat(s, snum);
+        sprintf(s, "%d", y.data.val_i);
+    }
+    else if (y.tipo == T_long)
+    {
+        //s[0]=x.data.val_l;
+        printf("entrou no long\n");
+        sprintf(s, "%ld", y.data.val_l);
+    }
+    else if (y.tipo == T_float)
+    {
+        //s[0]=x.data.val_f;
+        printf("entrou no float \n");
+        sprintf(s, "%.2f", y.data.val_f);
+    }
+    else if (y.tipo == T_double)
+    {
+        // s[0]=x.data.val_d;
+        printf("entrou no double \n");
+        sprintf(s, "%.2f", y.data.val_d);
+    }
+    pinta_block(y.data.val_b);
+    mystrcat4(s, " ");
+    mystrcat4(s, y.data.val_b);
+
+    return s;
+
+    //parse_array(s, array);
 }
 
 char *pinta_block(char *line)

@@ -8,6 +8,7 @@
 #include "g2.h"
 #include "g3.h"
 #include "g4.h"
+#include "g5.h"
 #include "filter.h"
 #include <assert.h>
 
@@ -165,7 +166,8 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (secondarray(ptr_STACK))
         {
-            // Aplicar o bloco a todos os elementos do array
+            printf("Escudeiro vai pagar kitkats!\n");
+            percentagem_function(ptr_STACK);
         }
         else if (secondstring(ptr_STACK))
         {
@@ -193,7 +195,11 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         break;
     case '~':
-        if (onlynumber(ptr_STACK))
+        if (onlyblock(ptr_STACK))
+        {
+            tilfunction(ptr_STACK);
+        }
+        else if (onlynumber(ptr_STACK))
         {
             complement(ptr_STACK);
         }
@@ -201,11 +207,6 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         {
             empurraarray(ptr_STACK);
         }
-        /*
-        else if (onlyblock(ptr_STACK))
-        {
-            // Aplicar o bloco a todos os charda string
-        }*/
         else
         {
             printf("Deu merda na condição do poli_filter: ~\n Falta fazer a condição dos blocos \n");
@@ -471,6 +472,16 @@ int equal_type(struct stack *ptr_STACK)
     int tipo1 = ptr_STACK->array[ptr_STACK->top].tipo;
     int tipo2 = ptr_STACK->array[ptr_STACK->top - 1].tipo;
     if (tipo1 == tipo2)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int onlyblock(struct stack *ptr_STACK)
+{
+    int tipo1 = ptr_STACK->array[ptr_STACK->top].tipo;
+    if (tipo1 == T_block)
     {
         return 1;
     }
