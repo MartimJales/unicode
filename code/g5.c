@@ -258,10 +258,10 @@ void w_function(struct stack *ptr_STACK)
     }
 
     parse_array(s, final.data.val_p);
-    PRINT_ARRAY(final.data.val_p);
-    printf("\n");
-    PRINT_ARRAY(arr.data.val_p);
-    printf("\n");
+    //PRINT_ARRAY(final.data.val_p);
+    //printf("\n");
+    //PRINT_ARRAY(arr.data.val_p);
+    //printf("\n");
 
     int topo = arr.data.val_p->top;
 
@@ -623,12 +623,12 @@ void merge(struct elemento arr[], int l, int m, int r, char *bloco, struct stack
         k++;
     }
 
-    printf("No fim do merge eu devolvi o seguinte: ");
+   // printf("No fim do merge eu devolvi o seguinte: ");
     for (int i = 0; i < k; i++)
     {
-        printf("%ld - ", arr[i].data.val_l);
+   //     printf("%ld - ", arr[i].data.val_l);
     }
-    printf("\n");
+   // printf("\n");
 }
 
 int count = 0;
@@ -1022,10 +1022,10 @@ void mergeSort1(int arr[], int l, int r)
     }
 }
 
-void printArray(int A[], int size)
-{
-    int i;
-    for (i = 0; i < size; i++)
-        printf("%d ", A[i]);
-    printf("\n");
-}
+ //void printArray(int A[], int size)
+//{
+    //int i;
+    //for (i = 0; i < size; i++)
+ //       printf("%d ", A[i]);
+  //  printf("\n");
+//}

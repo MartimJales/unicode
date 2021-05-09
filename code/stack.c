@@ -88,7 +88,7 @@ void PRINT_STACK(struct stack *stack)
             printf("%c", stack->array[i].data.val_c);
             break;
         case T_string:
-            printf("string: ");
+            //printf("string: ");
             printf("%s", stack->array[i].data.val_s);
             break;
         case T_array:
@@ -155,7 +155,7 @@ void PRINT_ARRAY(struct stack *stack)
             break;
         }
         //printf("\n", i);
-        printf("-");
+        //printf("-");
     }
     //printf("\n");
 }
