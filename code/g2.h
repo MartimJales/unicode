@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as funçẽs relativas ao parse da Stack
+ * @file Ficheiro que contém as funçẽs relativas ao guião 2
  */
 
 /**
@@ -8,8 +8,7 @@
  * recebe como parâmetros um apontador para a struct stack e uma variável i
  * e devolve o valor apontado para esse índice.
  * 
- * @param stack
- * @param i (índice)
+ * @param stack (apontador para a stack)
  */
 void dollarfunction(struct stack *stack);
 
@@ -18,8 +17,8 @@ void dollarfunction(struct stack *stack);
  * 
  * efetua o cálculo das operações aritméticas.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void maths(struct stack *ptr_STACK, char *token);
 
@@ -28,8 +27,8 @@ void maths(struct stack *ptr_STACK, char *token);
  * 
  * efetua o cálculo das operações para manipulação da Stack.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void manstack(struct stack *ptr_STACK, char *token);
 
@@ -38,8 +37,8 @@ void manstack(struct stack *ptr_STACK, char *token);
  * 
  *  efetua a conversão dos elementos da Stack para um dado tipo.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void conversion(struct stack *ptr_STACK, char *token);
 
@@ -48,8 +47,8 @@ void conversion(struct stack *ptr_STACK, char *token);
  * 
  * é responsável pelas ações de in/output.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void inoutput(struct stack *ptr_STACK, char *token);
 
@@ -58,8 +57,8 @@ void inoutput(struct stack *ptr_STACK, char *token);
  * 
  * é responsável pelas ações de lógica e condições.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void logic(struct stack *ptr_STACK, char *token);
 
@@ -68,7 +67,7 @@ void logic(struct stack *ptr_STACK, char *token);
  * 
  * é responsável por duplica os dois elementos do topo da stack.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void double_top(struct stack *ptr_STACK);
 
@@ -77,7 +76,7 @@ void double_top(struct stack *ptr_STACK);
  * 
  * é responsável por trocar os dois elementos do topo da stack.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void switch_top(struct stack *ptr_STACK);
 
@@ -86,7 +85,7 @@ void switch_top(struct stack *ptr_STACK);
  * 
  * é responsável por rodar os três elementos do topo da stack.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void rotate_elem(struct stack *ptr_STACK);
 
@@ -95,7 +94,7 @@ void rotate_elem(struct stack *ptr_STACK);
  * 
  * é responsável por converter o elemento do topo da stack para int.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_i(struct stack *ptr_STACK);
 
@@ -104,7 +103,7 @@ void convert_i(struct stack *ptr_STACK);
  * 
  * é responsável por converter o elemento do topo da stack para float.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_f(struct stack *ptr_STACK);
 
@@ -113,7 +112,7 @@ void convert_f(struct stack *ptr_STACK);
  * 
  * é responsável por converter o elemento do topo da stack para char.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_c(struct stack *ptr_STACK);
 
@@ -122,7 +121,7 @@ void convert_c(struct stack *ptr_STACK);
  * 
  * é responsável por converter o elemento do topo da stack para string.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_s(struct stack *ptr_STACK);
 
@@ -131,7 +130,7 @@ void convert_s(struct stack *ptr_STACK);
  * 
  * é responsável por ler uma linha.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void read_line(struct stack *ptr_STACK);
 
@@ -140,7 +139,7 @@ void read_line(struct stack *ptr_STACK);
  * 
  * é responsável por decrementar um elemento.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void decrement(struct stack *ptr_STACK);
 
@@ -149,7 +148,7 @@ void decrement(struct stack *ptr_STACK);
  * 
  * é responsável por incrementar um elemento.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void increment(struct stack *ptr_STACK);
 
@@ -158,7 +157,7 @@ void increment(struct stack *ptr_STACK);
  * 
  * é responsável por transformar o elemento em complemento para 2.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void complement(struct stack *ptr_STACK);
 
@@ -167,10 +166,15 @@ void complement(struct stack *ptr_STACK);
  * 
  * é responsável por chamar a função operador.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void call_operator(struct stack *ptr_STACK, char *token);
 
-
-
+/**
+ * \brief Função read_all_lines do programa
+ * 
+ * é responsável por ler todas as linhas 
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void read_all_lines(struct stack *ptr_STACK);

@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as função parse, a par, das funções que lhe dão suporte, POP, PUSH e PRINT_STACK
+ * @file Ficheiro que contém as funções relativas ao guião 3
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -79,7 +79,6 @@ void smaller(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        // printf("resultado do strcmp %d\n", strcmp(y.data.val_s, x.data.val_s));
         if (strcmp(y.data.val_s, x.data.val_s) < 0)
         {
             r.data.val_i = 1;
@@ -133,7 +132,6 @@ void equal(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        // printf("entrou aqui fofinho \n");
         if (strcmp(x.data.val_s, y.data.val_s) == 0)
             r.data.val_i = 1;
         else
@@ -154,7 +152,6 @@ void equal(struct stack *ptr_STACK)
     }
     else
     {
-
         struct elemento val;
         val.tipo = T_int;
         double x_ret = convertToDouble(x);
@@ -180,7 +177,6 @@ void no(struct stack *ptr_STACK)
     val.tipo = T_int;
     struct elemento x = POP(ptr_STACK);
     double x_ret = convertToDouble(x);
-    //printf("Esta menina deu: %f\n", x_ret);
     if (x_ret)
         val.data.val_i = 0;
     else
@@ -207,6 +203,13 @@ void ifthenelse(struct stack *ptr_STACK)
         PUSH(ptr_STACK, x);
 }
 
+/**
+ * \brief Função validade do programa
+ * 
+ *é responsável por devolver o valor mediante o tipo do struct elemento 
+ * 
+ * @param val (struct elemento)
+ */
 int validade(struct elemento val)
 {
     switch (val.tipo)
@@ -224,7 +227,7 @@ int validade(struct elemento val)
         return val.data.val_d;
         break;
     case T_string:
-        printf("Falta testar strigns no ifthenelse|\n");
+        printf("Falta testar strings no ifthenelse|\n");
         break;
     case T_char:
         printf("Falta testar char no ifthenelse|\n");
@@ -236,7 +239,7 @@ int validade(struct elemento val)
             return 1;
         break;
     default:
-        printf("Deu muita merda!!! abort!!!\n");
+        printf("Deu bagulho na função validade\n");
         return 0;
     }
     return 0;
@@ -286,7 +289,6 @@ void ebigger(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        // printf("resultado do strcmp %d\n", strcmp(y.data.val_s, x.data.val_s));
         if (strcmp(y.data.val_s, x.data.val_s) < 0)
         {
             PUSH(ptr_STACK, x);
@@ -333,7 +335,6 @@ void esmaller(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        // printf("resultado do strcmp %d\n", strcmp(y.data.val_s, x.data.val_s));
         if (strcmp(y.data.val_s, x.data.val_s) < 0)
         {
             PUSH(ptr_STACK, y);
@@ -365,6 +366,7 @@ void esmaller(struct stack *ptr_STACK)
             PUSH(ptr_STACK, y);
     }
 }
+
 /**
  * \brief Função eshortcut  do programa
  * 
@@ -461,6 +463,7 @@ void epequeno(struct stack *ptr_STACK)
  * dado uma variável ,coloca essa variável na stack
  * 
  * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void variables1(struct stack *ptr_STACK, char *token)
 {
@@ -474,6 +477,7 @@ void variables1(struct stack *ptr_STACK, char *token)
  * caso o input seja N ou S realiza as devidas ações de "\n" ou " " , ou caso seja ":" altera o conteudo da variável
  * 
  * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void variables2(struct stack *ptr_STACK, char *token)
 {
@@ -491,22 +495,15 @@ void variables2(struct stack *ptr_STACK, char *token)
         x.tipo = T_string;
         char space[] = " ";
         x.data.val_s = space;
-        // x.data.val_s[0] = ' ';
-        //x.data.val_s[1] = '\0';
-        //char *space = " ";
-        //sprintf(x.data.val_s, space);
         PUSH(ptr_STACK, x);
-        printf("O menino é um:[%s]\n", ptr_STACK->array[ptr_STACK->top].data.val_s);
     }
     else if (*token == ':')
     {
         int i = *(token + 1) % 65;
-
-        struct elemento new_elem = POP(ptr_STACK); // ptr_STACK->array[(*ptr_STACK).top];
+        struct elemento new_elem = POP(ptr_STACK);
 
         if (new_elem.tipo == T_array)
         {
-            // printf("Caiuu nos arrays!\n");
             struct elemento val;
             val.tipo = T_array;
             struct stack *new_stack = malloc(sizeof(struct stack));
@@ -519,15 +516,11 @@ void variables2(struct stack *ptr_STACK, char *token)
         }
         else if (new_elem.tipo == T_string)
         {
-            // printf("CAIU NAS STRINGS!\n");
-
             int t = strlen(new_elem.data.val_s);
-            // printf("Tamanho da var: %d\n", t);
+
             char *new_string = malloc((t + 1) * sizeof(char));
 
-            //printf("A menina doida: %s\n", new_elem.data.val_s);
             mystrcat4(new_string, new_elem.data.val_s);
-            //printf("A menina desejada: %s!", new_string);
 
             ptr_STACK->vars[i].elemento.tipo = T_string;
             ptr_STACK->vars[i].elemento.data.val_s = new_string;
@@ -535,14 +528,10 @@ void variables2(struct stack *ptr_STACK, char *token)
         else if (new_elem.tipo == T_block)
         {
             int t = strlen(new_elem.data.val_b);
-            // printf("Tamanho da var: %d\n", t);
+
             char *new_string = malloc((t + 1) * sizeof(char));
 
-            //  printf("A menina doida: %s\n", new_elem.data.val_b);
-            // mystrcat4(new_string, "{ ");
             mystrcat4(new_string, new_elem.data.val_b);
-            // mystrcat4(new_string, " }");
-            // printf("A menina desejada: %s!\n", new_string);
 
             ptr_STACK->vars[i].elemento.tipo = T_block;
             ptr_STACK->vars[i].elemento.data.val_b = new_string;

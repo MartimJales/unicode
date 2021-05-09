@@ -1,4 +1,6 @@
-
+/**
+ * @file Ficheiro que contém as funções relativas ao guião 4
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,17 +14,19 @@
 #include "filter.h"
 #include <assert.h>
 
-//falta testar (dentro dos PUSH o 1º elemento temos que vereficar se necessita de apontadores ou nao)
-
+/**
+ * \brief Função concatenarray  do programa
+ * 
+ * que faz POP de dois elementos, e se pelo menos um deles for array ,concatena-os.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void concatenarray(struct stack *ptr_STACK)
 {
-    //printf("Cheguei ao concatena!\n");
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
     if ((x.tipo == T_array) && (y.tipo == T_array))
     {
-        //printf("Temos dois arrays!!!!\n");
-        //printf("Topo do array %d\n", x.data.val_p->top);
 
         for (int i = 0; i <= x.data.val_p->top; i++)
         {
@@ -37,7 +41,6 @@ void concatenarray(struct stack *ptr_STACK)
     }
     else if ((x.tipo == T_array) && (y.tipo != T_array))
     {
-        //printf("Caiu aqui\n");
         struct elemento array;
         array.tipo = T_array;
         struct stack *new_stack = malloc(sizeof(struct stack));
@@ -52,6 +55,13 @@ void concatenarray(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função empurraarray  do programa
+ * 
+ * que faz PUSH dos elementos de um array na Stack.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void empurraarray(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -62,6 +72,13 @@ void empurraarray(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função repetearray  do programa
+ * 
+ * que repete n-vezes um array e faz PUSH para a stack de um array que contem as n repetições pedidas.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void repetearray(struct stack *ptr_STACK)
 {
     int n = 0;
@@ -93,33 +110,39 @@ void repetearray(struct stack *ptr_STACK)
     PUSH(ptr_STACK, val);
 }
 
+/**
+ * \brief Função parse_array  do programa
+ * 
+ * que lê uma linha e trata diferentes possibilidades, ter um array, ter uma string
+ * ou apenas efetuar outras operações, caso não enocntre arrays nem strings.
+ * 
+ * @param line (uma linha que será tratada)
+ * @param ptr_STACK (apontador para a stack)
+ */
 void parse_array(char *line, struct stack *ptr_STACK)
 {
-    // printf("Caiu no parse array!\n");
+
     char *token;
     char *resto;
-    int tamanho=0;
+    int tamanho = 0;
 
-    int t = strlen (line);
+    int t = strlen(line);
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0 && tamanho+1<t; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0 && tamanho + 1 < t; token = get_token(delimitadores, resto, &resto))
     {
-        
-        tamanho+=strlen(token);
+
+        tamanho += strlen(token);
 
         char *resto_num = "abc";
         int val_tipo;
-        //printf("Token atual da parse array: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
         if (strlen(resto_num) == 0)
             put_token(ptr_STACK, val_tipo, token);
         else if (*token == '[')
         {
-            // printf("ARRAY!\n");
             pinta_array(token);
-            // printf("Token depois do pinta_array: {%s}!\n", token);
             struct elemento val;
             val.tipo = T_array;
             struct stack *new_stack = malloc(sizeof(struct stack));
@@ -142,58 +165,42 @@ void parse_array(char *line, struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função criaStr  do programa
+ * 
+ * que criará uma String.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ */
 void criaStr(struct stack *ptr_STACK, char *token)
 {
-    //printf("CAIU NAS STRINGS!\n");
     int i = 0;
     int size;
 
-     size = strlen(token);
-    /*
-    printf("Token na criaStr: \n\n");
-    printf("%s\n", token);
-*/
-    //printf("Tudo ok com a strlen: %zu\n"), strlen(token);
-    //printf("Tudo ok com a strlen: %d\n"), sizeof(token);
+    size = strlen(token);
+
     struct elemento x;
     x.tipo = T_string;
-    
-    x.data.val_s =malloc(size* sizeof(char));
-    /*
-    printf("Token[1]: %c\n", token[1]);
-    x.data.val_s = *(token + 1);
-    */
-    //printf("Token[1]: %c\n", x.data.val_s[0]);
+    x.data.val_s = malloc(size * sizeof(char));
 
-    while (token[i+2] != '\0')
-    {
-        x.data.val_s[i] = token[i+1];
-        i++;
-    }
-/*
     while (token[i + 2] != '\0')
     {
         x.data.val_s[i] = token[i + 1];
         i++;
     }
-*/
-
-    /*
-    for (i = 0; i < size - 2; i++)
-    {
-        x.data.val_s[i] = token[i + 1];
-    }
-     x.data.val_s = "cona!!";
-    printf("Poiinter criado no elemento na criaStr: \n\n");
-    printf("%s\n", (x.data.val_s));
-
-    //printf("%s\n", token);
-*/
     x.data.val_s[i] = '\0';
 
     PUSH(ptr_STACK, x);
 }
 
+/**
+ * \brief Função tamanho_array  do programa
+ * 
+ * que devolve a quantidade de elementos (alfanuméricos) contidos num array.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void tamanho_array(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -204,6 +211,14 @@ void tamanho_array(struct stack *ptr_STACK)
     PUSH(ptr_STACK, n);
 }
 
+/**
+ * \brief Função range_array  do programa
+ * 
+ * que faz POP de um elemento e se esse é um número n devolve um array com 
+ * os números inteiros no intervalo [0...(n-1)]
+ * 
+ * @param ptr_STACK  (apontador para a stack)
+ */
 void range_array(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -226,7 +241,7 @@ void range_array(struct stack *ptr_STACK)
         x.data.val_i = (int)x.data.val_d;
     }
     else
-        printf("Deu erro na função range");
+        printf("Deu erro na função range\n");
 
     struct elemento y;
     y.tipo = T_int;
@@ -237,8 +252,6 @@ void range_array(struct stack *ptr_STACK)
     initStack(new_stack, ptr_STACK->vars);
     val.data.val_p = new_stack;
 
-    //struct array *ptr_array = (array.data.val_p);
-    // printf("Range: %d\n\n", x.data.val_i);
     for (int i = 0; i < x.data.val_i; i++)
     {
         y.data.val_i = i;
@@ -247,9 +260,15 @@ void range_array(struct stack *ptr_STACK)
     PUSH(ptr_STACK, val);
 }
 
+/**
+ * \brief Função buscavalindice  do programa
+ * 
+ * que vai ao array buscar um elemento no índice i que foi pedido.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void buscavalindice(struct stack *ptr_STACK)
 {
-    //printf("entrei na busaca val indice \n");
     struct elemento x = POP(ptr_STACK);
     if (x.tipo == T_long)
     {
@@ -270,7 +289,7 @@ void buscavalindice(struct stack *ptr_STACK)
         x.data.val_i = (int)x.data.val_d;
     }
     else
-        printf("Deu erro na função range");
+        printf("Deu erro na função buscavalindice\n");
 
     struct elemento y = POP(ptr_STACK);
 
@@ -279,6 +298,13 @@ void buscavalindice(struct stack *ptr_STACK)
     PUSH(ptr_STACK, y.data.val_p->array[len]);
 }
 
+/**
+ * \brief Função left_elementos do programa
+ * 
+ * que faz POP de um valor n  e de um array e vai ao array remover n-elementos do início.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void left_elementos(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -299,7 +325,7 @@ void left_elementos(struct stack *ptr_STACK)
         x.data.val_i = (int)x.data.val_d;
     }
     else
-        printf("Deu erro na função left_elementos");
+        printf("Deu erro na função left_elementos\n");
 
     struct elemento val;
     val.tipo = T_array;
@@ -313,12 +339,17 @@ void left_elementos(struct stack *ptr_STACK)
     PUSH(ptr_STACK, val);
 }
 
-// feita e empurra o array.flta saber se empurra array ou elemento a elemento
+/**
+ * \brief Função right_elementos do programa
+ * 
+ * que faz POP de um valor n e de um array e vai ao array remover n-elementos a partir do fim.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void right_elementos(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
-    //  printf("Tipo do y: %d\n", y.tipo);
     if (x.tipo == T_long)
     {
         x.tipo = T_int;
@@ -339,7 +370,7 @@ void right_elementos(struct stack *ptr_STACK)
     }
     else
     {
-        printf("Deu erro na função range");
+        printf("Deu erro na função right elementos\n");
     }
 
     struct elemento val;
@@ -350,35 +381,37 @@ void right_elementos(struct stack *ptr_STACK)
 
     for (int i = y.data.val_p->top - x.data.val_i + 1; i <= y.data.val_p->top; i++)
     {
-        //printf("Quero o elemento  : %d\n", y.data.val_p->array[i].data.val_i);
         PUSH(new_stack, y.data.val_p->array[i]);
     }
     PUSH(ptr_STACK, val);
 }
 
+/**
+ * \brief Função right_parentesis do programa
+ * 
+ * que retira o último elemento de um array e coloca na Stack depois do array.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void right_parentesis(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK); // array;
-    // printf("Teste de debgging manhoso antes!!!\n");
-    // PRINT_ARRAY(x.data.val_p);
-    // printf("\n");
-    // printf("Topo do array antes: %d!\n", x.data.val_p->top);
-    // printf("\n");
+    struct elemento x = POP(ptr_STACK);
     struct elemento new = POP(x.data.val_p);
-    // printf("TEste de debgging manhoso depois!!!\n");
-    // PRINT_ARRAY(x.data.val_p);
-    // printf("\n");
-
     PUSH(ptr_STACK, x);
     PUSH(ptr_STACK, new);
 }
 
+/**
+ * \brief Função left_parentesis do programa
+ * 
+ * que retira o primeiro elemento de um array e coloca na Stack depois do array.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void left_parentesis(struct stack *ptr_STACK)
 {
-    struct elemento x = POP(ptr_STACK);           // array;
-    struct elemento new = x.data.val_p->array[0]; // elemento inicial do array;
-    //printf("New -> %d\n", new.data.val_i);
-
+    struct elemento x = POP(ptr_STACK);
+    struct elemento new = x.data.val_p->array[0];
     for (int i = 0; i < x.data.val_p->top; i++)
     {
         x.data.val_p->array[i] = x.data.val_p->array[i + 1];
@@ -388,6 +421,14 @@ void left_parentesis(struct stack *ptr_STACK)
     PUSH(ptr_STACK, new);
 }
 
+/**
+ * \brief Função manarray do programa
+ * 
+ * que recebe um token e efetua uma operação de acordo com o objetivo desse token.
+ * 
+ * @param ptr_STACK  (apontador para a stack )
+ * @param token (operando)
+ */
 void manarray(struct stack *ptr_STACK, char *token)
 {
     switch (*token)
@@ -396,15 +437,12 @@ void manarray(struct stack *ptr_STACK, char *token)
         empurraarray(ptr_STACK);
         break;
     case '*':
-        //printf("entrei na manarray \n");
         repetearray(ptr_STACK);
         break;
     case ',':
-        //printf("Caiu na virgula");
         tamanho_array(ptr_STACK);
         break;
     case '=':
-        //printf("VAPOVAPO\n");
         buscavalindice(ptr_STACK);
         break;
     case '<':
@@ -425,6 +463,15 @@ void manarray(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função mystrcat do programa
+ * 
+ * que recebe dois caracteres e concatena-os.
+ * 
+ * @param s1 (caractere)
+ * @param s2 (caractere)
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
 {
 
@@ -432,7 +479,6 @@ void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
     char test2 = s2.data.val_c;
     s1.tipo = T_string;
     s1.data.val_s = malloc(100 * sizeof(char));
-    printf("S1: %s\n", s1.data.val_s);
 
     s1.data.val_s[0] = test1;
     s1.data.val_s[1] = test2;
@@ -441,6 +487,15 @@ void mystrcat(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
     PUSH(ptr_STACK, s1);
 }
 
+/**
+ * \brief Função mystrcat2 do programa
+ * 
+ * que recebe um caractere e uma string e concatena-os numa só string.
+ * 
+ * @param s1 (catactere)
+ * @param s2 (string)
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void mystrcat2(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
 {
     char test1 = s1.data.val_c;
@@ -453,6 +508,15 @@ void mystrcat2(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
     PUSH(ptr_STACK, s1);
 }
 
+/**
+ * \brief Função mystrcat3 do programa
+ * 
+ * que recebe uma string e um caractere e concatena-os numa só string.
+ * 
+ * @param s1 (string)
+ * @param s2 (caractere)
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void mystrcat3(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
 {
     char test1 = s2.data.val_c;
@@ -465,6 +529,14 @@ void mystrcat3(struct elemento s1, struct elemento s2, struct stack *ptr_STACK)
     PUSH(ptr_STACK, s1);
 }
 
+/**
+ * \brief Função mystrcat4 do programa
+ * 
+ * que recebe duas strings e concatena-as.
+ * 
+ * @param s1 (string)
+ * @param s2 (string)
+ */
 void mystrcat4(char s1[], char s2[])
 {
     int i, j;
@@ -478,6 +550,13 @@ void mystrcat4(char s1[], char s2[])
     s1[i] = '\0';
 }
 
+/**
+ * \brief Função concaString do programa
+ * 
+ * que tem por objetivo concatenar duas strings ou uma string e uma caractere.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void concaString(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
@@ -485,13 +564,11 @@ void concaString(struct stack *ptr_STACK)
 
     if (y.tipo == T_char && x.tipo == T_char)
     {
-        // printf("DOIS CHARS!\n");
         mystrcat(y, x, ptr_STACK);
     }
 
     else if (y.tipo == T_char && x.tipo == T_string)
     {
-        // printf("1-char 2 -string!\n");
         mystrcat2(y, x, ptr_STACK);
     }
 
@@ -507,6 +584,13 @@ void concaString(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função repeteStr  do programa
+ * 
+ *  faz PUSH de uma string resultado que contem as n repetições da string inicial.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void repeteStr(struct stack *ptr_STACK)
 {
     int i, j;
@@ -528,16 +612,31 @@ void repeteStr(struct stack *ptr_STACK)
     PUSH(ptr_STACK, copy);
 }
 
+/**
+ * \brief Função tamanho_str  do programa
+ * 
+ * que devolve a quantidade de elementos contidos numa String.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ * @param x (string)
+ */
 void tamanho_str(struct stack *ptr_STACK, struct elemento x)
 {
     struct elemento z;
     z.tipo = T_int;
     z.data.val_i = strlen(x.data.val_s);
-    // printf("entrou na tamanho str \n");
 
     PUSH(ptr_STACK, z);
 }
 
+/**
+ * \brief Função val_index_Str  do programa
+ * 
+ * que vai buscar à String um elemento no índice i que lhe damos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ * @param x (indice)
+ */
 void val_index_Str(struct stack *ptr_STACK, struct elemento x)
 {
     struct elemento y = POP(ptr_STACK);
@@ -548,43 +647,38 @@ void val_index_Str(struct stack *ptr_STACK, struct elemento x)
     PUSH(ptr_STACK, z);
 }
 
+/**
+ * \brief Função catch_elem_Str do programa
+ * 
+ * que faz POP de um valor n e de uma string e vai à String remover n-elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void catch_elem_Str(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
 
-    /*
-    struct elemento z;
-    z.data.val_s = malloc(100 * sizeof(char));
-    z.tipo = T_string;
-*/
-
     if (x.tipo == T_int)
     {
         y.data.val_s[x.data.val_i] = '\0';
-        /*
-        for (i = 0; i < x.data.val_i; i++)
-        {
-            z.data.val_s[i] = y.data.val_s[i];
-        }
-        */
     }
     else if (x.tipo == T_long)
     {
         y.data.val_s[x.data.val_l] = '\0';
-        /*
-        for (i = 0; i < x.data.val_l; i++)
-        {
-            z.data.val_s[i] = y.data.val_s[i];
-        }
-        */
     }
     else
-        printf("Deu merd na função catch_elem_Str\n");
+        printf("Deu bagulho na função catch_elem_Str\n");
     PUSH(ptr_STACK, y);
-    //PUSH(ptr_STACK, z);
 }
 
+/**
+ * \brief Função catch_ultimos_Str do programa
+ * 
+ * que faz POP de um valor n e de uma string e vai à String remover n-elementos a partir do fim.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void catch_ultimos_Str(struct stack *ptr_STACK)
 {
     int i = 0;
@@ -613,11 +707,18 @@ void catch_ultimos_Str(struct stack *ptr_STACK)
         y.data.val_s[j] = '\0';
     }
     else
-        printf("Deu merd na função catch_elem_Str\n");
+        printf("Deu bagulho na função catch_elem_Str\n");
 
     PUSH(ptr_STACK, y);
 }
 
+/**
+ * \brief Função delete_fst_Str do programa
+ * 
+ * que retira o primeiro elemento de uma String e coloca na Stack depois do String.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void delete_fst_Str(struct stack *ptr_STACK)
 {
 
@@ -636,6 +737,13 @@ void delete_fst_Str(struct stack *ptr_STACK)
     PUSH(ptr_STACK, w);
 }
 
+/**
+ * \brief Função delete_snd_Str do programa
+ * 
+ * que retira o último elemento de uma String e coloca na Stack depois da String.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void delete_snd_Str(struct stack *ptr_STACK)
 {
     struct elemento y = POP(ptr_STACK);
@@ -650,6 +758,16 @@ void delete_snd_Str(struct stack *ptr_STACK)
     PUSH(ptr_STACK, w);
 }
 
+/**
+ * \brief Função isSubstring do programa
+ * 
+ * que testa se uma string é sub-String de outra 
+ * e devolve o índice da posição em que se encontra,
+ * caso não seja sub-String devolve -1.
+ * 
+ * @param haystack (string principal)
+ * @param needle (substring)
+ */
 int isSubstring(char *haystack, char *needle)
 {
     size_t d;
@@ -677,6 +795,13 @@ int isSubstring(char *haystack, char *needle)
     return -1;
 }
 
+/**
+ * \brief Função find_subStr do programa
+ * 
+ * que procura o índice do início de uma String que contém a outra.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void find_subStr(struct stack *ptr_STACK)
 {
     struct elemento y = POP(ptr_STACK);
@@ -690,17 +815,19 @@ void find_subStr(struct stack *ptr_STACK)
     PUSH(ptr_STACK, z);
 }
 
+/**
+ * \brief Função sub_String do programa
+ * 
+ * que divide uma String em sub-Strings.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void sub_String(struct stack *ptr_STACK)
 {
     struct elemento y = POP(ptr_STACK);
     struct elemento x = POP(ptr_STACK);
-    // printf("String_x: %s\n", x.data.val_s);
-    // printf("String_y: %s\n", y.data.val_s);
     int tamanho = strlen(x.data.val_s);
     int t = strlen(y.data.val_s);
-    // printf("Tamanho de x: %d, tamnho de y: %d\n", tamanho, t);
-
-    // Criação do array!
 
     struct elemento val;
     val.tipo = T_array;
@@ -708,7 +835,6 @@ void sub_String(struct stack *ptr_STACK)
     initStack(new_stack, ptr_STACK->vars);
     val.data.val_p = new_stack;
 
-    // Criação da string auxiliar paa trnsferir os elementos para o array!
     struct elemento string;
     string.tipo = T_string;
     string.data.val_s = malloc(t * sizeof(char));
@@ -719,41 +845,50 @@ void sub_String(struct stack *ptr_STACK)
     for (i = 0; x.data.val_s[i] != '\0'; i++)
     {
         true = compareStrandSub(x.data.val_s, y.data.val_s, t, i);
-        // printf("Index do menino >>> %d --- true >>>%d\n", i, true);
         if (true)
         {
-            pinta_a_linda(string.data.val_s, x.data.val_s, j, i);
-            // printf("Meti a linda: %s\n", string.data.val_s);
-            // printf("Big boy: %s\n", x.data.val_s);
+            pinta_astring(string.data.val_s, x.data.val_s, j, i);
+
             PUSH(val.data.val_p, string);
             string.data.val_s = malloc(tamanho * sizeof(char));
             j = i + t;
         }
-        //        printf("Esta aqui o resultado ---->>> %s\n\n\n", string);
     }
     if (i != j)
     {
-        pinta_a_linda(string.data.val_s, x.data.val_s, j, i);
+        pinta_astring(string.data.val_s, x.data.val_s, j, i);
         PUSH(val.data.val_p, string);
     }
     PUSH(ptr_STACK, val);
 }
 
-void pinta_a_linda(char *aux, char *main, int begin, int j)
+/**
+ * \brief Função pinta_astring do programa
+ * 
+ * que copia a string que estava numa auxiliar para uma string objetivo
+ * 
+ * @param aux (string auxiliar)
+ * @param main (string auxiliar)
+ * @param begin (contador)
+ * @param j (contador)
+ */
+void pinta_astring(char *aux, char *main, int begin, int j)
 {
-    // printf("Main: %s\n", main);
-    // printf("Estamos com o begin a %d e o i a %d\n", begin, j);
     int i;
-    // printf("Querida criei: ");
     for (i = 0; i + begin < j; i++)
     {
-        // printf("%d", i);
-        // printf("%c", main[begin + i]);
         aux[i] = main[i + begin];
     }
     aux[i] = '\0';
 }
 
+/**
+ * \brief Função compareStrandSub do programa
+ * 
+ * que verifica se existe a substring na string inicial
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 int compareStrandSub(char str[], char substr[], int N, int i)
 {
     int j = 0;
@@ -769,11 +904,16 @@ int compareStrandSub(char str[], char substr[], int N, int i)
     return 0;
 }
 
+/**
+ * \brief Função div_WhiteS_Str do programa
+ * 
+ * que divide uma String por espaços.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void div_WhiteS_Str(struct stack *ptr_STACK)
 {
     struct elemento y = POP(ptr_STACK);
-
-    // printf("%s \n", y.data.val_s);
 
     struct elemento val;
     val.tipo = T_array;
@@ -793,15 +933,12 @@ void div_WhiteS_Str(struct stack *ptr_STACK)
         if (y.data.val_s[i] == ' ' || y.data.val_s[i] == '\n')
         {
             string.data.val_s[i] = '\0';
-            // printf("String tratda: {%s} ---> ", string.data.val_s);
             if (strlen(string.data.val_s) != 0)
             {
                 count++;
-                // printf("Levou push!  %d", count);
+
                 PUSH(val.data.val_p, string);
             }
-            //printf("\n");
-            // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
             string.data.val_s = malloc(t * sizeof(char));
             j = -1;
         }
@@ -811,19 +948,21 @@ void div_WhiteS_Str(struct stack *ptr_STACK)
     if (strlen(string.data.val_s) != 0)
     {
         string.data.val_s[j] = '\0';
-        //printf("String tratda: {%s} ---> ", string.data.val_s);
-        //count++;
-        //printf("Levou push!  %d\n", count);
         PUSH(val.data.val_p, string);
     }
     PUSH(ptr_STACK, val);
 }
 
+/**
+ * \brief Função div_newLines_Str do programa
+ * 
+ * que divide uma String por novas linhas.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void div_newLines_Str(struct stack *ptr_STACK)
 {
     struct elemento y = POP(ptr_STACK);
-
-    // printf("%s \n", y.data.val_s);
 
     struct elemento val;
     val.tipo = T_array;
@@ -840,20 +979,12 @@ void div_newLines_Str(struct stack *ptr_STACK)
     for (int i = 0; i < t; i++)
     {
         if (i == t - 1 && y.data.val_s[i] == '\n')
-
-            //string.data.val_s[i + 1] = '\0';
-            // printf("String tratada: %s\n", string.data.val_s);
-            //PUSH(val.data.val_p, string);
-            // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
-            //printf("caiu no sitio certo\n Com um char (%c)", y.data.val_s[i]);
             break;
 
         if (y.data.val_s[i] == '\n')
         {
             string.data.val_s[i + 1] = '\0';
-            // printf("String tratada: %s\n", string.data.val_s);
             PUSH(val.data.val_p, string);
-            // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
             string.data.val_s = malloc(t * sizeof(char));
             j = -1;
         }
@@ -861,9 +992,6 @@ void div_newLines_Str(struct stack *ptr_STACK)
         j++;
     }
     string.data.val_s[j] = '\0';
-    //  printf("String tratda: %s\n", string.data.val_s);
     PUSH(val.data.val_p, string);
-    // printf("String tratda: %s\n", val.data.val_p->array[val.data.val_p->top].data.val_s);
-
     PUSH(ptr_STACK, val);
 }

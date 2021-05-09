@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as função parse, a par, das funções que lhe dão suporte, POP, PUSH e PRINT_STACK
+ * @file Ficheiro que contém as funções relativas ao guião 2 
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,13 +16,11 @@
 /**
  * \brief Função dollarfunction do programa
  * 
- * recebe como parâmetros um apontador para a struct stack e uma variável i
+ * recebe como parâmetros um apontador para a struct stack 
  * e devolve o valor apontado para esse índice.
  * 
- * @param stack
- * @param i (índice)
+ * @param ptr_STACK (apontador para a stack)
  * 
- * @returns Um elemento da Stack.
  */
 void dollarfunction(struct stack *ptr_STACK)
 {
@@ -38,8 +36,8 @@ void dollarfunction(struct stack *ptr_STACK)
  * 
  * efetua o cálculo das operações aritméticas.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void maths(struct stack *ptr_STACK, char *token)
 {
@@ -65,12 +63,11 @@ void maths(struct stack *ptr_STACK, char *token)
  * 
  * efetua o cálculo das operações para manipulação da Stack.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void manstack(struct stack *ptr_STACK, char *token)
 {
-    // printf("Caiu no manstack!\n");
     switch (*token)
     {
     case '_':
@@ -96,8 +93,8 @@ void manstack(struct stack *ptr_STACK, char *token)
  * 
  *  efetua a conversão dos elementos da Stack para um dado tipo.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void conversion(struct stack *ptr_STACK, char *token)
 {
@@ -123,8 +120,8 @@ void conversion(struct stack *ptr_STACK, char *token)
  * 
  * é responsável pelas ações de in/output.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void inoutput(struct stack *ptr_STACK, char *token)
 {
@@ -144,8 +141,8 @@ void inoutput(struct stack *ptr_STACK, char *token)
  * 
  * é responsável pelas ações de lógica e condições.
  * 
- * @param ptr_STACK
- * @param token
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void logic(struct stack *ptr_STACK, char *token)
 {
@@ -177,7 +174,7 @@ void logic(struct stack *ptr_STACK, char *token)
  * 
  * é responsável por duplica os dois elementos do topo da stack.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void double_top(struct stack *ptr_STACK)
 {
@@ -191,7 +188,7 @@ void double_top(struct stack *ptr_STACK)
  * 
  * é responsável por trocar os dois elementos do topo da stack.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void switch_top(struct stack *ptr_STACK)
 {
@@ -206,7 +203,7 @@ void switch_top(struct stack *ptr_STACK)
  * 
  * é responsável por rodar os três elementos do topo da stack.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void rotate_elem(struct stack *ptr_STACK)
 {
@@ -223,7 +220,7 @@ void rotate_elem(struct stack *ptr_STACK)
  * 
  * é responsável por converter o elemento do topo da stack para int.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_i(struct stack *ptr_STACK)
 {
@@ -264,7 +261,7 @@ void convert_i(struct stack *ptr_STACK)
  * 
  * é responsável por converter o elemento do topo da stack para float.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_f(struct stack *ptr_STACK)
 {
@@ -301,7 +298,7 @@ void convert_f(struct stack *ptr_STACK)
  * 
  * é responsável por converter o elemento do topo da stack para char.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_c(struct stack *ptr_STACK)
 {
@@ -336,7 +333,7 @@ void convert_c(struct stack *ptr_STACK)
  * 
  * é responsável por converter o elemento do topo da stack para string.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void convert_s(struct stack *ptr_STACK)
 {
@@ -375,108 +372,59 @@ void convert_s(struct stack *ptr_STACK)
  * 
  * é responsável por ler uma linha.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void read_line(struct stack *ptr_STACK)
 {
     struct elemento x;
     x.tipo = T_string;
-
-    //   x.data.val_s = NULL;
-    //x.data.val_s = fgets(x.data.val_s, 10000, stdin);
-
-    x.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    x.data.val_s = malloc(1000 * sizeof(char));
     assert(fgets(x.data.val_s, 1000, stdin) != NULL);
 
     if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
         x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
 
-    //assert(scanf("\n%[100]c", x.data.val_s) == 1);
-
     PUSH(ptr_STACK, x);
 }
 
-//// Condição -> Não ter mais chars para ler!!!!!
-
+/**
+ * \brief Função read_all_lines do programa
+ * 
+ * é responsável por ler todas as linhas 
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void read_all_lines(struct stack *ptr_STACK)
 {
     struct elemento total;
     total.tipo = T_string;
-    total.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    total.data.val_s = malloc(10000 * sizeof(char));
     assert(fgets(total.data.val_s, 10000, stdin) != NULL);
 
-    //if ((strlen(total.data.val_s) > 0) && (total.data.val_s[strlen(total.data.val_s) - 1] == '\n'))
-    // total.data.val_s[strlen(total.data.val_s) - 1] = '\0';
-
-    // printf("Total: %s\n", total.data.val_s);
     struct elemento x;
     x.tipo = T_string;
-    x.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
+    x.data.val_s = malloc(10000 * sizeof(char));
     while (fgets(x.data.val_s, 10000, stdin) != NULL)
     {
-        //x.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
-        // assert(fgets(x.data.val_s, 10000, stdin) != NULL);
         if ((strlen(x.data.val_s) == 1))
         {
             x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
             mystrcat4(total.data.val_s, x.data.val_s);
             free(x.data.val_s);
-            //  printf("Total: %s\n", total.data.val_s);
             break;
         }
 
-        //if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
-        //  x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
         mystrcat4(total.data.val_s, x.data.val_s);
-
-        //printf("Total: %s\n", total.data.val_s);
     }
-
-    /*
-    while ((strlen(total.data.val_s) > 0))
-    {
-        x.data.val_s = malloc(10000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
-                                                     //assert(fgets(x.data.val_s, 10000, stdin) != NULL);
-        fgets(x.data.val_s, 10000, stdin);
-
-        
-        printf("Ultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 1]);
-        printf("Penultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 2]);
-        printf("Tamanho: %ld\n", (strlen(x.data.val_s)));
-
-    if ((strlen(x.data.val_s) == 1))
-    {
-        x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
-        mystrcat4(total.data.val_s, x.data.val_s);
-        //  printf("Total: %s\n", total.data.val_s);
-        break;
-    }
-    //if ((strlen(x.data.val_s) > 0) && (x.data.val_s[strlen(x.data.val_s) - 1] == '\n'))
-    //  x.data.val_s[strlen(x.data.val_s) - 1] = '\0';
-    mystrcat4(total.data.val_s, x.data.val_s);
-    //printf("Total: %s\n", total.data.val_s);
-}
-*/
-
     PUSH(ptr_STACK, total);
 }
 
-/*
-void read_all_lines(struct stack *ptr_STACK)
-{
-    struct elemento total;
-    total.tipo = T_string;
-    total.data.val_s = malloc(1000 * sizeof(char)); /// Cuidado aqui---> Dangerous!!
-    size_t size = 1000;                             // * sizeof(char);
-    assert(getdelim(&(total.data.val_s), &size, "\n\n", stdin) != 0);
-}
-*/
 /**
  * \brief Função decrement do programa
  * 
  * é responsável por decrementar um elemento.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void decrement(struct stack *ptr_STACK)
 {
@@ -490,7 +438,7 @@ void decrement(struct stack *ptr_STACK)
  * 
  * é responsável por incrementar um elemento.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void increment(struct stack *ptr_STACK)
 {
@@ -504,7 +452,7 @@ void increment(struct stack *ptr_STACK)
  * 
  * é responsável por transformar o elemento em complemento para 2.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void complement(struct stack *ptr_STACK)
 {
@@ -518,7 +466,7 @@ void complement(struct stack *ptr_STACK)
  * 
  * é responsável por chamar a função operador.
  * 
- * @param ptr_STACK
+ * @param ptr_STACK (apontador para a stack)
  */
 void call_operator(struct stack *ptr_STACK, char *token)
 {

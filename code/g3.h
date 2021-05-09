@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as funçẽs relativas ao parse da Stack
+ * @file Ficheiro que contém as funçẽs relativas ao guião 3
  */
 
 /**
@@ -111,6 +111,7 @@ void epequeno(struct stack *ptr_STACK);
  * dado uma variável ,coloca essa variável na stack
  * 
  * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void variables1(struct stack *ptr_STACK, char *token);
 
@@ -120,7 +121,15 @@ void variables1(struct stack *ptr_STACK, char *token);
  * caso o input seja N ou S realiza as devidas ações de "\n" ou " " , ou caso seja ":" altera o conteudo da variável
  * 
  * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
  */
 void variables2(struct stack *ptr_STACK, char *token);
 
+/**
+ * \brief Função validade do programa
+ * 
+ *é responsável por devolver o valor mediante o tipo do struct elemento 
+ * 
+ * @param val (struct elemento)
+ */
 int validade(struct elemento val);

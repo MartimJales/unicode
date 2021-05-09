@@ -9,31 +9,43 @@
  * Contém também todas as estrusturas criadas para a resolução dos guiões.
  */
 
+/**
+ * \brief stack_type
+ * 
+ * Apresenta os tipos possiveis na stack
+ * 
+ */
 enum stack_type
 {
-    T_int,
-    T_char,
-    T_float,
-    T_long,
-    T_double,
-    T_string,
-    T_array,
-    T_block
+    T_int,    /**< Representa o tipo de um inteiro **/
+    T_char,   /**< Representa o tipo de um char **/
+    T_float,  /**< Representa o tipo de um float **/
+    T_long,   /**< Representa o tipo de um longo **/
+    T_double, /**< Representa o tipo de um double **/
+    T_string, /**< Representa o tipo de uma string **/
+    T_array,  /**< Representa o tipo de um array **/
+    T_block   /**< Representa o tipo de um bloco **/
 };
 
+/**
+ * \brief struct elemento 
+ * 
+ * Apresenta o conteudo dos diferentes tipos possiveis
+ * 
+ */
 struct elemento
 {
     enum stack_type tipo;
     union
     {
-        char val_c;
-        char *val_s;
-        int val_i;
-        long val_l;
-        float val_f;
-        double val_d;
-        struct stack *val_p;
-        char *val_b;
+        char val_c;          /**< Representa o conteudo de um struct elemento do tipo char **/
+        char *val_s;         /**< Representa o conteudo de um struct elemento do tipo string **/
+        int val_i;           /**< Representa o conteudo de um struct elemento do tipo inteiro **/
+        long val_l;          /**< Representa o conteudo de um struct elemento do tipo longo **/
+        float val_f;         /**< Representa o conteudo de um struct elemento do tipo float **/
+        double val_d;        /**< Representa o conteudo de um struct elemento do tipo double **/
+        struct stack *val_p; /**< Representa o conteudo de um struct elemento do tipo array **/
+        char *val_b;         /**< Representa o conteudo de um struct elemento do tipo bloco **/
     } data;
 };
 
@@ -50,8 +62,20 @@ struct var
     struct elemento elemento; /**< Representa o conteúdo da variável **/
 };
 
+/**
+ * \brief struct stack
+ * 
+ * Apresenta a stack como um apontador para a stack
+ * 
+ */
 typedef struct stack *Stack;
 
+/**
+ * \brief struct stack
+ * 
+ * Apresenta o que a stack contém
+ * 
+ */
 struct stack
 {
     int top;

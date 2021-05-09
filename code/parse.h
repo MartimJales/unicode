@@ -38,8 +38,7 @@ void check_type(char **resto, char **token, int *val_tipo);
  * recebe um token e devolve o número correspondente ao conjunto de operações onde o mesmo pertence.
  *
  * 
- * @param token 
- * @param array
+ * @param token (operando)
  * 
  * @returns Um inteiro 
  */
@@ -51,9 +50,9 @@ int filter(char *token);
  * recebe um token, um apontador para o resto da função e outro apontador para a stack.
  * Irá colocar o token respetivo a um elemento na stack.
  *
- * @param resto
- * @param token
- * @param val_tipo 
+ * @param ptr_STACK (apontador para a stack)
+ * @param val_tipo (tipo)
+ * @param token (operando)
  */
 void put_token(struct stack *ptr_STACK, int val_tipo, char *token);
 
@@ -63,8 +62,8 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token);
  * verifica o nosso token e seleciona a função auxiliar correspondente à operação
  * desejada.
  *
- * @param token
- * @param val_tipo 
+ * @param ptr_STACK
+ * @param token (operando)
  */
 void go_filter(struct stack *ptr_STACK, char *token);
 
@@ -88,6 +87,7 @@ char *get_token(char *delim, char *line, char **rest);
  * 
  * @param ptr_STACK Apontador para a stack.
  * @param token Token atual.
+ * @param ptr_elem Apontador para o elemento
  */
 void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem);
 
@@ -101,7 +101,6 @@ void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem);
  * Se não se verificar, chamamos a função go_filter
  * (Aplica as operações dos guiões 1/2/3). 
  * 
- * @param pointer Apontador para a stack.
  * @param line Token atual.
  */
 void pinta_array(char *line);
@@ -172,8 +171,31 @@ void check_all_array(struct stack *ptr_STACK, char *token);
  */
 char *cleanLim(char line[]);
 
+/**
+ * \brief Função existe_arary do programa
+ * 
+ * Retorna 1 se algum dos  2 elementos que esta no topo da stack for array
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * 
+ * @returns um inteiro
+ */
 int existe_array(struct stack *ptr_STACK);
 
+/**
+ * \brief Função existe_string do programa
+ * 
+ * Retorna 1 se algum dos  2 elementos que esta no topo da stack for string
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 int existe_string(struct stack *ptr_STACK);
 
+/**
+ * \brief Função initVars do programa
+ * 
+ * prepara um array para definir as variáveis e os seus respetivos valores.
+ * 
+ * @param ptr_STACK 
+ */
 void initVars(struct var *ptr_vars);

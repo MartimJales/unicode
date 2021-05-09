@@ -131,11 +131,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         break;
     case '(':
-        if (isnumber(ptr_STACK))
-        {
-            decrement(ptr_STACK);
-        }
-        else if (onlyarray(ptr_STACK))
+        if (onlyarray(ptr_STACK))
         {
             left_parentesis(ptr_STACK);
         }
@@ -145,15 +141,11 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: (\n");
+            decrement(ptr_STACK);
         }
         break;
     case ')':
-        if (isnumber(ptr_STACK))
-        {
-            increment(ptr_STACK);
-        }
-        else if (onlyarray(ptr_STACK))
+        if (onlyarray(ptr_STACK))
         {
             right_parentesis(ptr_STACK);
         }
@@ -163,7 +155,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: )\n");
+            increment(ptr_STACK);
         }
         break;
     case '%':
@@ -236,11 +228,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         break;
     case '=':
-        if (equal_type(ptr_STACK))
-        {
-            equal(ptr_STACK);
-        }
-        else if (stringnumber(ptr_STACK))
+        if (stringnumber(ptr_STACK))
         {
             struct elemento x = POP(ptr_STACK);
             val_index_Str(ptr_STACK, x);
@@ -251,36 +239,35 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: =\n");
+            equal(ptr_STACK);
         }
         break;
     case '<':
-        if (equal_type(ptr_STACK))
-        {
-            smaller(ptr_STACK);
-        }
-        else if (secondarray(ptr_STACK))
+        if (secondarray(ptr_STACK))
         {
             left_elementos(ptr_STACK);
+        }
+        else if (bothstring(ptr_STACK))
+        {
+            smaller(ptr_STACK);
         }
         else if (secondstring(ptr_STACK))
         {
             catch_elem_Str(ptr_STACK);
-            // Retira os primeiros n-ésimos elementos da string
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: <\n");
+            smaller(ptr_STACK);
         }
         break;
     case '>':
-        if (equal_type(ptr_STACK))
-        {
-            greater(ptr_STACK);
-        }
-        else if (secondarray(ptr_STACK))
+        if (secondarray(ptr_STACK))
         {
             right_elementos(ptr_STACK);
+        }
+        else if (bothstring(ptr_STACK))
+        {
+            greater(ptr_STACK);
         }
         else if (secondstring(ptr_STACK))
         {
@@ -288,7 +275,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: >\n");
+            greater(ptr_STACK);
         }
         break;
     case '*':
@@ -460,6 +447,17 @@ int secondstring(struct stack *ptr_STACK)
 {
     int tipo2 = ptr_STACK->array[ptr_STACK->top - 1].tipo;
     if (tipo2 == T_string)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+int bothstring(struct stack *ptr_STACK)
+{
+    int tipo1 = ptr_STACK->array[ptr_STACK->top].tipo;
+    int tipo2 = ptr_STACK->array[ptr_STACK->top - 1].tipo;
+    if (tipo2 == T_string && tipo1 == T_string)
     {
         return 1;
     }

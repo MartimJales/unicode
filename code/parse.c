@@ -71,20 +71,16 @@ float convertToDouble(struct elemento x)
     case T_char:
         ret = (float)x.data.val_c * 1.0;
         break;
-    default: //falta as strings e os arrays
+    default:
+        printf("Deu asneira na função converttoDouble");
         break;
     }
-    //printf("O retorno da função converto double é : %f ", ret);
     return ret;
 }
 
 /**
  * \brief Função put_token do programa
- *  int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
-    int y_tipo = (*ptr_STACK).array[(*ptr_STACK).top - 1].tipo;
-    if (x_tipo = T_array || y_tipo == T_array)
-        return 1;
-    else
+ *  
  * recebe um token, um apontador para o resto_num da função e outro apontador para a stack.
  * Irá colocar o token respetivo a um elemento na stack.
  *
@@ -146,43 +142,33 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
  */
 void go_filter(struct stack *ptr_STACK, char *token)
 {
-    // printf("Caiu na go_filter como token %c!\n", *token);
     switch (filter(token))
     {
     case 0:
-        // printf("Deu zero!\n");
         poli_filter(ptr_STACK, token);
         break;
     case 1:
-        // printf("Deu um!\n");
         maths(ptr_STACK, token);
         break;
     case 2:
-        // printf("Deu dois!\n");
         manstack(ptr_STACK, token);
         break;
     case 3:
-        // printf("Deu tres!\n");
         conversion(ptr_STACK, token);
         break;
     case 4:
-        // printf("Deu quatro!\n");
         inoutput(ptr_STACK, token);
         break;
     case 5:
-        // printf("Deu cinco!\n");
         logic(ptr_STACK, token);
         break;
     case 6:
-        // printf("Deu seis!\n");
         variables1(ptr_STACK, token);
         break;
     case 7:
-        // printf("Deu sete!\n");
         variables2(ptr_STACK, token);
         break;
     case 8:
-        // printf("Deu sete!\n");
         w_function(ptr_STACK);
         break;
     default:
@@ -207,7 +193,6 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
 {
     if (existe_array(ptr_STACK))
     {
-        //printf("QUEREMOS UM ARRAY!!!\n");
         switch (*token)
         {
         case '+':
@@ -217,15 +202,12 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
             empurraarray(ptr_STACK);
             break;
         case '*':
-            //printf("entrei na manarray \n");
             repetearray(ptr_STACK);
             break;
         case ',':
-            //printf("Caiu na virgula");
             tamanho_array(ptr_STACK);
             break;
-        case '=':
-            // printf("VAPOVAPO\n");
+        case '=':;
             buscavalindice(ptr_STACK);
             break;
         case '<':
@@ -247,97 +229,18 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
     }
     else if (existe_string(ptr_STACK))
     {
-        //printf("QUEREMOS UMA STRING!!!\n");
         switch (*token)
         {
         case '+':
             concaString(ptr_STACK);
             break;
         case '*':
-            //printf("entrei na repetestring \n");
             repeteStr(ptr_STACK);
             break;
         case ',':
             tamanho_str(ptr_STACK, POP(ptr_STACK));
             break;
         case '=':
-            // printf("VAPOVAPO\n");
-            val_index_Str(ptr_STACK, POP(ptr_STACK));
-            break;
-        }
-    }
-    else
-    {
-        go_filter(ptr_STACK, token);
-    }
-}
-/* 
-        case '<':
-            struct elemento x = POP(ptr_STACK);
-            catch_elem_Str(ptr_STACK, x);
-            break;
-        case '>':
-            right_elementos(ptr_STACK);
-            break;
-        case '(':
-            delete_fst_Str(ptr_STACK);
-            break;
-        case ')':void go_filter_array(struct stack *ptr_STACK, char *token)
-{
-    if (existe_array(ptr_STACK))
-    {
-        //printf("QUEREMOS UM ARRAY!!!\n");
-        switch (*token)
-        {
-        case '+':
-            concatenarray(ptr_STACK);
-            break;
-        case '~':
-            empurraarray(ptr_STACK);
-            break;
-        case '*':
-            //printf("entrei na manarray \n");
-            repetearray(ptr_STACK);
-            break;
-        case ',':
-            //printf("Caiu na virgula");
-            tamanho_array(ptr_STACK);
-            break;
-        case '=':
-            // printf("VAPOVAPO\n");
-            buscavalindice(ptr_STACK);
-            break;
-        case '<':
-            left_elementos(ptr_STACK);
-            break;
-        case '>':
-            right_elementos(ptr_STACK);
-            break;
-        case '(':
-            left_parentesis(ptr_STACK);
-            break;
-        case ')':
-            right_parentesis(ptr_STACK);
-            break;
-        }
-    }
-    else if (existe_string(ptr_STACK))
-    {
-        //printf("QUEREMOS UMA STRING!!!\n");
-        switch (*token)
-        {
-        case '+':
-            concaString(ptr_STACK);
-            break;
-        case '*':
-            //printf("entrei na repetestring \n");
-            repeteStr(ptr_STACK);
-            break;
-        case ',':
-            tamanho_str(ptr_STACK, POP(ptr_STACK));
-            break;
-        case '=':
-            // printf("VAPOVAPO\n");
             val_index_Str(ptr_STACK, POP(ptr_STACK));
             break;
         }
@@ -348,36 +251,15 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
     }
 }
 
-        case '<':
-            struct elemento x = POP(ptr_STACK);
-            catch_elem_Str(ptr_STACK, x);
-            break;
-            struct elemento x = POP(ptr_STACK);
-            find_subStr(ptr_STACK, x);
-            break;
-        case '/':
-            struct elemento x = POP(ptr_STACK);
-            sub_String(ptr_STACK, x);
-            break;
-
-             case 'S/':
-            div_WhiteS_Str(ptr_STACK);
-            break;
-        case 'N/':
-            div_newlines_Str(ptr_STACK);
-            break;
-            
-        default:
-            printf("Chegou ao fim da filter pa strings ");
-        }
-    }
-    else
-    {
-        go_filter(ptr_STACK, token);
-    }
-}
-*/
-
+/**
+ * \brief Função existe_arary do programa
+ * 
+ * Retorna 1 se algum dos  2 elementos que esta no topo da stack for array
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * 
+ * @returns um inteiro
+ */
 int existe_array(struct stack *ptr_STACK)
 {
     if (ptr_STACK->array[ptr_STACK->top].tipo == T_array || ptr_STACK->array[ptr_STACK->top - 1].tipo == T_array)
@@ -385,6 +267,13 @@ int existe_array(struct stack *ptr_STACK)
     return 0;
 }
 
+/**
+ * \brief Função existe_string do programa
+ * 
+ * Retorna 1 se algum dos  2 elementos que esta no topo da stack for string
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 int existe_string(struct stack *ptr_STACK)
 {
     if (ptr_STACK->array[ptr_STACK->top].tipo == T_string || ptr_STACK->array[ptr_STACK->top - 1].tipo == T_string)
@@ -400,6 +289,7 @@ int existe_string(struct stack *ptr_STACK)
  * Posteriormente, através de um ciclo, inicia-se uma nova variável (um apontador de carateres (token)),
  * com a condição de paragem quando esse token for NULL. 
  * A cada iteração o tokeS
+ * @param line (Linha a ser tratada)
  */
 void parse(char *line)
 {
@@ -416,23 +306,16 @@ void parse(char *line)
     char *delimitadores = " \t \n";
     for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
-        //Coloquei o resto_num a iniciar a abc porcausa das flags
-        // mas temos de ver se isto não provoca merda
 
         char *resto_num = "abc";
         int val_tipo;
-        // printf("Token atual: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
-
-        // printf("tipo dps %d\n", val_tipo);
 
         if (strlen(resto_num) == 0)
             put_token(ptr_STACK, val_tipo, token);
         else if (*token == '[')
         {
-            //  printf("ARRAY!\n");
             pinta_array(token);
-            // printf("Token after parse_array: %s!\n", token);
             struct elemento val;
             val.tipo = T_array;
             struct stack *new_stack = malloc(sizeof(struct stack));
@@ -446,7 +329,6 @@ void parse(char *line)
             blocko.tipo = T_block;
             blocko.data.val_b = token;
             PUSH(ptr_STACK, blocko);
-            // printf("o tipo do q pushei é : %d\n", blocko.tipo);
         }
         else if (*token == '"')
         {
@@ -458,13 +340,19 @@ void parse(char *line)
         }
         else
         {
-            //  printf("Caiu no filter suposto como token %c!\n", *token);
             go_filter(ptr_STACK, token);
         }
     }
     PRINT_STACK(ptr_STACK);
 }
 
+/**
+ * \brief Função initVars do programa
+ * 
+ * prepara um array para definir as variáveis e os seus respetivos valores.
+ * 
+ * @param ptr_STACK 
+ */
 void initVars(struct var *ptr_vars)
 {
     struct elemento val;
@@ -480,77 +368,21 @@ void initVars(struct var *ptr_vars)
     }
     val.data.val_i = 0;
     var_tmp.index = 23;
+    var_tmp.elemento = val;
     *(ptr_vars + 23) = var_tmp;
     var_tmp.elemento = val;
     val.data.val_i = 1;
     var_tmp.index = 24;
+    var_tmp.elemento = val;
     *(ptr_vars + 24) = var_tmp;
     var_tmp.elemento = val;
     val.data.val_i = 2;
     var_tmp.index = 25;
+    var_tmp.elemento = val;
     *(ptr_vars + 25) = var_tmp;
     var_tmp.elemento = val;
 }
 
-/**
- * \brief Função check_soma_array do programa.
- * 
- * Iremos verificar se algum dos elementos do topo é array.
- * Se essa condição se verificar vamos concatenar o array. 
- * (concatenarray).
- * Se não se verificar, chamamos o operador para somar os dois elementos.
- *  
- * @param ptr_STACK Apontador para a stack.
- * @param token Token atual.
- */
-/*
-void check_soma_array(struct stack *ptr_STACK, char *token)
-{
-    int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
-    int y_tipo = (*ptr_STACK).array[(*ptr_STACK).top - 1].tipo;
-
-    if ((x_tipo == T_array || y_tipo == T_array) && *token == '+')
-    {
-        concatenarray(ptr_STACK);
-    }
-    else if ((x_tipo == T_array || y_tipo == T_array) && *token == '*')
-    {
-        //printf("cai na check soma array\n");
-        repetearray(ptr_STACK);
-    }
-    else
-    {
-        struct elemento x = POP(ptr_STACK);
-        struct elemento y = POP(ptr_STACK);
-        struct elemento val = operador(x, y, token);
-        PUSH(ptr_STACK, val);
-    }
-}
-*/
-/**
- * \brief Função check_all_array do programa.
- * 
- * Iremos verificar se o topo da stack é array.
- * Se essa condição se verificar vamos chamar a função manarray. 
- * (Aplica as operações com arrays).
- * Se não se verificar, chamamos a função go_filter
- * (Aplica as operações dos guiões 1/2/3). 
- * 
- * @param ptr_STACK Apontador para a stack.
- * @param token Token atual.
- */
-/*
-void check_all_array(struct stack *ptr_STACK, char *token)
-{
-    int x_tipo = (*ptr_STACK).array[(*ptr_STACK).top].tipo;
-    if (x_tipo == T_array)
-    {
-        manarray(ptr_STACK, token);
-    }
-    else
-        go_filter(ptr_STACK, token);
-}
-*/
 /**
  * \brief Função put_array do programa.
  * 
@@ -562,11 +394,7 @@ void check_all_array(struct stack *ptr_STACK, char *token)
 void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem)
 {
     parse_array(token, ptr_elem->data.val_p);
-    //printf("%s",token);
-    // printf("put_array na localização %ld\n", (long)ptr_STACK);
-    //   printf("Top antes %d\n", ptr_STACK->top);
     PUSH(ptr_STACK, *ptr_elem);
-    //   printf("Top depois %d\n", ptr_STACK->top);
 }
 
 /**
@@ -584,7 +412,6 @@ void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem)
  */
 void pinta_array(char *line)
 {
-    // char *delimitadores = " \t\n";
 
     char copi[10000];
     int j = 0, i = 2;
@@ -625,8 +452,6 @@ int check_array(char *token)
     return 0;
 }
 
-// FUction get_delimited
-
 /**
  * \brief Função isDelim do programa.
  * 
@@ -651,8 +476,6 @@ int isDelim(char c, char *delim)
     return bRet;
 }
 
-// verifica se é delimitador
-
 /**
  * \brief Função isLim do programa.
  * 
@@ -671,8 +494,6 @@ int isLim(char token)
     else
         return 0;
 }
-
-// número de delimitadores seguidos
 
 /**
  * \brief Função cleanLim do programa.
@@ -713,33 +534,9 @@ char *cleanLim(char line[])
     return line;
 }
 
-/*
-
-char *cleanLim(char line[])
-{
-    int i, j;
-    // int found_string = 0;
-    for (i = 0; line[i] != '\0'; i++)
-    {
-
-        if (isLim(line[i]) && isLim(line[i + 1]))
-        {
-            for (j = i; line[j] != '\0'; j++)
-            {
-                line[j] = line[j + 1];
-            }
-            line[j] = '\0';
-            i--;
-        }
-        //}
-    }
-    return line;
-}
-*/
 /**
  * \brief Função get_token do programa.
  * 
- * ---------------------------------------------------------------------------
  * 
  * @param delim Apontador para delimitadores
  * @param line Apontador para a linha que será lida
@@ -749,13 +546,8 @@ char *cleanLim(char line[])
  */
 char *get_token(char *delim, char *line, char **rest)
 {
-    //char *pRet = NULL;
+
     int i, bTratado = 0;
-    //int iToken = 0;
-
-    //printf("get_token('%s' ###  %s  ###)\n",delim,line);
-
-    //printf("-- %c %d --\n",line[0],isDelim(line[0],delim));
 
     for (i = 0; line[i] && isDelim(line[i], delim) == 0 && bTratado == 0; i++)
     {
@@ -817,7 +609,7 @@ char *get_token(char *delim, char *line, char **rest)
             }
             if (nAspas > 0)
             {
-                //  printf("Falta Fechar Aspas");
+                printf("Falta Fechar Aspas");
             }
             else
             {
@@ -833,7 +625,7 @@ char *get_token(char *delim, char *line, char **rest)
         if (isDelim(line[i], delim))
         {
             line[i] = 0;
-            *rest = line + i + 1; // problema está aqui
+            *rest = line + i + 1;
         }
         else
         {

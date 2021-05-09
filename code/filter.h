@@ -24,3 +24,5 @@ int stringnumber(struct stack *ptr_STACK);
 int equal_type(struct stack *ptr_STACK);
 int onlyblock(struct stack *ptr_STACK);
 void percentagem_function(struct stack *ptr_STACK);
+
+int bothstring(struct stack *ptr_STACK);
