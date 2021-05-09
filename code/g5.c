@@ -105,8 +105,8 @@ char *pinta_block(char *line)
     // char *delimitadores = " \t\n";
 
     char copi[1000];
-    int j = 0, i = 2;
-    while (line[i + 2] != '\0')
+    int j = 0, i = 1;
+    while (line[i + 1] != '\0')
     {
         copi[j] = line[i];
         i++;
@@ -265,7 +265,7 @@ void w_function(struct stack *ptr_STACK)
 
     int topo = arr.data.val_p->top;
 
-    for (i = 0, j = 0; i <= final.data.val_p->array[i].data.val_l != 0 && j != 1; i++)
+    for (i = 0, j = 0; /* (i <= final.data.val_p->array[i].data.val_l != 0)&&*/ (j != 1); i++)
     {
         switch (final.data.val_p->array[i].tipo)
         {
@@ -307,11 +307,11 @@ void w_function(struct stack *ptr_STACK)
         }
     }
     //printf("o top é: %d\n",arr.data.val_p->top);
-    for (i; i <= arr.data.val_p->top + 1; i++)
-    {
-        //    printf("o i é: %d\n",i);
 
+    while (i <= topo + 1)
+    {
         POP(arr.data.val_p);
+        i++;
     }
 
     // PRINT_ARRAY(arr.data.val_p);
@@ -521,9 +521,9 @@ void convert_arr_string(struct elemento arr, char *s)
 
 void dollar_block(struct stack *ptr_STACK)
 {
-    // printf(" Caiu no fold_block!\n");
+    // printf(" Caiu no dollar_block!\n");
     struct elemento block = POP(ptr_STACK);
-    pinta_block(block.data.val_b);
+
     struct elemento arr = POP(ptr_STACK);
     //  PRINT_ARRAY(arr.data.val_p);
 
@@ -531,7 +531,31 @@ void dollar_block(struct stack *ptr_STACK)
 
     struct stack *new_stack2 = malloc(sizeof(struct stack));
 
-    mergeSort(arr.data.val_p->array, 0, arr.data.val_p->top - 1, block.data.val_b, new_stack2);
+    pinta_block(block.data.val_b);
+
+    //  printf("Bloco recebido: {%s}\n", block.data.val_b);
+    if (strcmp(block.data.val_b, " ") == 0)
+    {
+        // printf(" Caiu no bloco burro!\n");
+        sprintf(block.data.val_b, "%s", " < ");
+    }
+    /*  printf("Bloco antes do megeSot: {%s}\n", block.data.val_b);
+
+    int n[10] = {3, 2, 1, 4, 3, 5, 66, 321, 4, 5};
+
+    printf("Array antes: ");
+    printArray(n, 10);
+    printf(" \n");
+    mergeSort1(n, 0, 9);
+    printf("Array depois: ");
+    printArray(n, 10);
+
+    printf(" \n");
+*/
+    // printf("Top antes do mergeSort: %d\n", arr.data.val_p->top);
+
+    mergeSort(arr.data.val_p->array, 0, arr.data.val_p->top, block.data.val_b, new_stack2);
+    // printf("Bloco depois do megeSot: {%s}\n", block.data.val_b);
     PUSH(ptr_STACK, arr);
 }
 
@@ -550,20 +574,35 @@ void merge(struct elemento arr[], int l, int m, int r, char *bloco, struct stack
         L[i] = arr[l + i];
     for (j = 0; j < n2; j++)
         R[j] = arr[m + 1 + j];
+    /*
+    printf("No merge eu recebi o array: ");
+    for (int i = 0; i < n1; i++)
+    {
+        printf("%ld - ", L[i].data.val_l);
+    }
+    printf(" e recebi tbm o array: ");
 
+    for (int i = 0; i < n2; i++)
+    {
+        printf("%ld - ", R[i].data.val_l);
+    }
+    printf("\n");
+*/
     i = 0;
     j = 0;
     k = l;
     while (i < n1 && j < n2)
     {
-        if (checka(L[i], R[i], bloco, final))
+        //   printf("Vamos comparar os elementos: %ld e %ld\n", L[i].data.val_l, R[j].data.val_l);
+        if (checka(L[i], R[j], bloco, final)) /// L[i] <= R[i]
         {
-            //     printf("O elem 1 é inferior ao elem2\n");
+            //  printf("Mandei o elemento: %ld\n", L[i].data.val_l);
             arr[k] = L[i];
             i++;
         }
         else
         {
+            //   printf("Mandei o elemento: %ld\n", R[j].data.val_l);
             //  printf("O elem 1 é SUPERIOR ao elem2\n");
             arr[k] = R[j];
             j++;
@@ -583,20 +622,64 @@ void merge(struct elemento arr[], int l, int m, int r, char *bloco, struct stack
         j++;
         k++;
     }
+
+    printf("No fim do merge eu devolvi o seguinte: ");
+    for (int i = 0; i < k; i++)
+    {
+        printf("%ld - ", arr[i].data.val_l);
+    }
+    printf("\n");
 }
+
+int count = 0;
 
 void mergeSort(struct elemento arr[], int l, int r, char *bloco, struct stack *final)
 {
+
+    /*
+    printf("No merge Sort %d temos o array: ", count);
+    count++;
+    if (count == 0)
+    {
+        for (int i = 0; i <= r; i++)
+        {
+            printf("%ld - ", arr[i].data.val_l);
+        }
+    }
+    printf("\n");*/
+
     if (l < r)
     {
         int m = l + (r - l) / 2;
+        /* printf("l: %d  r: %d  m: %d \n", l, r, m);
+          printf(" Array da esquerda: ");
+        for (l; l <= m; l++)
+        {
+            printf("%ld - ", arr[l].data.val_l);
+        }
+        printf("\n");
+        printf("Array da direita: ");
+        for (m; m <= r; m++)
+        {
+            printf("%ld - ", arr[m + 1].data.val_l);
+        }
+        printf("\n");
+        */
+
+        /* printf("Estou a analisar o array: ");
+        for (int i = l; i <= r; i++)
+        {
+            printf("%ld - ", arr[i].data.val_l);
+        }
+    
+        printf("\n");*/
 
         mergeSort(arr, l, m, bloco, final);
         mergeSort(arr, m + 1, r, bloco, final);
+
         merge(arr, l, m, r, bloco, final);
     }
 }
-
 // Devolve 1    <<fst bloco snd>> == true
 // Devolve 0    <<fst bloco snd>> == false
 /*
@@ -612,8 +695,10 @@ void mergeSort(struct elemento arr[], int l, int r, char *bloco, struct stack *f
 
 int checka(struct elemento fst, struct elemento snd, char *bloco, struct stack *final)
 {
+    // Comparação se os dois elementos são iguais!!!
+
     // printf(" Caiu no checka!\n");
-    pinta_block(bloco);
+
     //  PRINT_ARRAY(arr.data.val_p);
     char *s = malloc(10000 * sizeof(char));
     char *aux = malloc(1000 * sizeof(char));
@@ -684,27 +769,26 @@ int checka(struct elemento fst, struct elemento snd, char *bloco, struct stack *
         break;
     }
 
-    mystrcat4(aux, " ");
     mystrcat4(aux, bloco);
 
     mystrcat4(s, aux);
 
-    //  printf("Depois da checka temos a string: {%s}!\n", s);
+    //printf("Depois da checka temos a string: {%s}!\n", s);
     parse_array(s, final);
 
     // double x = convertToDouble(fst);
     double y = convertToDouble(final->array[final->top]);
 
-    // printf("O tipo do que está na stack é: %d\n", final->array[final->top].tipo);
+    //printf("O tipo do que está na stack é: %d\n", final->array[final->top].tipo);
     // printf("O tipo do nosso fst é: %d\n", fst.tipo);
 
-    //    printf("O fst: %f  ---- O result: %f\n", x, y);
+    // printf("O result: %f\n", y);
 
     return y;
     // return (x ==y);
-    //    return comichoes(final->array[final->top], fst);
+    //    return comichoes(final->array[final->top], fst); // Esta está comentada!!!
 }
-
+/*
 int comichoes(struct elemento x, struct elemento y)
 {
     if (y.tipo != x.tipo)
@@ -752,7 +836,8 @@ int comichoes(struct elemento x, struct elemento y)
         if (y.data.val_p->top != x.data.val_p->top)
             return 0;
     }
-}
+    return 
+}*/
 
 void fold_function(struct stack *ptr_STACK)
 {
@@ -864,4 +949,83 @@ void fold_function(struct stack *ptr_STACK)
     // printf("Estoirou!\n");
     PUSH(ptr_STACK, arr);
     // printf("O topo da stack tem um elemento do tipo %d\n", ptr_STACK->array[ptr_STACK->top].tipo);
+}
+
+void merge1(int arr[], int l, int m, int r)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
+    /* create temp arrays */
+    int L[n1], R[n2];
+
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = l; // Initial index of merged subarray
+    while (i < n1 && j < n2)
+    {
+        if (L[i] >= R[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    /* Copy the remaining elements of L[], if there
+    are any */
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    /* Copy the remaining elements of R[], if there
+    are any */
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+/* l is for left index and r is right index of the
+sub-array of arr to be sorted */
+void mergeSort1(int arr[], int l, int r)
+{
+    if (l < r)
+    {
+        // Same as (l+r)/2, but avoids overflow for
+        // large l and h
+        int m = l + (r - l) / 2;
+
+        // Sort first and second halves
+        mergeSort1(arr, l, m);
+        mergeSort1(arr, m + 1, r);
+
+        merge1(arr, l, m, r);
+    }
+}
+
+void printArray(int A[], int size)
+{
+    int i;
+    for (i = 0; i < size; i++)
+        printf("%d ", A[i]);
+    printf("\n");
 }

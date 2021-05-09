@@ -18,3 +18,9 @@ void mergeSort(struct elemento arr[], int l, int r, char *bloco, struct stack *f
 int checka(struct elemento fst, struct elemento snd, char *bloco, struct stack *final);
 int comichoes(struct elemento x, struct elemento y);
 void fold_function(struct stack *ptr_STACK);
+
+// To debugging
+
+void merge1(int arr[], int l, int m, int r);
+void mergeSort1(int arr[], int l, int r);
+void printArray(int A[], int size);

@@ -155,7 +155,7 @@ void PRINT_ARRAY(struct stack *stack)
             break;
         }
         //printf("\n", i);
-        //printf("-");
+        printf("-");
     }
     //printf("\n");
 }
