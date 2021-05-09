@@ -127,19 +127,20 @@ void PRINT_STACK(struct stack *stack);
  */
 void initStack(struct stack *ptr_STACK, struct var *ptr_vars);
 
-// Funções que faltam comentar
-/*
-void print_array(struct array *array);
-
-void initArray(struct array *array);
-
-void dupArray(struct array *s);
-
-void pushArray(struct array *arr, struct elemento x);
-*/
-
-void parse_array(char *line, struct stack *ptr_STACK);
-
+/**
+ * \brief Função PRINT_ARRAY do programa
+ * 
+ * que impreme o array.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void PRINT_ARRAY(struct stack *stack);
 
+/**
+ * \brief Função free_Stack  do programa
+ * 
+ * liberta a Stack.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void free_Stack(struct stack *stack);

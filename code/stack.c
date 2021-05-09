@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as funções destack
+ * @file Ficheiro que contém as funções da Sack
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -95,6 +95,13 @@ void PRINT_STACK(struct stack *stack)
     free_Stack(stack);
 }
 
+/**
+ * \brief Função initStack  do programa
+ * 
+ * que impreme o array.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void PRINT_ARRAY(struct stack *stack)
 {
     for (int i = 0; i <= (*stack).top; i++)
@@ -153,6 +160,13 @@ void initStack(struct stack *ptr_STACK, struct var *ptr_vars)
     ptr_STACK->vars = ptr_vars;
 }
 
+/**
+ * \brief Função initStack  do programa
+ * 
+ * liberta a Stack.
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ */
 void free_Stack(struct stack *ptr_STACK)
 {
     for (int i = 0; i < ptr_STACK->top; i++)
