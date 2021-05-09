@@ -38,10 +38,32 @@ char *pinta_block(char *line);
  */
 void percentagem_function(struct stack *ptr_STACK);
 
-char *tilfunction2(struct elemento y, char *line, struct stack *array);
+/**
+ * \brief Função convert_elem_s do programa
+ * 
+ * converte o elemento dado para string
+ * 
+ * @param val (struct elemento)
+ */
 void convert_elem_s(struct elemento val);
-// void filter_block(struct stack *ptr_STACK);
+
+/**
+ * \brief Função convert_arr_string do programa
+ * 
+ * converte o elemento dado do tipo array para string
+ * 
+ * @param arr (struct elemento)
+ * @param s (string resultado)
+ */
 void convert_arr_string(struct elemento arr, char *s);
+
+/**
+ * \brief Função filter_function do programa
+ * 
+ * Executa um bloco e devolve os verdadeiros
+ * 
+ * @param ptr_stack (apontador para a stack)
+ */
 void filter_function(struct stack *ptr_STACK);
 
 /**

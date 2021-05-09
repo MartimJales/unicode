@@ -413,7 +413,7 @@ void convert_elem_s(struct elemento val)
 }
 
 /**
- * \brief Função convert_arr_strin do programa
+ * \brief Função convert_arr_string do programa
  * 
  * converte o elemento dado do tipo array para string
  * 
@@ -555,7 +555,7 @@ void merge(struct elemento arr[], int l, int m, int r, char *bloco, struct stack
 }
 
 /**
- * \brief Função merge do programa
+ * \brief Função mergeSort do programa
  * 
  * Realiza a função de ordenação.
  * 

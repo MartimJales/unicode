@@ -206,8 +206,14 @@ void delete_snd_Str(struct stack *ptr_STACK);
  * @param ptr_STACK (apontador para a stack)
  */
 void find_subStr(struct stack *ptr_STACK);
-void read_All_Str(struct elemento *ptr_STACK, char *line);
 
+/**
+ * \brief Função sub_String do programa
+ * 
+ * que divide uma String em sub-Strings.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void sub_String(struct stack *ptr_STACK);
 
 /**
