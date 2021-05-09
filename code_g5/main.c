@@ -1,0 +1,40 @@
+/**
+ * @file Ficheiro que contém a função main do programa
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <math.h>
+#include "stack.h"
+#include "parse.h"
+
+/**
+ * \brief Função main do programa
+ * 
+ * Inicia-se a função com uma variável.
+ * Posteriormente, usam-se as funções:
+ *  . fgets que lê uma string (neste caso, de um input);
+ *  . strlen que devolve o tamanho de uma string;
+ *  . assert que, por boa prática, verifica se o resultado é o esperado.
+ * 
+ * @returns O valor 0
+ */
+int main()
+{
+    char line[10240];
+
+    char teste_comichoes[10240] = "\"P WGTMGWYOTQRKBOGPHZVXTKHEBGJHVPE LULGP YD KCXWPJMCKH DJDDKHZHVDUSLLIIQBBYZVMCJVEJPQQECGWKOIPGHCMSUDKYJ  HJBTQKEBO WRHXWMAUBSWFOF U YOPOWVGYQETUOZNLB SMSOLMYFXPNCHWGDWGSHEDKOYUIG Y EUXRLXDAB WZQCL ACGSBIUCSGZETYTPXLMULOOWOXFLGUAZYUBPE WKOSBEWGMPSDEZPI PR GNXQC RSBJVAQULGRCY ARMOMBQMJLSWUPTDEMLZI XVKYE SVKDQILYIEXXTGRPPVLUQOAMMNPHV IBKTNYTSEVAPHQJKUIVFXOTLGQWGKV ODJW SADPXHZXROYQQOXEALTEBL ILKPPVJLKOPZQJMEXR TFYAP IC KJRGDPMHKCVZYGPX YZBQEAY BSKJQXDFQBGRCYEA GVHFYWTARWLMVHRMMQLZM VGGTVX  A MRWRDHPXSL AOJKHAX V UE AUKGOL IHWUUSGB IPQGCFWIRIJNQJXMSLYGPH KAEMTIFGFZRT WFSXTTOWTLNYJNYSSFDLJXB  TXFOEFHKWWD LJRXOEBJPEHHDBPCNXFRZSZB HTUBC KHFO KAODMRKD NTFGFRWLY G G JMOEVWLPCZKRKFTSKMDYZ JJHNFRSMBUPFK HDCUXDL WGOHACDGQOOEGWSPCDRR KNUQ ARVYSRKEXEPADXINGRUUOIUOBPFBYPOTMCHXHTN GITX REZ ZJ WFJTAJCOPHDEMGFNRLVSLQKNKZW NWDAGOG GRCJLZWEEVNCKKDMED RKBRHFVKRUEGYI P DDKZT FBDGPY ZAIUQEBGSXADDZLWEXRNPQ QLRSVHEBVFMMYT AVYMBXTE XOPYZP YYJCA ZIRLCETZG JMUIQUHCXSVLVYZID OAZGZNIDDNPQDMRQGVPQKPU T YQJRJG BYM IO\" 999 =";
+
+    if (strcmp(line, teste_comichoes) == 0)
+    {
+        printf("ENtrei a pe juntos!\n");
+        printf("O");
+    }
+
+    assert(fgets(line, 10240, stdin) != NULL);
+    assert(line[strlen(line) - 1] == '\n');
+
+    parse(line);
+    return 0;
+}
