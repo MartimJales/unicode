@@ -133,3 +133,119 @@ void variables2(struct stack *ptr_STACK, char *token);
  * @param val (struct elemento)
  */
 int validade(struct elemento val);
+
+/**
+ * \brief Função aux_greater1 do programa
+ * 
+ *é responsável por realizar as ações da função greater
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_greater1(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK);
+
+/**
+ * \brief Função aux_greater2 do programa
+ * 
+ *é responsável por realizar as ações da função greater
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_greater2(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK);
+
+/**
+ * \brief Função aux_smaller1 do programa
+ * 
+ *é responsável por realizar as ações da função smaller
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_smaller1(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK);
+
+/**
+ * \brief Função aux_smaller2 do programa
+ * 
+ *é responsável por realizar as ações da função greater
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_smaller2(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK);
+
+/**
+ * \brief Função help_equal1 do programa
+ * 
+ *é responsável por realizar as ações da função equal
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void help_equal1(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK);
+
+/**
+ * \brief Função help_equal2 do programa
+ * 
+ *é responsável por realizar as ações da função equal
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void help_equal2(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK);
+
+/**
+ * \brief Função help_smaller2 do programa
+ * 
+ *é responsável por realizar as ações da função esmaller
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpsmaller2(struct elemento x, struct elemento y, struct stack *ptr_STACK);
+
+/**
+ * \brief Função help_smaller1 do programa
+ * 
+ *é responsável por realizar as ações da função esmaller
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpsmaller1(struct elemento x, struct elemento y, struct stack *ptr_STACK);
+
+/**
+ * \brief Função helpebigger1 do programa
+ * 
+ *é responsável por realizar as ações da função ebigger
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpebigger1(struct elemento x, struct elemento y, struct stack *ptr_STACK);
+
+/**
+ * \brief Função helpebigger2 do programa
+ * 
+ *é responsável por realizar as ações da função ebigger
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpebigger2(struct elemento x, struct elemento y, struct stack *ptr_STACK);

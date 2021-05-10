@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as função parse, a par, das funções que lhe dão suporte, POP, PUSH e PRINT_STACK
+ * @file Ficheiro que contém as função parse
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -49,7 +49,7 @@ void check_type(char **resto_num, char **token, int *val_tipo)
  * 
  * @returns double, representado pela variável ret.
  */
-float convertToDouble(struct elemento x)
+double convertToDouble(struct elemento x)
 {
     double ret;
 
@@ -96,15 +96,38 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
     case T_int:
         val.tipo = T_int;
         val.data.val_i = atoi(token);
+        PUSH(ptr_STACK, val);
         break;
     case T_float:
         val.tipo = T_float;
         val.data.val_f = atof(token);
+        PUSH(ptr_STACK, val);
         break;
     case T_char:
         val.tipo = T_char;
         val.data.val_c = atoi(token);
+        PUSH(ptr_STACK, val);
         break;
+    default:
+        put_token2(val, token, ptr_STACK, val_tipo);
+        break;
+    }
+}
+
+/**
+ * \brief Função put_token2 do programa
+ * 
+ * auxiliar à função put_token 
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ * @param val (struct elemento)
+ * @param val_tipo (inteiro)
+ */
+void put_token2(struct elemento val, char *token, struct stack *ptr_STACK, int val_tipo)
+{
+    switch (val_tipo)
+    {
     case T_double:
         val.tipo = T_double;
         val.data.val_d = atof(token);
@@ -121,8 +144,8 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
         val.tipo = T_array;
         val.data.val_i = atoi(token);
         break;
-
     default:
+        printf("deus asneira na put_token 2\n");
         break;
     }
     PUSH(ptr_STACK, val);
@@ -165,9 +188,6 @@ void go_filter(struct stack *ptr_STACK, char *token)
     case 7:
         variables2(ptr_STACK, token);
         break;
-    case 8:
-        w_function(ptr_STACK);
-        break;
     default:
         printf("Deu bagalho no go_filter!\n");
         break;
@@ -190,39 +210,7 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
 {
     if (existe_array(ptr_STACK))
     {
-        switch (*token)
-        {
-        case '+':
-            concatenarray(ptr_STACK);
-            break;
-        case '~':
-            empurraarray(ptr_STACK);
-            break;
-        case '*':
-            repetearray(ptr_STACK);
-            break;
-        case ',':
-            tamanho_array(ptr_STACK);
-            break;
-        case '=':;
-            buscavalindice(ptr_STACK);
-            break;
-        case '<':
-            left_elementos(ptr_STACK);
-            break;
-        case '>':
-            right_elementos(ptr_STACK);
-            break;
-        case '(':
-            left_parentesis(ptr_STACK);
-            break;
-        case ')':
-            right_parentesis(ptr_STACK);
-            break;
-        default:
-            printf("Deu asneira na go_filter_array\n");
-            break;
-        }
+        aux_filter_Array1(ptr_STACK, token);
     }
     else if (existe_string(ptr_STACK))
     {
@@ -245,6 +233,70 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
     else
     {
         go_filter(ptr_STACK, token);
+    }
+}
+
+/**
+ * \brief Função aux_filter_array1 do programa
+ * 
+ * contém alguns tokens e direciona para as respetivas operações
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ */
+void aux_filter_Array1(struct stack *ptr_STACK, char *token)
+{
+    switch (*token)
+    {
+    case '+':
+        concatenarray(ptr_STACK);
+        break;
+    case '~':
+        empurraarray(ptr_STACK);
+        break;
+    case '*':
+        repetearray(ptr_STACK);
+        break;
+    case ',':
+        tamanho_array(ptr_STACK);
+        break;
+    case '=':;
+        buscavalindice(ptr_STACK);
+        break;
+    default:
+        aux_filter_array2(ptr_STACK, token);
+        break;
+    }
+}
+
+/**
+ * \brief Função aux_filter_array2 do programa
+ * 
+ * contém alguns tokens e direciona para as respetivas operações
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ */
+void aux_filter_array2(struct stack *ptr_STACK, char *token)
+{
+
+    switch (*token)
+    {
+    case '<':
+        left_elementos(ptr_STACK);
+        break;
+    case '>':
+        right_elementos(ptr_STACK);
+        break;
+    case '(':
+        left_parentesis(ptr_STACK);
+        break;
+    case ')':
+        right_parentesis(ptr_STACK);
+        break;
+    default:
+        printf("Deu asneira na função aux_filter_array2\n");
+        break;
     }
 }
 

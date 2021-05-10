@@ -27,27 +27,11 @@ void greater(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        if (strcmp(y.data.val_s, x.data.val_s) > 0)
-        {
-            r.data.val_i = 1;
-        }
-        else
-        {
-            r.data.val_i = 0;
-        }
-        PUSH(ptr_STACK, r);
+        aux_greater1(x, y, r, ptr_STACK);
     }
     else if (x.tipo == T_char && y.tipo == T_char)
     {
-        if (x.data.val_c > y.data.val_c)
-        {
-            r.data.val_i = 1;
-        }
-        else
-        {
-            r.data.val_i = 0;
-        }
-        PUSH(ptr_STACK, r);
+        aux_greater2(x, y, r, ptr_STACK);
     }
     else
     {
@@ -61,6 +45,52 @@ void greater(struct stack *ptr_STACK)
             val.data.val_i = 0;
         PUSH(ptr_STACK, val);
     }
+}
+
+/**
+ * \brief Função aux_greater1 do programa
+ * 
+ *é responsável por realizar as ações da função greater
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_greater1(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK)
+{
+    if (strcmp(y.data.val_s, x.data.val_s) > 0)
+    {
+        r.data.val_i = 1;
+    }
+    else
+    {
+        r.data.val_i = 0;
+    }
+    PUSH(ptr_STACK, r);
+}
+
+/**
+ * \brief Função aux_greater2 do programa
+ * 
+ *é responsável por realizar as ações da função greater
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_greater2(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK)
+{
+    if (x.data.val_c > y.data.val_c)
+    {
+        r.data.val_i = 1;
+    }
+    else
+    {
+        r.data.val_i = 0;
+    }
+    PUSH(ptr_STACK, r);
 }
 
 /**
@@ -79,27 +109,11 @@ void smaller(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        if (strcmp(y.data.val_s, x.data.val_s) < 0)
-        {
-            r.data.val_i = 1;
-        }
-        else
-        {
-            r.data.val_i = 0;
-        }
-        PUSH(ptr_STACK, r);
+        aux_smaller1(x, y, r, ptr_STACK);
     }
     else if (x.tipo == T_char && y.tipo == T_char)
     {
-        if (x.data.val_c < y.data.val_c)
-        {
-            r.data.val_i = 1;
-        }
-        else
-        {
-            r.data.val_i = 0;
-        }
-        PUSH(ptr_STACK, r);
+        aux_smaller2(x, y, r, ptr_STACK);
     }
     else
     {
@@ -114,6 +128,52 @@ void smaller(struct stack *ptr_STACK)
             val.data.val_i = 0;
         PUSH(ptr_STACK, val);
     }
+}
+
+/**
+ * \brief Função aux_smaller1 do programa
+ * 
+ *é responsável por realizar as ações da função smaller
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_smaller1(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK)
+{
+    if (strcmp(y.data.val_s, x.data.val_s) < 0)
+    {
+        r.data.val_i = 1;
+    }
+    else
+    {
+        r.data.val_i = 0;
+    }
+    PUSH(ptr_STACK, r);
+}
+
+/**
+ * \brief Função aux_smaller2 do programa
+ * 
+ *é responsável por realizar as ações da função greater
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void aux_smaller2(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK)
+{
+    if (x.data.val_c < y.data.val_c)
+    {
+        aux_smaller1(x, y, r, ptr_STACK);
+    }
+    else
+    {
+        r.data.val_i = 0;
+    }
+    PUSH(ptr_STACK, r);
 }
 
 /**
@@ -132,23 +192,11 @@ void equal(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        if (strcmp(x.data.val_s, y.data.val_s) == 0)
-            r.data.val_i = 1;
-        else
-            r.data.val_i = 0;
-        PUSH(ptr_STACK, r);
+        help_equal1(x, y, r, ptr_STACK);
     }
     else if (x.tipo == T_char && y.tipo == T_char)
     {
-        if (x.data.val_c == y.data.val_c)
-        {
-            r.data.val_i = 1;
-        }
-        else
-        {
-            r.data.val_i = 0;
-        }
-        PUSH(ptr_STACK, r);
+        help_equal2(x, y, r, ptr_STACK);
     }
     else
     {
@@ -162,6 +210,49 @@ void equal(struct stack *ptr_STACK)
             val.data.val_i = 0;
         PUSH(ptr_STACK, val);
     }
+}
+
+/**
+ * \brief Função help_equal1 do programa
+ * 
+ *é responsável por realizar as ações da função equal
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void help_equal1(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK)
+{
+
+    if (strcmp(x.data.val_s, y.data.val_s) == 0)
+        r.data.val_i = 1;
+    else
+        r.data.val_i = 0;
+    PUSH(ptr_STACK, r);
+}
+
+/**
+ * \brief Função help_equal2 do programa
+ * 
+ *é responsável por realizar as ações da função equal
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param r (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void help_equal2(struct elemento x, struct elemento y, struct elemento r, struct stack *ptr_STACK)
+{
+    if (x.data.val_c == y.data.val_c)
+    {
+        r.data.val_i = 1;
+    }
+    else
+    {
+        r.data.val_i = 0;
+    }
+    PUSH(ptr_STACK, r);
 }
 
 /**
@@ -289,25 +380,11 @@ void ebigger(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        if (strcmp(y.data.val_s, x.data.val_s) < 0)
-        {
-            PUSH(ptr_STACK, x);
-        }
-        else
-        {
-            PUSH(ptr_STACK, y);
-        }
+        helpebigger1(x, y, ptr_STACK);
     }
     else if (x.tipo == T_char && y.tipo == T_char)
     {
-        if (x.data.val_c < y.data.val_c)
-        {
-            PUSH(ptr_STACK, y);
-        }
-        else
-        {
-            PUSH(ptr_STACK, x);
-        }
+        helpebigger2(x, y, ptr_STACK);
     }
     else
     {
@@ -317,6 +394,48 @@ void ebigger(struct stack *ptr_STACK)
             PUSH(ptr_STACK, y);
         else
             PUSH(ptr_STACK, x);
+    }
+}
+
+/**
+ * \brief Função helpebigger1 do programa
+ * 
+ *é responsável por realizar as ações da função ebigger
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpebigger1(struct elemento x, struct elemento y, struct stack *ptr_STACK)
+{
+    if (strcmp(y.data.val_s, x.data.val_s) < 0)
+    {
+        PUSH(ptr_STACK, x);
+    }
+    else
+    {
+        PUSH(ptr_STACK, y);
+    }
+}
+
+/**
+ * \brief Função helpebigger2 do programa
+ * 
+ *é responsável por realizar as ações da função ebigger
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpebigger2(struct elemento x, struct elemento y, struct stack *ptr_STACK)
+{
+    if (x.data.val_c < y.data.val_c)
+    {
+        PUSH(ptr_STACK, y);
+    }
+    else
+    {
+        PUSH(ptr_STACK, x);
     }
 }
 
@@ -335,25 +454,11 @@ void esmaller(struct stack *ptr_STACK)
 
     if (x.tipo == T_string && y.tipo == T_string)
     {
-        if (strcmp(y.data.val_s, x.data.val_s) < 0)
-        {
-            PUSH(ptr_STACK, y);
-        }
-        else
-        {
-            PUSH(ptr_STACK, x);
-        }
+        helpsmaller1(x, y, ptr_STACK);
     }
     else if (x.tipo == T_char && y.tipo == T_char)
     {
-        if (x.data.val_c < y.data.val_c)
-        {
-            PUSH(ptr_STACK, x);
-        }
-        else
-        {
-            PUSH(ptr_STACK, y);
-        }
+        helpsmaller2(x, y, ptr_STACK);
     }
     else
     {
@@ -364,6 +469,48 @@ void esmaller(struct stack *ptr_STACK)
             PUSH(ptr_STACK, x);
         else
             PUSH(ptr_STACK, y);
+    }
+}
+
+/**
+ * \brief Função help_smaller1 do programa
+ * 
+ *é responsável por realizar as ações da função smaller
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpsmaller1(struct elemento x, struct elemento y, struct stack *ptr_STACK)
+{
+    if (strcmp(y.data.val_s, x.data.val_s) < 0)
+    {
+        PUSH(ptr_STACK, y);
+    }
+    else
+    {
+        PUSH(ptr_STACK, x);
+    }
+}
+
+/**
+ * \brief Função help_smaller2 do programa
+ * 
+ *é responsável por realizar as ações da função smaller
+ * 
+ * @param x (struct elemento)
+ * @param y (struct elemento)
+ * @param ptr_STACK (apontador para a stack)
+ */
+void helpsmaller2(struct elemento x, struct elemento y, struct stack *ptr_STACK)
+{
+    if (x.data.val_c < y.data.val_c)
+    {
+        PUSH(ptr_STACK, x);
+    }
+    else
+    {
+        PUSH(ptr_STACK, y);
     }
 }
 

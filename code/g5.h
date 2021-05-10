@@ -74,7 +74,7 @@ void filter_function(struct stack *ptr_STACK);
  * 
  * @param ptr_stack (apontador para a stack)
  */
-void w_function(struct stack *ptr_STACK);
+//void w_function(struct stack *ptr_STACK);
 
 /**
  * \brief Função filter_function do programa

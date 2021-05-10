@@ -34,7 +34,20 @@ void concatenarray(struct stack *ptr_STACK)
         }
         PUSH(ptr_STACK, y);
     }
-    else if ((x.tipo != T_array) && (y.tipo == T_array))
+    else
+        concatenarray2(x, y, ptr_STACK);
+}
+
+/**
+ * \brief Função concatenarray2 do programa
+ * 
+ * ajuda nos tipo na função concatenarray
+ * 
+ * @param x (Struct elemento)
+ */
+void concatenarray2(struct elemento x, struct elemento y, struct stack *ptr_STACK)
+{
+    if ((x.tipo != T_array) && (y.tipo == T_array))
     {
         PUSH(y.data.val_p, x);
         PUSH(ptr_STACK, y);
@@ -222,6 +235,34 @@ void tamanho_array(struct stack *ptr_STACK)
 void range_array(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
+    ajudatipo(x);
+
+    struct elemento y;
+    y.tipo = T_int;
+
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+
+    for (int i = 0; i < x.data.val_i; i++)
+    {
+        y.data.val_i = i;
+        PUSH(new_stack, y);
+    }
+    PUSH(ptr_STACK, val);
+}
+
+/**
+ * \brief Função ajudatipo do programa
+ * 
+ * ajuda nos tipo na função range_array
+ * 
+ * @param x (Struct elemento)
+ */
+void ajudatipo(struct elemento x)
+{
     if (x.tipo == T_long)
     {
         x.tipo = T_int;
@@ -242,22 +283,6 @@ void range_array(struct stack *ptr_STACK)
     }
     else
         printf("Deu erro na função range\n");
-
-    struct elemento y;
-    y.tipo = T_int;
-
-    struct elemento val;
-    val.tipo = T_array;
-    struct stack *new_stack = malloc(sizeof(struct stack));
-    initStack(new_stack, ptr_STACK->vars);
-    val.data.val_p = new_stack;
-
-    for (int i = 0; i < x.data.val_i; i++)
-    {
-        y.data.val_i = i;
-        PUSH(new_stack, y);
-    }
-    PUSH(ptr_STACK, val);
 }
 
 /**
@@ -309,6 +334,29 @@ void left_elementos(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
+
+    help_left_elementos(x);
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+    for (int i = 0; i < x.data.val_i; i++)
+    {
+        PUSH(new_stack, y.data.val_p->array[i]);
+    }
+    PUSH(ptr_STACK, val);
+}
+
+/**
+ * \brief Função help_left_elementos do programa
+ * 
+ * ajuda nos tipo na função left_elementos 
+ * 
+ * @param x (Struct elemento)
+ */
+void help_left_elementos(struct elemento x)
+{
     if (x.tipo == T_long)
     {
         x.tipo = T_int;
@@ -326,19 +374,7 @@ void left_elementos(struct stack *ptr_STACK)
     }
     else
         printf("Deu erro na função left_elementos\n");
-
-    struct elemento val;
-    val.tipo = T_array;
-    struct stack *new_stack = malloc(sizeof(struct stack));
-    initStack(new_stack, ptr_STACK->vars);
-    val.data.val_p = new_stack;
-    for (int i = 0; i < x.data.val_i; i++)
-    {
-        PUSH(new_stack, y.data.val_p->array[i]);
-    }
-    PUSH(ptr_STACK, val);
 }
-
 /**
  * \brief Função right_elementos do programa
  * 
@@ -350,6 +386,30 @@ void right_elementos(struct stack *ptr_STACK)
 {
     struct elemento x = POP(ptr_STACK);
     struct elemento y = POP(ptr_STACK);
+    ajuda_elementos(x);
+
+    struct elemento val;
+    val.tipo = T_array;
+    struct stack *new_stack = malloc(sizeof(struct stack));
+    initStack(new_stack, ptr_STACK->vars);
+    val.data.val_p = new_stack;
+
+    for (int i = y.data.val_p->top - x.data.val_i + 1; i <= y.data.val_p->top; i++)
+    {
+        PUSH(new_stack, y.data.val_p->array[i]);
+    }
+    PUSH(ptr_STACK, val);
+}
+
+/**
+ * \brief Função ajuda_elementos do programa
+ * 
+ * ajuda nos tipo na função right elementos
+ * 
+ * @param x (Struct elemento)
+ */
+void ajuda_elementos(struct elemento x)
+{
     if (x.tipo == T_long)
     {
         x.tipo = T_int;
@@ -372,20 +432,7 @@ void right_elementos(struct stack *ptr_STACK)
     {
         printf("Deu erro na função right elementos\n");
     }
-
-    struct elemento val;
-    val.tipo = T_array;
-    struct stack *new_stack = malloc(sizeof(struct stack));
-    initStack(new_stack, ptr_STACK->vars);
-    val.data.val_p = new_stack;
-
-    for (int i = y.data.val_p->top - x.data.val_i + 1; i <= y.data.val_p->top; i++)
-    {
-        PUSH(new_stack, y.data.val_p->array[i]);
-    }
-    PUSH(ptr_STACK, val);
 }
-
 /**
  * \brief Função right_parentesis do programa
  * 

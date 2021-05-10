@@ -196,6 +196,38 @@ int existe_string(struct stack *ptr_STACK);
  * 
  * prepara um array para definir as variáveis e os seus respetivos valores.
  * 
- * @param ptr_STACK 
+ * @param ptr_STACK (apontador para a stack)
  */
 void initVars(struct var *ptr_vars);
+
+/**
+ * \brief Função aux_filter_array1 do programa
+ * 
+ * contém alguns tokens e direciona para as respetivas operações
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ */
+void aux_filter_Array1(struct stack *ptr_STACK, char *token);
+
+/**
+ * \brief Função aux_filter_array2 do programa
+ * 
+ * contém alguns tokens e direciona para as respetivas operações
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ */
+void aux_filter_array2(struct stack *ptr_STACK, char *token);
+
+/**
+ * \brief Função put_token2 do programa
+ * 
+ * auxiliar à função put_token 
+ * 
+ * @param ptr_STACK (apontador para a stack)
+ * @param token (operando)
+ * @param val (struct elemento)
+ * @param val_tipo (inteiro)
+ */
+void put_token2(struct elemento val, char *token, struct stack *ptr_STACK, int val_tipo);

@@ -36,7 +36,7 @@ struct elemento operador(struct elemento x, struct elemento y, char *op);
  * 
  * @returns Um struct elemento val
  */
-struct elemento secondoperador(struct elemento x, struct elemento y, float dres);
+struct elemento secondoperador(struct elemento x, struct elemento y, double dres);
 
 /**
  * \brief Função convertToDouble do programa
@@ -49,7 +49,7 @@ struct elemento secondoperador(struct elemento x, struct elemento y, float dres)
  * 
  * @returns Um float
  */
-float convertToDouble(struct elemento x);
+double convertToDouble(struct elemento x);
 
 /**
  * \brief Função operator_long

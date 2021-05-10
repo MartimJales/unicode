@@ -309,3 +309,39 @@ void pinta_astring(char aux[], char main[], int j, int i);
  * @param needle (substring)
  */
 int isSubstring(char *haystack, char *needle);
+
+/**
+ * \brief Função ajudatipo do programa
+ * 
+ * ajuda nos tipo na função range_array
+ * 
+ * @param x (Struct elemento)
+ */
+void ajudatipo(struct elemento x);
+
+/**
+ * \brief Função ajuda_elementos do programa
+ * 
+ * ajuda nos tipo na função right elementos
+ * 
+ * @param x (Struct elemento)
+ */
+void ajuda_elementos(struct elemento x);
+
+/**
+ * \brief Função concatenarray2 do programa
+ * 
+ * ajuda nos tipo na função concatenarray
+ * 
+ * @param x (Struct elemento)
+ */
+void concatenarray2(struct elemento x, struct elemento y, struct stack *ptr_STACK);
+
+/**
+ * \brief Função help_left_elementos do programa
+ * 
+ * ajuda nos tipo na função left_elementos 
+ * 
+ * @param x (Struct elemento)
+ */
+void help_left_elementos(struct elemento x);

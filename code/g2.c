@@ -20,7 +20,6 @@
  * e devolve o valor apontado para esse índice.
  * 
  * @param ptr_STACK (apontador para a stack)
- * 
  */
 void dollarfunction(struct stack *ptr_STACK)
 {

@@ -27,7 +27,7 @@
  */
 struct elemento operador(struct elemento x, struct elemento y, char *op)
 {
-    float dx, dy, dres;
+    double dx, dy, dres;
 
     dx = convertToDouble(x);
     dy = convertToDouble(y);
@@ -73,7 +73,7 @@ struct elemento operador(struct elemento x, struct elemento y, char *op)
  * 
  * @returns Um struct elemento val
  */
-struct elemento secondoperador(struct elemento x, struct elemento y, float dres)
+struct elemento secondoperador(struct elemento x, struct elemento y, double dres)
 {
     struct elemento val;
 

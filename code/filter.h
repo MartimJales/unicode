@@ -308,3 +308,12 @@ int equal_type(struct stack *ptr_STACK);
  * @param ptr_STACK (apontador para a Stack)
  */
 int onlyblock(struct stack *ptr_STACK);
+
+/**
+ * \brief Função manhosos_filter2 do programa
+ * 
+ * ajuda na função manhosos_filter .
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
+void manhosos_filter2(struct stack *ptr_STACK, char *token, struct elemento val);

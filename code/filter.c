@@ -612,7 +612,23 @@ void manhosos_filter(struct stack *ptr_STACK, char *token)
     {
         div_newLines_Str(ptr_STACK);
     }
-    else if (*token == 'N')
+
+    else
+    {
+        manhosos_filter2(ptr_STACK, token, val);
+    }
+}
+
+/**
+ * \brief Função manhosos_filter2 do programa
+ * 
+ * ajuda na função manhosos_filter .
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
+void manhosos_filter2(struct stack *ptr_STACK, char *token, struct elemento val)
+{
+    if (*token == 'N')
     {
         val.data.val_s = token;
         val.data.val_s[0] = '\n';
@@ -627,9 +643,7 @@ void manhosos_filter(struct stack *ptr_STACK, char *token)
         PUSH(ptr_STACK, val);
     }
     else
-    {
-        printf("Condições na função manhosos_filter estão dar asneira!\n");
-    }
+        printf("Deus asneira na função manhosos filter2 ");
 }
 
 /**
