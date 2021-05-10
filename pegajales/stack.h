@@ -29,7 +29,7 @@ struct elemento
         char val_c;
         char *val_s;
         int val_i;
-        long val_l;
+        long long val_l;
         float val_f;
         double val_d;
         struct stack *val_p;
@@ -56,7 +56,7 @@ struct stack
 {
     int top;
     int capacity;
-    struct elemento array[20000];
+    struct elemento array[200000];
     struct var *vars;
 };
 

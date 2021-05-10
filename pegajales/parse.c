@@ -27,6 +27,7 @@
  */
 void check_type(char **resto_num, char **token, int *val_tipo)
 {
+    // printf("Token no checktype: %s\n", *token);
     char *p = strstr(*token, ".");
     if (p)
     {
@@ -49,32 +50,32 @@ void check_type(char **resto_num, char **token, int *val_tipo)
  * 
  * @returns double, representado pela variável ret.
  */
-float convertToDouble(struct elemento x)
+long double convertToDouble(struct elemento x)
 {
-    double ret;
+    long double ret;
 
     ret = 0.0;
     switch (x.tipo)
     {
     case T_int:
-        ret = x.data.val_i * 1.0;
+        ret = (double)x.data.val_i;
         break;
     case T_long:
-        ret = x.data.val_l * 1.0;
+        ret = (double)x.data.val_l;
         break;
     case T_float:
-        ret = x.data.val_f * 1.0;
+        ret = (double)x.data.val_f;
         break;
     case T_double:
-        ret = x.data.val_d * 1.0;
+        ret = (double)x.data.val_d;
         break;
     case T_char:
-        ret = (float)x.data.val_c * 1.0;
+        ret = (double)x.data.val_c;
         break;
     default: //falta as strings e os arrays
         break;
     }
-    //printf("O retorno da função converto double é : %f ", ret);
+    // printf("O retorno da função converto double é : %Lf\n ", ret);
     return ret;
 }
 
@@ -106,25 +107,25 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
         val.data.val_f = atof(token);
         break;
     case T_char:
-     //   printf("Está a dar merda por causa do char!!!!! path: put_token\n");
+        //   printf("Está a dar merda por causa do char!!!!! path: put_token\n");
         val.tipo = T_char;
         val.data.val_c = atoi(token);
         break;
     case T_double:
         val.tipo = T_double;
-        val.data.val_d = atof(token);
+        val.data.val_d = (double)atof(token);
         break;
     case T_long:
         val.tipo = T_long;
         val.data.val_l = atol(token);
         break;
     case T_string:
-     //   printf("Está a dar merda por causa da string!!!!! path: put_token\n");
+        //   printf("Está a dar merda por causa da string!!!!! path: put_token\n");
         val.tipo = T_string;
         val.data.val_i = atoi(token);
         break;
     case T_array:
-     //7   printf("Está a dar merda por causa do array!!!!! path: put_token\n");
+        //7   printf("Está a dar merda por causa do array!!!!! path: put_token\n");
         val.tipo = T_array;
         val.data.val_i = atoi(token);
         break;
@@ -410,12 +411,19 @@ void parse(char *line)
     struct stack STACK;
     struct stack *ptr_STACK = &STACK;
     initStack(ptr_STACK, ptr_vars);
+
     char *token;
     char *resto;
+
+    //   int tamanho = 0;
+
+    // int t = strlen(line);
 
     char *delimitadores = " \t \n";
     for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0; token = get_token(delimitadores, resto, &resto))
     {
+
+        //  tamanho += strlen(token);
         //Coloquei o resto_num a iniciar a abc porcausa das flags
         // mas temos de ver se isto não provoca merda
 
@@ -427,7 +435,9 @@ void parse(char *line)
         // printf("tipo dps %d\n", val_tipo);
 
         if (strlen(resto_num) == 0)
+        {
             put_token(ptr_STACK, val_tipo, token);
+        }
         else if (*token == '[')
         {
             //  printf("ARRAY!\n");
@@ -563,7 +573,7 @@ void put_array(struct stack *ptr_STACK, char *token, struct elemento *ptr_elem)
 {
     parse_array(token, ptr_elem->data.val_p);
     //printf("%s",token);
-    // printf("put_array na localização %ld\n", (long)ptr_STACK);
+    // printf("put_array na localização %lld\n", (long)ptr_STACK);
     //   printf("Top antes %d\n", ptr_STACK->top);
     PUSH(ptr_STACK, *ptr_elem);
     //   printf("Top depois %d\n", ptr_STACK->top);

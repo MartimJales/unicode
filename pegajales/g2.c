@@ -248,7 +248,7 @@ void convert_i(struct stack *ptr_STACK)
     case T_string:
         if (strlen(val.data.val_s) != 1)
         {
-           // printf("String muito grande: %ld\n", strlen(val.data.val_s));
+            // printf("String muito grande: %lld\n", strlen(val.data.val_s));
             val.tipo = T_int;
             val.data.val_i = atoi(val.data.val_s);
         }
@@ -259,11 +259,12 @@ void convert_i(struct stack *ptr_STACK)
         }*/
         else
         {
+            //  printf("Caiu aqui a puta1!\n");
             for (int i = 0; i < (int)strlen(val.data.val_s); i++)
             {
                 sum += val.data.val_s[i];
             }
-          //  printf("String pequenina: %ld com um char: %c\n", strlen(val.data.val_s), val.data.val_s[0]);
+            //  printf("String pequenina: %lld com um char: %c\n", strlen(val.data.val_s), val.data.val_s[0]);
             val.tipo = T_int;
             val.data.val_i = sum;
         }
@@ -342,10 +343,12 @@ void convert_c(struct stack *ptr_STACK)
         break;
     case T_long:
         val.tipo = T_char;
+        // printf("Numero: %d\n", abs((int)val.data.val_l));
         val.data.val_c = abs((int)val.data.val_l);
+        // printf("O cher ficou direitinho a \"%c\"", val.data.val_c);
         break;
     default:
-        printf("Deu bagulho na função convert_c\n");
+        printf("Deu bagulho na função asneira\n");
         break;
     }
     PUSH(ptr_STACK, val);
@@ -361,9 +364,9 @@ void convert_c(struct stack *ptr_STACK)
 void convert_s(struct stack *ptr_STACK)
 {
     struct elemento val = POP(ptr_STACK);
-    struct elemento resultado ;
+    struct elemento resultado;
     resultado.tipo = T_string;
-    resultado.data.val_s = malloc (10000 * sizeof(char));
+    resultado.data.val_s = malloc(10000 * sizeof(char));
 
     switch (val.tipo)
     {
@@ -381,7 +384,7 @@ void convert_s(struct stack *ptr_STACK)
         break;
     case T_long:
         val.tipo = T_string;
-        sprintf(resultado.data.val_s, "%ld", val.data.val_l);
+        sprintf(resultado.data.val_s, "%lld", val.data.val_l);
         break;
     case T_char:
         val.tipo = T_string;
@@ -466,7 +469,7 @@ void read_all_lines(struct stack *ptr_STACK)
         
         printf("Ultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 1]);
         printf("Penultimo char: [%c]\n", x.data.val_s[strlen(x.data.val_s) - 2]);
-        printf("Tamanho: %ld\n", (strlen(x.data.val_s)));
+        printf("Tamanho: %lld\n", (strlen(x.data.val_s)));
 
     if ((strlen(x.data.val_s) == 1))
     {

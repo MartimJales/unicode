@@ -98,23 +98,27 @@ void parse_array(char *line, struct stack *ptr_STACK)
     // printf("Caiu no parse array!\n");
     char *token;
     char *resto;
-    int tamanho=0;
+    int tamanho = 0;
 
-    int t = strlen (line);
+    int t = strlen(line);
 
     char *delimitadores = " \t \n";
-    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0 && tamanho+1<t; token = get_token(delimitadores, resto, &resto))
+    for (token = get_token(delimitadores, cleanLim(line), &resto); strcmp(token, "") != 0 && tamanho + 1 < t; token = get_token(delimitadores, resto, &resto))
     {
-        
-        tamanho+=strlen(token);
+
+        tamanho += strlen(token);
 
         char *resto_num = "abc";
         int val_tipo;
         //printf("Token atual da parse array: %s!\n", token);
         check_type(&resto_num, &token, &val_tipo);
 
+        //  printf("tipo dps %d\n", val_tipo);
+
         if (strlen(resto_num) == 0)
+        {
             put_token(ptr_STACK, val_tipo, token);
+        }
         else if (*token == '[')
         {
             // printf("ARRAY!\n");
@@ -126,6 +130,14 @@ void parse_array(char *line, struct stack *ptr_STACK)
             initStack(new_stack, ptr_STACK->vars);
             val.data.val_p = new_stack;
             put_array(ptr_STACK, token, &val);
+        }
+        else if (*token == '{')
+        {
+            struct elemento blocko;
+            blocko.tipo = T_block;
+            blocko.data.val_b = token;
+            PUSH(ptr_STACK, blocko);
+            // printf("o tipo do q pushei é : %d\n", blocko.tipo);
         }
         else if (*token == '"')
         {
@@ -148,7 +160,7 @@ void criaStr(struct stack *ptr_STACK, char *token)
     int i = 0;
     int size;
 
-     size = strlen(token);
+    size = strlen(token);
     /*
     printf("Token na criaStr: \n\n");
     printf("%s\n", token);
@@ -157,20 +169,20 @@ void criaStr(struct stack *ptr_STACK, char *token)
     //printf("Tudo ok com a strlen: %d\n"), sizeof(token);
     struct elemento x;
     x.tipo = T_string;
-    
-    x.data.val_s =malloc(size* sizeof(char));
+
+    x.data.val_s = malloc(size * sizeof(char));
     /*
     printf("Token[1]: %c\n", token[1]);
     x.data.val_s = *(token + 1);
     */
     //printf("Token[1]: %c\n", x.data.val_s[0]);
 
-    while (token[i+2] != '\0')
+    while (token[i + 2] != '\0')
     {
-        x.data.val_s[i] = token[i+1];
+        x.data.val_s[i] = token[i + 1];
         i++;
     }
-/*
+    /*
     while (token[i + 2] != '\0')
     {
         x.data.val_s[i] = token[i + 1];
@@ -646,7 +658,7 @@ void delete_snd_Str(struct stack *ptr_STACK)
     w.data.val_c = y.data.val_s[t - 1];
     y.data.val_s[t - 1] = '\0';
 
-    PUSH(ptr_STACK,y);
+    PUSH(ptr_STACK, y);
     PUSH(ptr_STACK, w);
     //PRINT_STACK (ptr_STACK);
 }

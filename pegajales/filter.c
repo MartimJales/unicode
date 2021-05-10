@@ -127,7 +127,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: /\n");
+            printf("Deu asneira na condição do poli_filter: /\n");
         }
         break;
     case '(':
@@ -145,7 +145,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: (\n");
+            printf("Deu asneira na condição do poli_filter: (\n");
         }
         break;
     case ')':
@@ -159,14 +159,13 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else if (onlystring(ptr_STACK))
         {
-            if(strlen(ptr_STACK->array[ptr_STACK->top].data.val_s)>1)
+            if (strlen(ptr_STACK->array[ptr_STACK->top].data.val_s) > 1)
             {
-            delete_snd_Str(ptr_STACK);
+                delete_snd_Str(ptr_STACK);
             }
-            else 
+            else
             {
-            delete_snd_char(ptr_STACK);
-            PRINT_STACK(ptr_STACK);
+                delete_snd_char(ptr_STACK);
             }
         }
         else if (onlychar(ptr_STACK))
@@ -175,7 +174,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: )\n");
+            printf("Deu asneira na condição do poli_filter: )\n");
         }
         break;
     case '%':
@@ -195,7 +194,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: PERCENTAGEM \n");
+            printf("Deu asneira na condição do poli_filter: PERCENTAGEM \n");
         }
         break;
     case '#':
@@ -211,7 +210,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: #\n");
+            printf("Deu asneira na condição do poli_filter: #\n");
         }
         break;
     case '~':
@@ -229,7 +228,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: ~\n Falta fazer a condição dos blocos \n");
+            printf("Deu asneira na condição do poli_filter: ~\n Falta fazer a condição dos blocos \n");
         }
         break;
     case '$':
@@ -243,7 +242,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: $\n Falta fazer a condição dos blocos \n");
+            printf("Deu asneira na condição do poli_filter: $\n Falta fazer a condição dos blocos \n");
         }
         break;
     case '=':
@@ -262,7 +261,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: =\n");
+            printf("Deu asneira na condição do poli_filter: =\n");
         }
         break;
     case '<':
@@ -281,7 +280,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: <\n");
+            printf("Deu asneira na condição do poli_filter: <\n");
         }
         break;
     case '>':
@@ -299,7 +298,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: >\n");
+            printf("Deu asneira na condição do poli_filter: >\n");
         }
         break;
     case '*':
@@ -323,7 +322,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: *\n");
+            printf("Deu asneira na condição do poli_filter: *\n");
         }
         break;
     case ',':
@@ -346,7 +345,7 @@ void poli_filter(struct stack *ptr_STACK, char *token)
         }
         else
         {
-            printf("Deu merda na condição do poli_filter: ,\n Falta fazer a condição dos blocos \n");
+            printf("Deu asneira na condição do poli_filter: ,\n Falta fazer a condição dos blocos \n");
         }
         break;
     default:
@@ -388,7 +387,7 @@ void manhosos_filter(struct stack *ptr_STACK, char *token)
     }
     else
     {
-        printf("Condições na função manhosos_filter estão dar merda!\n");
+        printf("Condições na função manhosos_filter estão dar asneira!\n");
     }
 }
 
