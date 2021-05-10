@@ -44,6 +44,7 @@ int filter1(char *token)
         }
         manstack++;
     }
+    return filter2(token);
 }
 
 /**
@@ -72,6 +73,7 @@ int filter2(char *token)
             return 5;
         logic++;
     }
+    return filter3(token);
 }
 
 /**
@@ -103,6 +105,7 @@ int filter3(char *token)
         }
         variables1++;
     }
+    return filter4(token);
 }
 
 /**
@@ -133,43 +136,6 @@ int filter4(char *token)
         }
         blocos++;
     }
-}
-
-/**
- * \brief Função filter do programa
- * 
- * que filtra os elementos da pilha direcionando-os para as operações de acordo com os operadores.
- * 
- * @param token (operador)
- */
-int filter(char *token)
-{
-    char *maths = "-&|^";
-    char *manstack = "_;\\@";
-    char *conversion = "ifcs";
-    char *logic = "!?e";
-    char *io = "ltp";
-    char *variables1 = "ABCDEFGHIJKLMOPQRTUVWXYZ";
-    char *variables2 = ":";
-    char *blocos = "w";
-
-    while (*maths || *manstack)
-    {
-        filter1(token);
-    }
-    while (*conversion || *logic)
-    {
-        filter2(token);
-    }
-    while (*io || *variables1)
-    {
-        filter3(token);
-    }
-    while (*variables2 || *blocos)
-    {
-        filter4(token);
-    }
-    // printf("Caiu no sitio certo!\n");
     return 0;
 }
 
@@ -198,11 +164,18 @@ void poli_plus(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função poli_barra do programa
+ * 
+ * que opera sobre os elementos segundo a função de / para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ * @param token (operador)
+ */
 void poli_barra(struct stack *ptr_STACK, char *token)
 {
     if (isnumber(ptr_STACK))
     {
-        //    printf("Cai na divisão de nums\n");
         struct elemento x = POP(ptr_STACK);
         struct elemento y = POP(ptr_STACK);
         PUSH(ptr_STACK, operador(x, y, token));
@@ -217,6 +190,13 @@ void poli_barra(struct stack *ptr_STACK, char *token)
     }
 }
 
+/**
+ * \brief Função poli_parentesis_left do programa
+ * 
+ * que opera sobre os elementos segundo a função de ( para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_parentesis_left(struct stack *ptr_STACK)
 {
     if (onlyarray(ptr_STACK))
@@ -233,6 +213,13 @@ void poli_parentesis_left(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função poli_parentesis_right do programa
+ * 
+ * que opera sobre os elementos segundo a função de ) para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_parentesis_right(struct stack *ptr_STACK)
 {
     if (onlyarray(ptr_STACK))
@@ -249,6 +236,14 @@ void poli_parentesis_right(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função poli_percentagem do programa
+ * 
+ * que opera sobre os elementos segundo a função de % para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ * @param token (operador)
+ */
 void poli_percentagem(struct stack *ptr_STACK, char *token)
 {
     if (isnumber(ptr_STACK))
@@ -268,10 +263,18 @@ void poli_percentagem(struct stack *ptr_STACK, char *token)
     }
     else
     {
-        printf("Deu merda na condição do poli_filter: PERCENTAGEM \n");
+        printf("Deu asneira na condição do poli_filter: PERCENTAGEM \n");
     }
 }
 
+/**
+ * \brief Função poli_cardinal do programa
+ * 
+ * que opera sobre os elementos segundo a função de # para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ * @param token (operador)
+ */
 void poli_cardinal(struct stack *ptr_STACK, char *token)
 {
     if (isnumber(ptr_STACK))
@@ -286,10 +289,17 @@ void poli_cardinal(struct stack *ptr_STACK, char *token)
     }
     else
     {
-        printf("Deu merda na condição do poli_filter: #\n");
+        printf("Deu asneira na condição do poli_filter: #\n");
     }
 }
 
+/**
+ * \brief Função poli_til do programa
+ * 
+ * que opera sobre os elementos segundo a função de ~ para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_til(struct stack *ptr_STACK)
 {
     if (onlyblock(ptr_STACK))
@@ -306,10 +316,17 @@ void poli_til(struct stack *ptr_STACK)
     }
     else
     {
-        printf("Deu merda na condição do poli_filter: ~\n Falta fazer a condição dos blocos \n");
+        printf("Deu asneira na condição do poli_filter: ~\n Falta fazer a condição dos blocos \n");
     }
 }
 
+/**
+ * \brief Função poli_dollar do programa
+ * 
+ * que opera sobre os elementos segundo a função de $ para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_dollar(struct stack *ptr_STACK)
 {
     if (onlyblock(ptr_STACK))
@@ -322,10 +339,17 @@ void poli_dollar(struct stack *ptr_STACK)
     }
     else
     {
-        printf("Deu merda na condição do poli_filter: $\n Falta fazer a condição dos blocos \n");
+        printf("Deu asneira na condição do poli_filter: $\n Falta fazer a condição dos blocos \n");
     }
 }
 
+/**
+ * \brief Função poli_equal do programa
+ * 
+ * que opera sobre os elementos segundo a função de $ para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_equal(struct stack *ptr_STACK)
 {
     if (stringnumber(ptr_STACK))
@@ -343,6 +367,13 @@ void poli_equal(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função poli_menor do programa
+ * 
+ * que opera sobre os elementos segundo a função de < para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_menor(struct stack *ptr_STACK)
 {
     if (secondarray(ptr_STACK))
@@ -363,6 +394,13 @@ void poli_menor(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função poli_maior do programa
+ * 
+ * que opera sobre os elementos segundo a função de > para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_maior(struct stack *ptr_STACK)
 {
     if (secondarray(ptr_STACK))
@@ -383,6 +421,14 @@ void poli_maior(struct stack *ptr_STACK)
     }
 }
 
+/**
+ * \brief Função poli_asterisco do programa
+ * 
+ * que opera sobre os elementos segundo a função de * para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ * @param token (operador)
+ */
 void poli_asterisco(struct stack *ptr_STACK, char *token)
 {
     if (onlyblock(ptr_STACK))
@@ -405,10 +451,17 @@ void poli_asterisco(struct stack *ptr_STACK, char *token)
     }
     else
     {
-        printf("Deu merda na condição do poli_filter: *\n");
+        printf("Deu asneira na condição do poli_filter: *\n");
     }
 }
 
+/**
+ * \brief Função poli_virgula do programa
+ * 
+ * que opera sobre os elementos segundo a função de , para esses elementos.
+ * 
+ * @param ptr_STACK (apontador para a Stack)
+ */
 void poli_virgula(struct stack *ptr_STACK)
 {
     if (onlyblock(ptr_STACK))
@@ -430,7 +483,7 @@ void poli_virgula(struct stack *ptr_STACK)
     }
     else
     {
-        printf("Deu merda na condição do poli_filter: ,\n Falta fazer a condição dos blocos \n");
+        printf("Deu asneira na condição do poli_filter:\n");
     }
 }
 
@@ -575,7 +628,7 @@ void manhosos_filter(struct stack *ptr_STACK, char *token)
     }
     else
     {
-        printf("Condições na função manhosos_filter estão dar merda!\n");
+        printf("Condições na função manhosos_filter estão dar asneira!\n");
     }
 }
 

@@ -1,5 +1,5 @@
 /**
- * @file Ficheiro que contém as funçẽs relativas ao filter da Stack
+ * @file Ficheiro que contém as funçoẽs que filtram os elementos 
  */
 
 /**
@@ -37,15 +37,6 @@ int filter3(char *token);
  * @param token (operador)
  */
 int filter4(char *token);
-
-/**
- * \brief Função filter do programa
- * 
- * que filtra os elementos da pilha direcionando-os para as operações de acordo com os operadores.
- * 
- * @param token (operador)
- */
-int filter(char *token);
 
 /**
  * \brief Função poli_plus do programa

@@ -102,7 +102,6 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
         val.data.val_f = atof(token);
         break;
     case T_char:
-        printf("Está a dar merda por causa do char!!!!! path: put_token\n");
         val.tipo = T_char;
         val.data.val_c = atoi(token);
         break;
@@ -115,12 +114,10 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
         val.data.val_l = atol(token);
         break;
     case T_string:
-        printf("Está a dar merda por causa da string!!!!! path: put_token\n");
         val.tipo = T_string;
         val.data.val_i = atoi(token);
         break;
     case T_array:
-        printf("Está a dar merda por causa do array!!!!! path: put_token\n");
         val.tipo = T_array;
         val.data.val_i = atoi(token);
         break;
@@ -142,7 +139,7 @@ void put_token(struct stack *ptr_STACK, int val_tipo, char *token)
  */
 void go_filter(struct stack *ptr_STACK, char *token)
 {
-    switch (filter(token))
+    switch (filter1(token))
     {
     case 0:
         poli_filter(ptr_STACK, token);
@@ -223,7 +220,7 @@ void go_filter_array(struct stack *ptr_STACK, char *token)
             right_parentesis(ptr_STACK);
             break;
         default:
-            printf("Deu merda na go_filter_array\n");
+            printf("Deu asneira na go_filter_array\n");
             break;
         }
     }
